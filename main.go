@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+
 	"github.com/joho/godotenv"
 	"github.com/upikoth/starter-new/internal/app"
 	"github.com/upikoth/starter-new/internal/config"
@@ -23,8 +25,9 @@ func main() {
 	}
 
 	loggerInstance.Info("Запуск приложения")
+	ctx := context.Background()
 
-	if appErr := app.Start(); appErr != nil {
+	if appErr := app.Start(ctx); appErr != nil {
 		loggerInstance.Error("Приложение отработало с ошибкой")
 	} else {
 		loggerInstance.Info("Приложение успешно завершило работу")

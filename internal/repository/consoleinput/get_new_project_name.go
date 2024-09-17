@@ -1,8 +1,11 @@
 package consoleinput
 
-import "fmt"
+import (
+	"context"
+	"fmt"
+)
 
-func (c *ConsoleInput) GetNewProjectName() (string, error) {
+func (c *ConsoleInput) GetNewProjectName(_ context.Context) (string, error) {
 	c.logger.Debug("Запрашиваем имя нового проекта")
 
 	projectName := ""

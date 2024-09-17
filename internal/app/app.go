@@ -8,6 +8,7 @@ import (
 	"github.com/upikoth/starter-new/internal/pkg/logger"
 	"github.com/upikoth/starter-new/internal/repository"
 	"github.com/upikoth/starter-new/internal/service"
+	"golang.org/x/sync/errgroup"
 )
 
 type App struct {
@@ -40,14 +41,18 @@ func New(config *config.Config, logger logger.Logger) (*App, error) {
 	}, nil
 }
 
-func (s *App) Start() error {
-	if err := s.service.NewProject.SetNewProjectName(); err != nil {
+func (s *App) Start(ctx context.Context) error {
+	if err := s.service.NewProject.SetNewProjectName(ctx); err != nil {
 		return err
 	}
 
-	s.service.NewProject.CreateGithubRepositories()
+	eg, newCtx := errgroup.WithContext(ctx)
 
-	return nil
+	eg.Go(func() error {
+		return s.service.NewProject.CreateGithubRepositories(newCtx)
+	})
+
+	return eg.Wait()
 }
 
 func (s *App) Stop(_ context.Context) error {

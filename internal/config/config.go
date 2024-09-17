@@ -8,6 +8,7 @@ type Config struct {
 
 type GitHub struct {
 	AccessToken string `envconfig:"GITHUB_ACCESS_TOKEN" required:"true"`
+	UserName    string `envconfig:"GITHUB_USER_NAME" required:"true"`
 }
 
 func New() (*Config, error) {

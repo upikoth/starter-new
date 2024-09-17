@@ -4,10 +4,12 @@ import (
 	"github.com/upikoth/starter-new/internal/config"
 	"github.com/upikoth/starter-new/internal/pkg/logger"
 	"github.com/upikoth/starter-new/internal/repository/consoleinput"
+	"github.com/upikoth/starter-new/internal/repository/github"
 )
 
 type Repository struct {
-	ConsoleInput consoleinput.ConsoleInput
+	ConsoleInput *consoleinput.ConsoleInput
+	Github       *github.Github
 }
 
 func New(
@@ -15,7 +17,11 @@ func New(
 	config *config.Config,
 ) (*Repository, error) {
 	return &Repository{
-		ConsoleInput: *consoleinput.New(
+		ConsoleInput: consoleinput.New(
+			logger,
+			config,
+		),
+		Github: github.New(
 			logger,
 			config,
 		),

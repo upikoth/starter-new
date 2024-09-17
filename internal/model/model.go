@@ -6,18 +6,18 @@ type Project struct {
 	Name string
 }
 
-func (p *Project) getBackendRepoName() string {
+func (p *Project) GetBackendRepoName() string {
 	return fmt.Sprintf("%s-go", p.Name)
 }
 
-func (p *Project) getFrontendRepoName() string {
+func (p *Project) GetFrontendRepoName() string {
 	return fmt.Sprintf("%s-vue3", p.Name)
 }
 
-func (p *Project) getBackendRepoUrl(githubDomain string, githubUserName string) string {
-	return fmt.Sprintf("%s/%s/%s", githubDomain, githubUserName, p.getBackendRepoName())
+func (p *Project) GetBackendRepoUrl(githubDomain string, githubUserName string) string {
+	return fmt.Sprintf("%s/%s/%s", githubDomain, githubUserName, p.GetBackendRepoName())
 }
 
-func (p *Project) getFrontendRepoUrl(githubDomain string, githubUserName string) string {
-	return fmt.Sprintf("%s/%s/%s", githubDomain, githubUserName, p.getFrontendRepoName())
+func (p *Project) GetFrontendRepoUrl(githubDomain string, githubUserName string) string {
+	return fmt.Sprintf("%s/%s/%s", githubDomain, githubUserName, p.GetFrontendRepoName())
 }
