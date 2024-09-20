@@ -12,11 +12,11 @@ func (p *NewProject) CreateGithubRepositories(ctx context.Context) error {
 	eg, newCtx := errgroup.WithContext(ctx)
 
 	eg.Go(func() error {
-		return p.repository.Github.CreateRepository(newCtx, p.project.GetBackendRepoName())
+		return p.repositories.Github.CreateRepository(newCtx, p.project.GetBackendRepoName())
 	})
 
 	eg.Go(func() error {
-		return p.repository.Github.CreateRepository(newCtx, p.project.GetFrontendRepoName())
+		return p.repositories.Github.CreateRepository(newCtx, p.project.GetFrontendRepoName())
 	})
 
 	if err := eg.Wait(); err != nil {

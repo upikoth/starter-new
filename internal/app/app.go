@@ -6,27 +6,27 @@ import (
 
 	"github.com/upikoth/starter-new/internal/config"
 	"github.com/upikoth/starter-new/internal/pkg/logger"
-	"github.com/upikoth/starter-new/internal/repository"
-	"github.com/upikoth/starter-new/internal/service"
+	"github.com/upikoth/starter-new/internal/repositories"
+	"github.com/upikoth/starter-new/internal/services"
 	"golang.org/x/sync/errgroup"
 )
 
 type App struct {
-	config     *config.Config
-	logger     logger.Logger
-	repository *repository.Repository
-	service    *service.Service
+	config       *config.Config
+	logger       logger.Logger
+	repositories *repositories.Repositories
+	services     *services.Services
 }
 
 func New(config *config.Config, logger logger.Logger) (*App, error) {
-	repository, err := repository.New(logger, config)
+	repositories, err := repositories.New(logger, config)
 
 	if err != nil {
 		logger.Error(fmt.Sprintf("Ошибка при инициализации repository: %s", err))
 		return nil, err
 	}
 
-	service, err := service.New(logger, config, repository)
+	services, err := services.New(logger, config, repositories)
 
 	if err != nil {
 		logger.Error(fmt.Sprintf("Ошибка при инициализации service: %s", err))
@@ -34,22 +34,26 @@ func New(config *config.Config, logger logger.Logger) (*App, error) {
 	}
 
 	return &App{
-		config:     config,
-		logger:     logger,
-		repository: repository,
-		service:    service,
+		config:       config,
+		logger:       logger,
+		repositories: repositories,
+		services:     services,
 	}, nil
 }
 
 func (s *App) Start(ctx context.Context) error {
-	if err := s.service.NewProject.SetNewProjectName(ctx); err != nil {
+	if err := s.services.NewProject.CreateNewProjectName(ctx); err != nil {
 		return err
 	}
 
 	eg, newCtx := errgroup.WithContext(ctx)
 
 	eg.Go(func() error {
-		return s.service.NewProject.CreateGithubRepositories(newCtx)
+		return s.services.NewProject.CreateGithubRepositories(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProject.CreateYCFolder(newCtx)
 	})
 
 	return eg.Wait()

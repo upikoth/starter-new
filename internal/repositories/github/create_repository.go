@@ -36,7 +36,7 @@ func (r *Github) CreateRepository(ctx context.Context, repoName string) error {
 	defer res.Body.Close()
 
 	if res.StatusCode != http.StatusCreated {
-		err := errors.New("Репозиторий go не создан в github")
+		err := errors.New("репозиторий go не создан в github")
 		r.logger.Error(err.Error())
 		return err
 	}

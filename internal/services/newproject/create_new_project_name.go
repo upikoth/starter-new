@@ -5,10 +5,10 @@ import (
 	"fmt"
 )
 
-func (p *NewProject) SetNewProjectName(ctx context.Context) error {
+func (p *NewProject) CreateNewProjectName(ctx context.Context) error {
 	p.logger.Debug("Задаем имя нового проекта")
 
-	name, err := p.repository.ConsoleInput.GetNewProjectName(ctx)
+	name, err := p.repositories.ConsoleInput.GetNewProjectName(ctx)
 
 	if err != nil {
 		p.logger.Error("Не удалось задать имя проекта")

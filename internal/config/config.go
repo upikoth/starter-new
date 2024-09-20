@@ -3,12 +3,18 @@ package config
 import "github.com/kelseyhightower/envconfig"
 
 type Config struct {
-	GitHub GitHub
+	GitHub      GitHub
+	YandexCloud YandexCloud
 }
 
 type GitHub struct {
 	AccessToken string `envconfig:"GITHUB_ACCESS_TOKEN" required:"true"`
 	UserName    string `envconfig:"GITHUB_USER_NAME" required:"true"`
+}
+
+type YandexCloud struct {
+	OauthToken string `envconfig:"YANDEX_CLOUD_OAUTH_USER_TOKEN" required:"true"`
+	CloudID    string `envconfig:"YANDEX_CLOUD_CLOUD_ID" required:"true"`
 }
 
 func New() (*Config, error) {
