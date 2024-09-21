@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
+
+	"github.com/upikoth/starter-new/internal/model"
 )
 
 type createFolderRequest struct {
@@ -15,12 +17,13 @@ type createFolderRequest struct {
 
 type createFolderResponse struct {
 	OperationID string `json:"id"`
+	Done        bool   `json:"done"`
 	Metadata    struct {
 		FolderID string `json:"folderId"`
 	} `json:"metadata"`
 }
 
-func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (string, string, error) {
+func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (*model.CreateFolderResponse, error) {
 	y.logger.Info("Создаем folder в yandex cloud")
 
 	reqStruct := createFolderRequest{
@@ -38,7 +41,7 @@ func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (stri
 
 	if err != nil {
 		y.logger.Error(err.Error())
-		return "", "", err
+		return nil, err
 	}
 
 	resParsed := createFolderResponse{}
@@ -46,10 +49,14 @@ func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (stri
 
 	if err != nil {
 		y.logger.Error(err.Error())
-		return "", "", err
+		return nil, err
 	}
 
 	y.logger.Info("Folder успешно создан!")
 
-	return resParsed.OperationID, resParsed.Metadata.FolderID, nil
+	return &model.CreateFolderResponse{
+		OperationID: resParsed.OperationID,
+		FolderId:    resParsed.Metadata.FolderID,
+		Done:        resParsed.Done,
+	}, nil
 }

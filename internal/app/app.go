@@ -51,9 +51,9 @@ func (s *App) Start(ctx context.Context) error {
 	// folder в yandex.cloud
 	eg, newCtx := errgroup.WithContext(ctx)
 
-	// eg.Go(func() error {
-	// 	return s.services.NewProject.CreateGithubRepositories(newCtx)
-	// })
+	eg.Go(func() error {
+		return s.services.NewProject.CreateGithubRepositories(newCtx)
+	})
 
 	eg.Go(func() error {
 		return s.services.NewProject.CreateYCFolder(newCtx)
@@ -67,9 +67,15 @@ func (s *App) Start(ctx context.Context) error {
 
 	eg, newCtx = errgroup.WithContext(ctx)
 
-	// 2. Создаем сервисный аккаунт
+	// 2. Создаем:
+	// сервисный аккаунт
+	// бакеты
 	eg.Go(func() error {
 		return s.services.NewProject.CreateYCFolderServiceAccount(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProject.CreateYCStorageBuckets(newCtx)
 	})
 
 	err = eg.Wait()

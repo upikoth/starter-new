@@ -23,3 +23,22 @@ func (p *Project) GetBackendRepoUrl(githubDomain string, githubUserName string) 
 func (p *Project) GetFrontendRepoUrl(githubDomain string, githubUserName string) string {
 	return fmt.Sprintf("%s/%s/%s", githubDomain, githubUserName, p.GetFrontendRepoName())
 }
+
+func (p *Project) GetObjectStorageSecretsBucketName() string {
+	return fmt.Sprintf("%s-secrets", p.Name)
+}
+
+func (p *Project) GetProjectSiteDomain(mainSiteDomainName string) string {
+	return fmt.Sprintf("%s.%s", p.Name, mainSiteDomainName)
+}
+
+type CreateFolderResponse struct {
+	OperationID string
+	FolderId    string
+	Done        bool
+}
+
+type CreateBucketResponse struct {
+	OperationID string
+	Done        bool
+}
