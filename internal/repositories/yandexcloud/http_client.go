@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func (y *YandexCloud) sendHttpPostRequest(ctx context.Context, url string, req any) ([]byte, error) {
+func (y *YandexCloud) sendHttpRequest(ctx context.Context, method string, url string, req any) ([]byte, error) {
 	y.logger.Info("Делаем POST запрос в YandexCloud")
 
 	body, err := json.Marshal(req)
@@ -25,7 +25,7 @@ func (y *YandexCloud) sendHttpPostRequest(ctx context.Context, url string, req a
 
 	request, err := http.NewRequestWithContext(
 		ctxWithTimeout,
-		http.MethodPost,
+		method,
 		url,
 		bytes.NewBuffer(body),
 	)

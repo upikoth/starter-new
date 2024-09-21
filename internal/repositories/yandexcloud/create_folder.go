@@ -3,6 +3,7 @@ package yandexcloud
 import (
 	"context"
 	"encoding/json"
+	"net/http"
 )
 
 type createFolderRequest struct {
@@ -13,12 +14,13 @@ type createFolderRequest struct {
 }
 
 type createFolderResponse struct {
-	Response struct {
-		FolderID string `json:"id"`
-	} `json:"response"`
+	OperationID string `json:"id"`
+	Metadata    struct {
+		FolderID string `json:"folderId"`
+	} `json:"metadata"`
 }
 
-func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (string, error) {
+func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (string, string, error) {
 	y.logger.Info("Создаем folder в yandex cloud")
 
 	reqStruct := createFolderRequest{
@@ -27,15 +29,16 @@ func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (stri
 		Description: "",
 	}
 
-	bodyBytes, err := y.sendHttpPostRequest(
-		context.Background(),
+	bodyBytes, err := y.sendHttpRequest(
+		ctx,
+		http.MethodPost,
 		"https://resource-manager.api.cloud.yandex.net/resource-manager/v1/folders",
 		reqStruct,
 	)
 
 	if err != nil {
 		y.logger.Error(err.Error())
-		return "", err
+		return "", "", err
 	}
 
 	resParsed := createFolderResponse{}
@@ -43,10 +46,10 @@ func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (stri
 
 	if err != nil {
 		y.logger.Error(err.Error())
-		return "", err
+		return "", "", err
 	}
 
 	y.logger.Info("Folder успешно создан!")
 
-	return resParsed.Response.FolderID, nil
+	return resParsed.OperationID, resParsed.Metadata.FolderID, nil
 }

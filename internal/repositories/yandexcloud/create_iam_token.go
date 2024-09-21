@@ -3,6 +3,7 @@ package yandexcloud
 import (
 	"context"
 	"encoding/json"
+	"net/http"
 	"time"
 )
 
@@ -22,8 +23,9 @@ func (y *YandexCloud) fillIamToken() error {
 		YandexPassportOauthToken: y.config.YandexCloud.OauthToken,
 	}
 
-	bodyBytes, err := y.sendHttpPostRequest(
+	bodyBytes, err := y.sendHttpRequest(
 		context.Background(),
+		http.MethodPost,
 		"https://iam.api.cloud.yandex.net/iam/v1/tokens",
 		reqStruct,
 	)

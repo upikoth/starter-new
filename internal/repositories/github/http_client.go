@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func (y *Github) sendHttpPostRequest(ctx context.Context, url string, req any) ([]byte, error) {
+func (y *Github) sendHttpRequest(ctx context.Context, method string, url string, req any) ([]byte, error) {
 	y.logger.Info("Делаем POST запрос в Github")
 
 	body, err := json.Marshal(req)
@@ -25,7 +25,7 @@ func (y *Github) sendHttpPostRequest(ctx context.Context, url string, req any) (
 
 	request, err := http.NewRequestWithContext(
 		ctxWithTimeout,
-		http.MethodPost,
+		method,
 		url,
 		bytes.NewBuffer(body),
 	)

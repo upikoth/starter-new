@@ -3,6 +3,7 @@ package github
 import (
 	"context"
 	"fmt"
+	"net/http"
 )
 
 type createRepositoryRequest struct {
@@ -16,8 +17,9 @@ func (r *Github) CreateRepository(ctx context.Context, repoName string) error {
 		Name: repoName,
 	}
 
-	_, err := r.sendHttpPostRequest(
+	_, err := r.sendHttpRequest(
 		ctx,
+		http.MethodPost,
 		"https://api.github.com/user/repos",
 		reqStruct,
 	)

@@ -3,8 +3,9 @@ package model
 import "fmt"
 
 type Project struct {
-	Name     string
-	FolderID string
+	Name             string
+	FolderID         string
+	ServiceAccountID string
 }
 
 func (p *Project) GetBackendRepoName() string {

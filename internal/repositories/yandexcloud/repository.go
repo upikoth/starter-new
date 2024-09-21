@@ -1,6 +1,8 @@
 package yandexcloud
 
 import (
+	"fmt"
+
 	"github.com/upikoth/starter-new/internal/config"
 	"github.com/upikoth/starter-new/internal/pkg/logger"
 )
@@ -21,6 +23,8 @@ func New(
 	}
 
 	err := yc.fillIamToken()
+
+	fmt.Println(yc.iamToken)
 
 	if err != nil {
 		return nil, err
