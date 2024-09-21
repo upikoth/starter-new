@@ -1,12 +1,8 @@
 package yandexcloud
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
-	"io"
-	"net/http"
 	"time"
 )
 
@@ -26,37 +22,12 @@ func (y *YandexCloud) fillIamToken() error {
 		YandexPassportOauthToken: y.config.YandexCloud.OauthToken,
 	}
 
-	body, err := json.Marshal(reqStruct)
-	if err != nil {
-		y.logger.Error(err.Error())
-		return err
-	}
+	bodyBytes, err := y.sendHttpPostRequest(
+		context.Background(),
+		"https://iam.api.cloud.yandex.net/iam/v1/tokens",
+		reqStruct,
+	)
 
-	newCtx, cancel := context.WithTimeout(context.Background(), time.Minute)
-	defer cancel()
-
-	req, err := http.NewRequestWithContext(newCtx, http.MethodPost, "https://iam.api.cloud.yandex.net/iam/v1/tokens", bytes.NewBuffer(body))
-	if err != nil {
-		y.logger.Error(err.Error())
-		return err
-	}
-
-	client := &http.Client{}
-	res, err := client.Do(req)
-	if err != nil {
-		y.logger.Error(err.Error())
-		return err
-	}
-
-	defer res.Body.Close()
-
-	if res.StatusCode != http.StatusOK {
-		err := errors.New("не удалось создать iam token")
-		y.logger.Error(err.Error())
-		return err
-	}
-
-	bodyBytes, err := io.ReadAll(res.Body)
 	if err != nil {
 		y.logger.Error(err.Error())
 		return err

@@ -46,6 +46,7 @@ func (s *App) Start(ctx context.Context) error {
 		return err
 	}
 
+	// 1. Создаем github репозитории и folder в yandex.cloud
 	eg, newCtx := errgroup.WithContext(ctx)
 
 	eg.Go(func() error {
@@ -56,7 +57,13 @@ func (s *App) Start(ctx context.Context) error {
 		return s.services.NewProject.CreateYCFolder(newCtx)
 	})
 
-	return eg.Wait()
+	err := eg.Wait()
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (s *App) Stop(_ context.Context) error {
