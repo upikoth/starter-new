@@ -82,6 +82,10 @@ func (s *App) Start(ctx context.Context) error {
 		return s.services.NewProject.CreateYCContainerRegistry(newCtx)
 	})
 
+	eg.Go(func() error {
+		return s.services.NewProject.CreateYCYDB(newCtx)
+	})
+
 	err = eg.Wait()
 
 	if err != nil {

@@ -7,6 +7,7 @@ type Project struct {
 	FolderID         string
 	ServiceAccountID string
 	RegistryID       string
+	DatabaseEndpoint string
 }
 
 func (p *Project) GetBackendRepoName() string {
@@ -41,6 +42,10 @@ func (p *Project) GetProjectRegistryName() string {
 	return p.Name
 }
 
+func (p *Project) GetProjectYDBName() string {
+	return p.Name
+}
+
 type CreateFolderResponse struct {
 	OperationID string
 	FolderId    string
@@ -56,4 +61,10 @@ type CreateRegistryResponse struct {
 	OperationID string
 	RegistryID  string
 	Done        bool
+}
+
+type CreateYDBResponse struct {
+	OperationID      string
+	DatabaseEndpoint string
+	Done             bool
 }

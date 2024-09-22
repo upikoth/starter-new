@@ -13,7 +13,7 @@ type operationStatusResponse struct {
 }
 
 func (y *YandexCloud) GetOperationStatus(ctx context.Context, operationID string) bool {
-	for i := 0; i < 10; i += 1 {
+	for i := 0; i < 30; i += 1 {
 		time.Sleep(time.Second)
 		done, _ := y.getOperationStatus(ctx, operationID)
 
