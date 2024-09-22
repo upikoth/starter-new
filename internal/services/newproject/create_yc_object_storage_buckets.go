@@ -62,7 +62,7 @@ func (p *NewProject) createYCStorageBucketForFrontendStatic(ctx context.Context)
 	res, err := p.repositories.YandexCloud.CreateBucket(
 		ctx,
 		p.project.FolderID,
-		p.project.GetProjectSiteDomain(p.config.MainSiteDomainName),
+		p.project.GetObjectStorageFrontendStaticBucketName(p.config.MainSiteDomainName),
 	)
 
 	if err != nil {
