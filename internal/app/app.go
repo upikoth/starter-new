@@ -70,6 +70,10 @@ func (s *App) Start(ctx context.Context) error {
 	// 2. Создаем:
 	// сервисный аккаунт
 	// бакеты
+	// container registry
+	// ydb
+	// serverless container
+	// logging group
 	eg.Go(func() error {
 		return s.services.NewProject.CreateYCFolderServiceAccount(newCtx)
 	})
@@ -88,6 +92,10 @@ func (s *App) Start(ctx context.Context) error {
 
 	eg.Go(func() error {
 		return s.services.NewProject.CreateYCServerlessContainer(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProject.CreateYCLogGroup(newCtx)
 	})
 
 	err = eg.Wait()

@@ -15,12 +15,12 @@ func (p *NewProject) CreateYCYDB(ctx context.Context) error {
 		return err
 	}
 
-	isYDBCreated := res.Done
-	if !isYDBCreated {
-		isYDBCreated = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
+	isCreated := res.Done
+	if !isCreated {
+		isCreated = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
 	}
 
-	if !isYDBCreated {
+	if !isCreated {
 		err := errors.New("ydb в процессе создания, статус операции не завершен")
 		p.logger.Error(err.Error())
 		return err

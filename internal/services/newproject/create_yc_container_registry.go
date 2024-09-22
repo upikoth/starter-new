@@ -15,12 +15,12 @@ func (p *NewProject) CreateYCContainerRegistry(ctx context.Context) error {
 		return err
 	}
 
-	isRegistryCreated := res.Done
-	if !isRegistryCreated {
-		isRegistryCreated = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
+	isCreated := res.Done
+	if !isCreated {
+		isCreated = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
 	}
 
-	if !isRegistryCreated {
+	if !isCreated {
 		err := errors.New("registry в процессе создания, статус операции не завершен")
 		p.logger.Error(err.Error())
 		return err

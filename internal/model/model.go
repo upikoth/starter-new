@@ -8,6 +8,7 @@ type Project struct {
 	ServiceAccountID string
 	RegistryID       string
 	DatabaseEndpoint string
+	LoggingGroupID   string
 }
 
 func (p *Project) GetBackendRepoName() string {
@@ -50,6 +51,10 @@ func (p *Project) GetProjectServerlessContainerName() string {
 	return p.Name
 }
 
+func (p *Project) GetProjectLoggingGroupName() string {
+	return p.Name
+}
+
 type CreateFolderResponse struct {
 	OperationID string
 	FolderId    string
@@ -75,5 +80,11 @@ type CreateYDBResponse struct {
 
 type CreateContainerResponse struct {
 	OperationID string
+	Done        bool
+}
+
+type CreateLoggingGroupResponse struct {
+	OperationID string
+	LogGroupID  string
 	Done        bool
 }

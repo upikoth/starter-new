@@ -15,12 +15,12 @@ func (p *NewProject) CreateYCServerlessContainer(ctx context.Context) error {
 		return err
 	}
 
-	isContainerCreated := res.Done
-	if !isContainerCreated {
-		isContainerCreated = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
+	isCreated := res.Done
+	if !isCreated {
+		isCreated = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
 	}
 
-	if !isContainerCreated {
+	if !isCreated {
 		err := errors.New("serverless container в процессе создания, статус операции не завершен")
 		p.logger.Error(err.Error())
 		return err

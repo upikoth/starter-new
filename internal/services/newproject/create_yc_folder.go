@@ -15,12 +15,12 @@ func (p *NewProject) CreateYCFolder(ctx context.Context) error {
 		return err
 	}
 
-	isFolderCreated := res.Done
-	if !isFolderCreated {
-		isFolderCreated = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
+	isCreated := res.Done
+	if !isCreated {
+		isCreated = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
 	}
 
-	if !isFolderCreated {
+	if !isCreated {
 		err := errors.New("folder в процессе создания, статус операции не завершен")
 		p.logger.Error(err.Error())
 		return err
