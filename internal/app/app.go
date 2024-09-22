@@ -74,6 +74,7 @@ func (s *App) Start(ctx context.Context) error {
 	// ydb
 	// serverless container
 	// logging group
+	// dns zone
 	eg.Go(func() error {
 		return s.services.NewProject.CreateYCFolderServiceAccount(newCtx)
 	})
@@ -96,6 +97,10 @@ func (s *App) Start(ctx context.Context) error {
 
 	eg.Go(func() error {
 		return s.services.NewProject.CreateYCLogGroup(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProject.CreateYCDNSZone(newCtx)
 	})
 
 	err = eg.Wait()

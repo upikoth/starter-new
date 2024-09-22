@@ -55,6 +55,10 @@ func (p *Project) GetProjectLoggingGroupName() string {
 	return p.Name
 }
 
+func (p *Project) GetProjectDNSZoneName(mainSiteDomainName string) string {
+	return fmt.Sprintf("%s.", p.GetProjectSiteDomain(mainSiteDomainName))
+}
+
 type CreateFolderResponse struct {
 	OperationID string
 	FolderId    string
@@ -86,5 +90,10 @@ type CreateContainerResponse struct {
 type CreateLoggingGroupResponse struct {
 	OperationID string
 	LogGroupID  string
+	Done        bool
+}
+
+type CreateDNSZoneResponse struct {
+	OperationID string
 	Done        bool
 }
