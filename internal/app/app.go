@@ -86,6 +86,10 @@ func (s *App) Start(ctx context.Context) error {
 		return s.services.NewProject.CreateYCYDB(newCtx)
 	})
 
+	eg.Go(func() error {
+		return s.services.NewProject.CreateYCServerlessContainer(newCtx)
+	})
+
 	err = eg.Wait()
 
 	if err != nil {

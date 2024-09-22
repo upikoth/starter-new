@@ -46,6 +46,10 @@ func (p *Project) GetProjectYDBName() string {
 	return p.Name
 }
 
+func (p *Project) GetProjectServerlessContainerName() string {
+	return p.Name
+}
+
 type CreateFolderResponse struct {
 	OperationID string
 	FolderId    string
@@ -67,4 +71,9 @@ type CreateYDBResponse struct {
 	OperationID      string
 	DatabaseEndpoint string
 	Done             bool
+}
+
+type CreateContainerResponse struct {
+	OperationID string
+	Done        bool
 }
