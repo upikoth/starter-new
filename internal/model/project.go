@@ -1,6 +1,12 @@
 package model
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
+)
 
 type Project struct {
 	Name             string
@@ -9,6 +15,8 @@ type Project struct {
 	RegistryID       string
 	DatabaseEndpoint string
 	LoggingGroupID   string
+	PostboxUsername  string
+	PostboxPassword  string
 }
 
 func (p *Project) GetBackendRepoName() string {
@@ -55,45 +63,18 @@ func (p *Project) GetProjectLoggingGroupName() string {
 	return p.Name
 }
 
+func (p *Project) GetCertificateName(mainSiteDomainName string) string {
+	return strings.Join(strings.Split(p.GetProjectSiteDomain(mainSiteDomainName), "."), "-")
+}
+
+func (p *Project) GetPostboxFromName() string {
+	return cases.Title(language.English, cases.Compact).String(p.Name)
+}
+
+func (p *Project) GetPostboxFromAddress(mainSiteDomainName string) string {
+	return fmt.Sprintf("noreply@%s", p.GetProjectSiteDomain(mainSiteDomainName))
+}
+
 func (p *Project) GetProjectDNSZoneName(mainSiteDomainName string) string {
 	return fmt.Sprintf("%s.", p.GetProjectSiteDomain(mainSiteDomainName))
-}
-
-type CreateFolderResponse struct {
-	OperationID string
-	FolderId    string
-	Done        bool
-}
-
-type CreateBucketResponse struct {
-	OperationID string
-	Done        bool
-}
-
-type CreateRegistryResponse struct {
-	OperationID string
-	RegistryID  string
-	Done        bool
-}
-
-type CreateYDBResponse struct {
-	OperationID      string
-	DatabaseEndpoint string
-	Done             bool
-}
-
-type CreateContainerResponse struct {
-	OperationID string
-	Done        bool
-}
-
-type CreateLoggingGroupResponse struct {
-	OperationID string
-	LogGroupID  string
-	Done        bool
-}
-
-type CreateDNSZoneResponse struct {
-	OperationID string
-	Done        bool
 }

@@ -42,6 +42,10 @@ func New(config *config.Config, logger logger.Logger) (*App, error) {
 }
 
 func (s *App) Start(ctx context.Context) error {
+	if err := s.services.User.SetYcUserCookie(ctx); err != nil {
+		return err
+	}
+
 	if err := s.services.NewProject.CreateNewProjectName(ctx); err != nil {
 		return err
 	}
@@ -101,6 +105,10 @@ func (s *App) Start(ctx context.Context) error {
 
 	eg.Go(func() error {
 		return s.services.NewProject.CreateYCDNSZone(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProject.CreateYCCertificate(ctx, s.services.User.YCUser)
 	})
 
 	err = eg.Wait()
