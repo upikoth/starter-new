@@ -33,8 +33,6 @@ func (y *YandexCloud) CreateYDB(
 	folderID string,
 	databaseName string,
 ) (*model.CreateYDBResponse, error) {
-	y.logger.Info("Создаем ydb в yandex cloud")
-
 	reqStruct := createYDBRequest{
 		FolderID: folderID,
 		Name:     databaseName,
@@ -51,7 +49,6 @@ func (y *YandexCloud) CreateYDB(
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
 
@@ -59,11 +56,8 @@ func (y *YandexCloud) CreateYDB(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
-
-	y.logger.Info("Bucket успешно создан!")
 
 	return &model.CreateYDBResponse{
 		OperationID:      resParsed.OperationID,

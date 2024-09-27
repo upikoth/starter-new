@@ -12,11 +12,8 @@ import (
 )
 
 func (y *Github) sendHttpRequest(ctx context.Context, method string, url string, req any) ([]byte, error) {
-	y.logger.Info("Делаем POST запрос в Github")
-
 	body, err := json.Marshal(req)
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 
@@ -35,14 +32,12 @@ func (y *Github) sendHttpRequest(ctx context.Context, method string, url string,
 	request.Header.Add("Accept", "application/vnd.github+json")
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 
 	client := &http.Client{}
 	res, err := client.Do(request)
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 
@@ -50,7 +45,6 @@ func (y *Github) sendHttpRequest(ctx context.Context, method string, url string,
 
 	bodyBytes, err := io.ReadAll(res.Body)
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 

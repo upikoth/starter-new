@@ -12,11 +12,8 @@ import (
 )
 
 func (y *YandexCloud) sendHttpRequest(ctx context.Context, method string, url string, req any) ([]byte, error) {
-	y.logger.Info("Делаем POST запрос в YandexCloud")
-
 	body, err := json.Marshal(req)
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 
@@ -33,14 +30,12 @@ func (y *YandexCloud) sendHttpRequest(ctx context.Context, method string, url st
 	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", y.iamToken))
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 
 	client := &http.Client{}
 	res, err := client.Do(request)
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 
@@ -48,7 +43,6 @@ func (y *YandexCloud) sendHttpRequest(ctx context.Context, method string, url st
 
 	bodyBytes, err := io.ReadAll(res.Body)
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 

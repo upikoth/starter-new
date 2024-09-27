@@ -2,7 +2,6 @@ package github
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 )
 
@@ -11,8 +10,6 @@ type createRepositoryRequest struct {
 }
 
 func (r *Github) CreateRepository(ctx context.Context, repoName string) error {
-	r.logger.Info(fmt.Sprintf("Создаем репозиторий в github: %s", repoName))
-
 	reqStruct := createRepositoryRequest{
 		Name: repoName,
 	}
@@ -25,10 +22,8 @@ func (r *Github) CreateRepository(ctx context.Context, repoName string) error {
 	)
 
 	if err != nil {
-		r.logger.Error(err.Error())
 		return err
 	}
 
-	r.logger.Info(fmt.Sprintf("Репозиторий в github успешно создан: %s", repoName))
 	return nil
 }

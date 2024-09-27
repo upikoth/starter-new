@@ -6,24 +6,20 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func (p *NewProject) CreateGithubRepositories(ctx context.Context) error {
-	p.logger.Info("Создаем репозитории в github")
-
+func (p *NewProjectService) CreateGithubRepositories(ctx context.Context) error {
 	eg, newCtx := errgroup.WithContext(ctx)
 
 	eg.Go(func() error {
-		return p.repositories.Github.CreateRepository(newCtx, p.project.GetBackendRepoName())
+		return p.repositories.Github.CreateRepository(newCtx, p.getBackendRepoName())
 	})
 
 	eg.Go(func() error {
-		return p.repositories.Github.CreateRepository(newCtx, p.project.GetFrontendRepoName())
+		return p.repositories.Github.CreateRepository(newCtx, p.getFrontendRepoName())
 	})
 
 	if err := eg.Wait(); err != nil {
-		p.logger.Error(err.Error())
 		return err
 	}
 
-	p.logger.Info("Репозитории в github успешно созданы")
 	return nil
 }

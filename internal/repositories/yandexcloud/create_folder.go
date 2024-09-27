@@ -24,8 +24,6 @@ type createFolderResponse struct {
 }
 
 func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (*model.CreateFolderResponse, error) {
-	y.logger.Info("Создаем folder в yandex cloud")
-
 	reqStruct := createFolderRequest{
 		CloudID:     y.config.YandexCloud.CloudID,
 		Name:        folderName,
@@ -40,7 +38,6 @@ func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (*mod
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
 
@@ -48,11 +45,8 @@ func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (*mod
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
-
-	y.logger.Info("Folder успешно создан!")
 
 	return &model.CreateFolderResponse{
 		OperationID: resParsed.OperationID,

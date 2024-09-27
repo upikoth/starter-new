@@ -2,7 +2,6 @@ package app
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/upikoth/starter-new/internal/config"
 	"github.com/upikoth/starter-new/internal/pkg/logger"
@@ -18,18 +17,19 @@ type App struct {
 	services     *services.Services
 }
 
-func New(config *config.Config, logger logger.Logger) (*App, error) {
+func New(
+	config *config.Config,
+	logger logger.Logger,
+) (*App, error) {
 	repositories, err := repositories.New(logger, config)
 
 	if err != nil {
-		logger.Error(fmt.Sprintf("Ошибка при инициализации repository: %s", err))
 		return nil, err
 	}
 
 	services, err := services.New(logger, config, repositories)
 
 	if err != nil {
-		logger.Error(fmt.Sprintf("Ошибка при инициализации service: %s", err))
 		return nil, err
 	}
 
@@ -42,73 +42,26 @@ func New(config *config.Config, logger logger.Logger) (*App, error) {
 }
 
 func (s *App) Start(ctx context.Context) error {
-	if err := s.services.User.SetYcUserCookie(ctx); err != nil {
-		return err
-	}
-
-	if err := s.services.NewProject.CreateNewProjectName(ctx); err != nil {
-		return err
-	}
-
-	// 1. Создаем:
-	// github репозитории
-	// folder в yandex.cloud
-	eg, newCtx := errgroup.WithContext(ctx)
-
-	eg.Go(func() error {
-		return s.services.NewProject.CreateGithubRepositories(newCtx)
-	})
-
-	eg.Go(func() error {
-		return s.services.NewProject.CreateYCFolder(newCtx)
-	})
-
-	err := eg.Wait()
+	s.logger.Info("Задаем имя проекта")
+	err := s.services.NewProjectService.CreateNewProjectName(ctx)
 
 	if err != nil {
 		return err
 	}
+	s.logger.Info("Имя проекта успешно задано")
 
-	eg, newCtx = errgroup.WithContext(ctx)
+	s.logger.Info(`Шаг 1: Создаем
+			github репозиторий,
+			folder в yandex.cloud
+		`)
+	eg, newCtx := errgroup.WithContext(ctx)
 
-	// 2. Создаем:
-	// сервисный аккаунт
-	// бакеты
-	// container registry
-	// ydb
-	// serverless container
-	// logging group
-	// dns zone
 	eg.Go(func() error {
-		return s.services.NewProject.CreateYCFolderServiceAccount(newCtx)
+		return s.services.NewProjectService.CreateGithubRepositories(newCtx)
 	})
 
 	eg.Go(func() error {
-		return s.services.NewProject.CreateYCStorageBuckets(newCtx)
-	})
-
-	eg.Go(func() error {
-		return s.services.NewProject.CreateYCContainerRegistry(newCtx)
-	})
-
-	eg.Go(func() error {
-		return s.services.NewProject.CreateYCYDB(newCtx)
-	})
-
-	eg.Go(func() error {
-		return s.services.NewProject.CreateYCServerlessContainer(newCtx)
-	})
-
-	eg.Go(func() error {
-		return s.services.NewProject.CreateYCLogGroup(newCtx)
-	})
-
-	eg.Go(func() error {
-		return s.services.NewProject.CreateYCDNSZone(newCtx)
-	})
-
-	eg.Go(func() error {
-		return s.services.NewProject.CreateYCCertificate(ctx, s.services.User.YCUser)
+		return s.services.NewProjectService.CreateYCFolder(newCtx)
 	})
 
 	err = eg.Wait()
@@ -116,6 +69,57 @@ func (s *App) Start(ctx context.Context) error {
 	if err != nil {
 		return err
 	}
+	s.logger.Info("Шаг 1 успешно выполнен!")
+
+	s.logger.Info(`Шаг 2: Создаем 
+			сервисный аккаунт,
+			бакеты,
+			container registry,
+			ydb,
+			serverless container,
+			logging group,
+			dns zone
+		`)
+	eg, newCtx = errgroup.WithContext(ctx)
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.CreateYCFolderServiceAccount(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.CreateYCStorageBuckets(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.CreateYCContainerRegistry(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.CreateYCYDB(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.CreateYCServerlessContainer(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.CreateYCLogGroup(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.CreateYCDNSZone(newCtx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.CreateYCCertificate(ctx)
+	})
+
+	err = eg.Wait()
+
+	if err != nil {
+		return err
+	}
+	s.logger.Info("Шаг 2 успешно выполнен!")
 
 	return nil
 }

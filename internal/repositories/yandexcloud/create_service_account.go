@@ -24,8 +24,6 @@ func (y *YandexCloud) CreateServiceAccount(
 	accountName string,
 	folderID string,
 ) (string, error) {
-	y.logger.Info("Создаем service account в yandex cloud")
-
 	reqStruct := createServiceAccountRequest{
 		FolderID:           folderID,
 		AccountFolderID:    folderID,
@@ -41,7 +39,6 @@ func (y *YandexCloud) CreateServiceAccount(
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return "", err
 	}
 
@@ -49,11 +46,8 @@ func (y *YandexCloud) CreateServiceAccount(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return "", err
 	}
-
-	y.logger.Info("Service account успешно создан!")
 
 	return resParsed.Metadata.ServiceAccountID, nil
 }

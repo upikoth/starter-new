@@ -23,8 +23,6 @@ type createLoggingGroupResponse struct {
 }
 
 func (y *YandexCloud) CreateLoggingGroup(ctx context.Context, folderID, logGroupName string) (*model.CreateLoggingGroupResponse, error) {
-	y.logger.Info("Создаем logging group в yandex cloud")
-
 	reqStruct := createLoggingGroupRequest{
 		FolderID:        folderID,
 		Name:            logGroupName,
@@ -39,7 +37,6 @@ func (y *YandexCloud) CreateLoggingGroup(ctx context.Context, folderID, logGroup
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
 
@@ -47,11 +44,8 @@ func (y *YandexCloud) CreateLoggingGroup(ctx context.Context, folderID, logGroup
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
-
-	y.logger.Info("Log group успешно создана!")
 
 	return &model.CreateLoggingGroupResponse{
 		OperationID: resParsed.OperationID,

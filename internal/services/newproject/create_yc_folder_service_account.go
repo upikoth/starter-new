@@ -5,19 +5,16 @@ import (
 	"fmt"
 )
 
-func (p *NewProject) CreateYCFolderServiceAccount(ctx context.Context) error {
-	p.logger.Info("Создаем service account для folder в yandex cloud")
-
-	accountName := fmt.Sprintf("%s-manager", p.project.Name)
+func (p *NewProjectService) CreateYCFolderServiceAccount(ctx context.Context) error {
+	accountName := fmt.Sprintf("%s-manager", p.newProject.name)
 
 	serviceAccountID, err := p.repositories.YandexCloud.CreateServiceAccount(
 		ctx,
 		accountName,
-		p.project.FolderID,
+		p.newProject.folderID,
 	)
 
 	if err != nil {
-		p.logger.Error(err.Error())
 		return err
 	}
 
@@ -33,16 +30,15 @@ func (p *NewProject) CreateYCFolderServiceAccount(ctx context.Context) error {
 	err = p.repositories.YandexCloud.UpdateServiceAccountRoles(
 		ctx,
 		serviceAccountID,
-		p.project.FolderID,
+		p.newProject.folderID,
 		accountRoles,
 	)
 
 	if err != nil {
-		p.logger.Error(err.Error())
 		return err
 	}
 
-	p.project.ServiceAccountID = serviceAccountID
-	p.logger.Info("Service account в yandex cloud успешно создан, роли заданы")
+	p.newProject.serviceAccountID = serviceAccountID
+
 	return nil
 }

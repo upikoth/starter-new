@@ -27,19 +27,14 @@ type createCertificateResponse struct {
 
 func (y *YandexCloudBrowser) CreateCertificate(
 	ctx context.Context,
-	folderID string,
-	domain string,
-	certificateName string,
-	ycUser *model.YCUser,
+	req model.CreateCertificateRequest,
 ) (*model.CreateCertificateResponse, error) {
-	y.logger.Info("Создаем certificate в yandex cloud")
-
 	reqStruct := createCertificateRequest{
 		Req:           "certificate-request",
 		ChallengeType: "DNS",
-		Domains:       []string{domain},
-		FolderID:      folderID,
-		Name:          certificateName,
+		Domains:       []string{req.Domain},
+		FolderID:      req.FolderID,
+		Name:          req.CertificateName,
 		Provider:      "LETS_ENCRYPT",
 	}
 
@@ -48,11 +43,11 @@ func (y *YandexCloudBrowser) CreateCertificate(
 		http.MethodPost,
 		"https://console.yandex.cloud/gateway/root/certificateManager/requestNewCertificate",
 		reqStruct,
-		ycUser,
+		req.YCUserCookie,
+		req.YCUserCSRFToken,
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
 
@@ -60,11 +55,8 @@ func (y *YandexCloudBrowser) CreateCertificate(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
-
-	y.logger.Info("Certificate успешно создан!")
 
 	return &model.CreateCertificateResponse{
 		OperationID: resParsed.OperationID,

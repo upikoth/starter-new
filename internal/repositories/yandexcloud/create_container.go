@@ -23,8 +23,6 @@ func (y *YandexCloud) CreateContainer(
 	folderID string,
 	containerName string,
 ) (*model.CreateContainerResponse, error) {
-	y.logger.Info("Создаем container в yandex cloud")
-
 	reqStruct := createContainerRequest{
 		FolderID: folderID,
 		Name:     containerName,
@@ -38,7 +36,6 @@ func (y *YandexCloud) CreateContainer(
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
 
@@ -46,11 +43,8 @@ func (y *YandexCloud) CreateContainer(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
-
-	y.logger.Info("Container успешно создан!")
 
 	return &model.CreateContainerResponse{
 		OperationID: resParsed.OperationID,

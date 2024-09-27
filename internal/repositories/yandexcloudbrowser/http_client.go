@@ -9,8 +9,6 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-
-	"github.com/upikoth/starter-new/internal/model"
 )
 
 func (y *YandexCloudBrowser) sendHttpRequest(
@@ -18,13 +16,11 @@ func (y *YandexCloudBrowser) sendHttpRequest(
 	method string,
 	url string,
 	req any,
-	user *model.YCUser,
+	cookie string,
+	csrfToken string,
 ) ([]byte, error) {
-	y.logger.Info("Делаем POST запрос в yandex cloud console")
-
 	body, err := json.Marshal(req)
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 
@@ -38,21 +34,19 @@ func (y *YandexCloudBrowser) sendHttpRequest(
 		bytes.NewBuffer(body),
 	)
 
-	request.Header.Add("Cookie", user.Cookie.GetValue())
-	request.Header.Add("X-CSRF-TOKEN", user.Cookie.GetCSRFToken())
+	request.Header.Add("Cookie", cookie)
+	request.Header.Add("X-CSRF-TOKEN", csrfToken)
 	request.Header.Add("Host", "https://console.yandex.cloud")
 	request.Header.Add("Content-Type", "application/json")
 	request.Header.Add("Content-Length", strconv.Itoa(len(body)))
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 
 	client := &http.Client{}
 	res, err := client.Do(request)
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 
@@ -60,7 +54,6 @@ func (y *YandexCloudBrowser) sendHttpRequest(
 
 	bodyBytes, err := io.ReadAll(res.Body)
 	if err != nil {
-		y.logger.Error(err.Error())
 		return []byte{}, err
 	}
 

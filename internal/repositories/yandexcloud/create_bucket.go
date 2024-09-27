@@ -24,8 +24,6 @@ func (y *YandexCloud) CreateBucket(
 	folderID string,
 	bucketName string,
 ) (*model.CreateBucketResponse, error) {
-	y.logger.Info("Создаем bucket в yandex cloud")
-
 	reqStruct := createBucketRequest{
 		FolderID:    folderID,
 		Name:        bucketName,
@@ -40,7 +38,6 @@ func (y *YandexCloud) CreateBucket(
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
 
@@ -48,11 +45,8 @@ func (y *YandexCloud) CreateBucket(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
-
-	y.logger.Info("Bucket успешно создан!")
 
 	return &model.CreateBucketResponse{
 		OperationID: resParsed.OperationID,

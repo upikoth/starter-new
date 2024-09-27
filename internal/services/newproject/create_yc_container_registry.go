@@ -5,13 +5,14 @@ import (
 	"errors"
 )
 
-func (p *NewProject) CreateYCContainerRegistry(ctx context.Context) error {
-	p.logger.Info("Создаем новый registry")
-
-	res, err := p.repositories.YandexCloud.CreateRegistry(ctx, p.project.FolderID, p.project.GetProjectRegistryName())
+func (p *NewProjectService) CreateYCContainerRegistry(ctx context.Context) error {
+	res, err := p.repositories.YandexCloud.CreateRegistry(
+		ctx,
+		p.newProject.folderID,
+		p.getProjectRegistryName(),
+	)
 
 	if err != nil {
-		p.logger.Error(err.Error())
 		return err
 	}
 
@@ -22,11 +23,10 @@ func (p *NewProject) CreateYCContainerRegistry(ctx context.Context) error {
 
 	if !isCreated {
 		err := errors.New("registry в процессе создания, статус операции не завершен")
-		p.logger.Error(err.Error())
 		return err
 	}
 
-	p.project.RegistryID = res.RegistryID
-	p.logger.Info("Registry в yandex cloud успешно создан")
+	p.newProject.registryID = res.RegistryID
+
 	return nil
 }

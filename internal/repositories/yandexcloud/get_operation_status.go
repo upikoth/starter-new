@@ -26,8 +26,6 @@ func (y *YandexCloud) GetOperationStatus(ctx context.Context, operationID string
 }
 
 func (y *YandexCloud) getOperationStatus(ctx context.Context, operationID string) (bool, error) {
-	y.logger.Info("Проверяем статус операции")
-
 	bodyBytes, err := y.sendHttpRequest(
 		ctx,
 		http.MethodGet,
@@ -36,7 +34,6 @@ func (y *YandexCloud) getOperationStatus(ctx context.Context, operationID string
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return false, err
 	}
 
@@ -44,11 +41,8 @@ func (y *YandexCloud) getOperationStatus(ctx context.Context, operationID string
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return false, err
 	}
-
-	y.logger.Info("Статус получен!")
 
 	return resParsed.Done, nil
 }

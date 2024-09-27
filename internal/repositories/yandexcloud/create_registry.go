@@ -26,8 +26,6 @@ func (y *YandexCloud) CreateRegistry(
 	folderID string,
 	registryName string,
 ) (*model.CreateRegistryResponse, error) {
-	y.logger.Info("Создаем registry в yandex cloud")
-
 	reqStruct := createRegistryRequest{
 		FolderID: folderID,
 		Name:     registryName,
@@ -41,7 +39,6 @@ func (y *YandexCloud) CreateRegistry(
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
 
@@ -49,11 +46,8 @@ func (y *YandexCloud) CreateRegistry(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
-
-	y.logger.Info("Registry успешно создан!")
 
 	return &model.CreateRegistryResponse{
 		OperationID: resParsed.OperationID,

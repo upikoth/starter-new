@@ -5,12 +5,12 @@ import (
 	"github.com/upikoth/starter-new/internal/pkg/logger"
 	"github.com/upikoth/starter-new/internal/repositories"
 	"github.com/upikoth/starter-new/internal/services/newproject"
-	"github.com/upikoth/starter-new/internal/services/user"
+	"github.com/upikoth/starter-new/internal/services/ycuser"
 )
 
 type Services struct {
-	NewProject *newproject.NewProject
-	User       *user.User
+	NewProjectService *newproject.NewProjectService
+	YCUserService     *ycuser.YCUserService
 }
 
 func New(
@@ -18,16 +18,21 @@ func New(
 	config *config.Config,
 	repositories *repositories.Repositories,
 ) (*Services, error) {
+	ycUserService := ycuser.New(
+		logger,
+		config,
+		repositories,
+	)
+
+	newProjectService := newproject.New(
+		logger,
+		config,
+		repositories,
+		ycUserService,
+	)
+
 	return &Services{
-		User: user.New(
-			logger,
-			config,
-			repositories,
-		),
-		NewProject: newproject.New(
-			logger,
-			config,
-			repositories,
-		),
+		YCUserService:     ycUserService,
+		NewProjectService: newProjectService,
 	}, nil
 }

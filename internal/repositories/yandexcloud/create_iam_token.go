@@ -17,8 +17,6 @@ type iamTokenRequest struct {
 }
 
 func (y *YandexCloud) fillIamToken() error {
-	y.logger.Info("Создаем iam token для доступа к yandex cloud")
-
 	reqStruct := iamTokenRequest{
 		YandexPassportOauthToken: y.config.YandexCloud.OauthToken,
 	}
@@ -31,7 +29,6 @@ func (y *YandexCloud) fillIamToken() error {
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return err
 	}
 
@@ -39,12 +36,10 @@ func (y *YandexCloud) fillIamToken() error {
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return err
 	}
 
 	y.iamToken = resParsed.IamToken
-	y.logger.Info("Iam token успешно создан!")
 
 	return nil
 }

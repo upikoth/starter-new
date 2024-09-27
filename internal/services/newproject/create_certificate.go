@@ -6,25 +6,32 @@ import (
 	"github.com/upikoth/starter-new/internal/model"
 )
 
-func (p *NewProject) CreateYCCertificate(
-	ctx context.Context,
-	user *model.YCUser,
-) error {
-	p.logger.Info("Создаем certificate в yandex cloud")
-
-	_, err := p.repositories.YandexCloudBrowser.CreateCertificate(
-		ctx,
-		p.project.FolderID,
-		p.project.GetProjectSiteDomain(p.config.MainSiteDomainName),
-		p.project.GetCertificateName(p.config.MainSiteDomainName),
-		user,
-	)
+func (p *NewProjectService) CreateYCCertificate(ctx context.Context) error {
+	cookie, err := p.ycUserService.GetYcUserCookie(ctx)
 
 	if err != nil {
-		p.logger.Error(err.Error())
 		return err
 	}
 
-	p.logger.Info("Certificate в yandex cloud успешно создан")
+	csrfToken, err := p.ycUserService.GetYcUserCSRFToken(ctx)
+
+	if err != nil {
+		return err
+	}
+
+	req := model.CreateCertificateRequest{
+		FolderID:        p.newProject.folderID,
+		Domain:          p.getProjectSiteDomain(),
+		CertificateName: p.getCertificateName(),
+		YCUserCookie:    cookie,
+		YCUserCSRFToken: csrfToken,
+	}
+
+	_, err = p.repositories.YandexCloudBrowser.CreateCertificate(ctx, req)
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

@@ -24,8 +24,6 @@ func (y *YandexCloud) CreateDNSZone(
 	folderID string,
 	zoneName string,
 ) (*model.CreateDNSZoneResponse, error) {
-	y.logger.Info("Создаем dns zone в yandex cloud")
-
 	reqStruct := createDNSZoneRequest{
 		FolderID:         folderID,
 		Zone:             zoneName,
@@ -40,7 +38,6 @@ func (y *YandexCloud) CreateDNSZone(
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
 
@@ -48,11 +45,8 @@ func (y *YandexCloud) CreateDNSZone(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return nil, err
 	}
-
-	y.logger.Info("Dns zone успешно создана!")
 
 	return &model.CreateDNSZoneResponse{
 		OperationID: resParsed.OperationID,

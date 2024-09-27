@@ -31,8 +31,6 @@ func (y *YandexCloud) UpdateServiceAccountRoles(
 	folderID string,
 	roles []string,
 ) error {
-	y.logger.Info("Задаем роли для service account в yandex cloud")
-
 	reqStruct := updateServiceAccountRequest{}
 
 	for i := range roles {
@@ -56,11 +54,8 @@ func (y *YandexCloud) UpdateServiceAccountRoles(
 	)
 
 	if err != nil {
-		y.logger.Error(err.Error())
 		return err
 	}
-
-	y.logger.Info("Роль для service account успешно заданы!")
 
 	return nil
 }
