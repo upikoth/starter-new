@@ -6,7 +6,7 @@ import (
 	"github.com/upikoth/starter-new/internal/model"
 )
 
-func (p *NewProjectService) CreateYCCertificate(ctx context.Context) error {
+func (p *Service) CreateYCCertificate(ctx context.Context) error {
 	cookie, err := p.ycUserService.GetYcUserCookie(ctx)
 
 	if err != nil {

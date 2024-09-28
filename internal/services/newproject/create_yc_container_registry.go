@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func (p *NewProjectService) CreateYCContainerRegistry(ctx context.Context) error {
+func (p *Service) CreateYCContainerRegistry(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateRegistry(
 		ctx,
 		p.newProject.folderID,

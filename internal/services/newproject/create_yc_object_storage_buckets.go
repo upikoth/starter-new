@@ -7,7 +7,7 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
-func (p *NewProjectService) CreateYCStorageBuckets(ctx context.Context) error {
+func (p *Service) CreateYCStorageBuckets(ctx context.Context) error {
 	eg, newCtx := errgroup.WithContext(ctx)
 
 	eg.Go(func() error {
@@ -27,7 +27,7 @@ func (p *NewProjectService) CreateYCStorageBuckets(ctx context.Context) error {
 	return nil
 }
 
-func (p *NewProjectService) createYCStorageBucketWithSecrets(ctx context.Context) error {
+func (p *Service) createYCStorageBucketWithSecrets(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateBucket(
 		ctx,
 		p.newProject.folderID,
@@ -51,7 +51,7 @@ func (p *NewProjectService) createYCStorageBucketWithSecrets(ctx context.Context
 	return nil
 }
 
-func (p *NewProjectService) createYCStorageBucketForFrontendStatic(ctx context.Context) error {
+func (p *Service) createYCStorageBucketForFrontendStatic(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateBucket(
 		ctx,
 		p.newProject.folderID,

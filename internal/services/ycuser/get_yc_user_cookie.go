@@ -8,7 +8,7 @@ import (
 	"github.com/upikoth/starter-new/internal/constants"
 )
 
-func (s *YCUserService) GetYcUserCookie(ctx context.Context) (string, error) {
+func (s *Service) GetYcUserCookie(ctx context.Context) (string, error) {
 	cookie := s.ycUser.getCookie()
 
 	if cookie != "" {
@@ -24,7 +24,7 @@ func (s *YCUserService) GetYcUserCookie(ctx context.Context) (string, error) {
 	return cookie, nil
 }
 
-func (s *YCUserService) setYcUserCookie(ctx context.Context) (string, error) {
+func (s *Service) setYcUserCookie(ctx context.Context) (string, error) {
 	path, err := os.Getwd()
 
 	if err != nil {

@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func (p *NewProjectService) CreateYCFolder(ctx context.Context) error {
+func (p *Service) CreateYCFolder(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateFolder(ctx, p.newProject.name)
 
 	if err != nil {

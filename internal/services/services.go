@@ -9,8 +9,8 @@ import (
 )
 
 type Services struct {
-	NewProjectService *newproject.NewProjectService
-	YCUserService     *ycuser.YCUserService
+	NewProjectService *newproject.Service
+	YCUserService     *ycuser.Service
 }
 
 func New(

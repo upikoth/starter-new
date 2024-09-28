@@ -50,7 +50,9 @@ func (y *YandexCloudBrowser) sendHttpRequest(
 		return []byte{}, err
 	}
 
-	defer res.Body.Close()
+	defer func(body io.ReadCloser) {
+		_ = body.Close()
+	}(res.Body)
 
 	bodyBytes, err := io.ReadAll(res.Body)
 	if err != nil {

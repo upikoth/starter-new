@@ -14,12 +14,12 @@ func main() {
 	loggerInstance := logger.New()
 	loggerInstance.SetPrettyOutputToConsole()
 
-	config, err := config.New()
+	cfg, err := config.New()
 	if err != nil {
 		loggerInstance.Fatal(err.Error())
 	}
 
-	app, err := app.New(config, loggerInstance)
+	appInstance, err := app.New(cfg, loggerInstance)
 	if err != nil {
 		loggerInstance.Fatal(err.Error())
 	}
@@ -27,7 +27,7 @@ func main() {
 	loggerInstance.Info("Запуск приложения")
 	ctx := context.Background()
 
-	if appErr := app.Start(ctx); appErr != nil {
+	if appErr := appInstance.Start(ctx); appErr != nil {
 		loggerInstance.Error("Приложение отработало с ошибкой")
 	} else {
 		loggerInstance.Info("Приложение успешно завершило работу")

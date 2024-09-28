@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func (p *NewProjectService) CreateYCFolderServiceAccount(ctx context.Context) error {
+func (p *Service) CreateYCFolderServiceAccount(ctx context.Context) error {
 	accountName := fmt.Sprintf("%s-manager", p.newProject.name)
 
 	serviceAccountID, err := p.repositories.YandexCloud.CreateServiceAccount(

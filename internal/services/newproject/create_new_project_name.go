@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-func (p *NewProjectService) CreateNewProjectName(ctx context.Context) error {
+func (p *Service) CreateNewProjectName(ctx context.Context) error {
 	fmt.Println("Введите название нового приложения. Латиница, строчные буквы, разделитель - дефис.")
 
 	name, err := p.repositories.ConsoleInput.GetString(ctx)

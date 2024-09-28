@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func (y *Github) sendHttpRequest(ctx context.Context, method string, url string, req any) ([]byte, error) {
+func (g *Github) sendHttpRequest(ctx context.Context, method string, url string, req any) ([]byte, error) {
 	body, err := json.Marshal(req)
 	if err != nil {
 		return []byte{}, err
@@ -27,7 +27,7 @@ func (y *Github) sendHttpRequest(ctx context.Context, method string, url string,
 		bytes.NewBuffer(body),
 	)
 
-	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", y.config.GitHub.AccessToken))
+	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", g.config.GitHub.AccessToken))
 	request.Header.Add("X-GitHub-Api-Version", "2022-11-28")
 	request.Header.Add("Accept", "application/vnd.github+json")
 
@@ -41,7 +41,9 @@ func (y *Github) sendHttpRequest(ctx context.Context, method string, url string,
 		return []byte{}, err
 	}
 
-	defer res.Body.Close()
+	defer func(body io.ReadCloser) {
+		_ = body.Close()
+	}(res.Body)
 
 	bodyBytes, err := io.ReadAll(res.Body)
 	if err != nil {
@@ -50,8 +52,8 @@ func (y *Github) sendHttpRequest(ctx context.Context, method string, url string,
 
 	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated {
 		err := errors.New("не удалось выполнить POST запрос, статус ответа не 200 и не 201")
-		y.logger.Error(err.Error())
-		y.logger.Error(string(bodyBytes))
+		g.logger.Error(err.Error())
+		g.logger.Error(string(bodyBytes))
 		return []byte{}, err
 	}
 

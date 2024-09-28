@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func (p *NewProjectService) CreateYCLogGroup(ctx context.Context) error {
+func (p *Service) CreateYCLogGroup(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateLoggingGroup(
 		ctx,
 		p.newProject.folderID,

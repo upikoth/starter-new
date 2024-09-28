@@ -5,7 +5,7 @@ import (
 	"errors"
 )
 
-func (p *NewProjectService) CreateYCDNSZone(ctx context.Context) error {
+func (p *Service) CreateYCDNSZone(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateDNSZone(
 		ctx,
 		p.newProject.folderID,

@@ -6,7 +6,7 @@ import (
 	"github.com/upikoth/starter-new/internal/repositories"
 )
 
-type YCUserService struct {
+type Service struct {
 	ycUser       *ycUser
 	logger       logger.Logger
 	config       *config.Config
@@ -17,8 +17,8 @@ func New(
 	logger logger.Logger,
 	config *config.Config,
 	repositories *repositories.Repositories,
-) *YCUserService {
-	return &YCUserService{
+) *Service {
+	return &Service{
 		ycUser:       &ycUser{},
 		logger:       logger,
 		config:       config,

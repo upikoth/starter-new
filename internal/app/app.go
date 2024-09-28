@@ -21,13 +21,13 @@ func New(
 	config *config.Config,
 	logger logger.Logger,
 ) (*App, error) {
-	repositories, err := repositories.New(logger, config)
+	repositoriesInstance, err := repositories.New(logger, config)
 
 	if err != nil {
 		return nil, err
 	}
 
-	services, err := services.New(logger, config, repositories)
+	servicesInstance, err := services.New(logger, config, repositoriesInstance)
 
 	if err != nil {
 		return nil, err
@@ -36,8 +36,8 @@ func New(
 	return &App{
 		config:       config,
 		logger:       logger,
-		repositories: repositories,
-		services:     services,
+		repositories: repositoriesInstance,
+		services:     servicesInstance,
 	}, nil
 }
 
@@ -56,9 +56,9 @@ func (s *App) Start(ctx context.Context) error {
 		`)
 	eg, newCtx := errgroup.WithContext(ctx)
 
-	eg.Go(func() error {
-		return s.services.NewProjectService.CreateGithubRepositories(newCtx)
-	})
+	// eg.Go(func() error {
+	// 	return s.services.NewProjectService.CreateGithubRepositories(newCtx)
+	// })
 
 	eg.Go(func() error {
 		return s.services.NewProjectService.CreateYCFolder(newCtx)

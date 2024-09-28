@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func (s *YCUserService) GetYcUserCSRFToken(ctx context.Context) (string, error) {
+func (s *Service) GetYcUserCSRFToken(ctx context.Context) (string, error) {
 	cookie, err := s.GetYcUserCookie(ctx)
 
 	if err != nil {
