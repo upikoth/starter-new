@@ -25,6 +25,7 @@ type CreateYDBResponse struct {
 
 type CreateContainerResponse struct {
 	OperationID string
+	ContainerID string
 	Done        bool
 }
 
@@ -40,6 +41,11 @@ type CreateDNSZoneResponse struct {
 }
 
 type CreateCertificateResponse struct {
+	OperationID string
+	Done        bool
+}
+
+type CreateApiGatewayResponse struct {
 	OperationID string
 	Done        bool
 }

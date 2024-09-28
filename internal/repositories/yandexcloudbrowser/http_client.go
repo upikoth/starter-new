@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -60,7 +61,7 @@ func (y *YandexCloudBrowser) sendHttpRequest(
 	}
 
 	if res.StatusCode != http.StatusOK {
-		err := errors.New("не удалось выполнить POST запрос, статус ответа не 200")
+		err := errors.New(fmt.Sprintf("не удалось выполнить запрос %s: %s, статус ответа - %d", method, url, res.StatusCode))
 		y.logger.Error(err.Error())
 		y.logger.Error(string(bodyBytes))
 		return []byte{}, err

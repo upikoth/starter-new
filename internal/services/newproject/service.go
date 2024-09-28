@@ -95,3 +95,11 @@ func (p *Service) getPostboxFromAddress() string {
 func (p *Service) getProjectDNSZoneName() string {
 	return fmt.Sprintf("%s.", p.getProjectSiteDomain())
 }
+
+func (p *Service) getApiGatewayName() string {
+	return p.newProject.name
+}
+
+func (p *Service) getCapitalizeName() string {
+	return cases.Title(language.English, cases.Compact).String(p.newProject.name)
+}

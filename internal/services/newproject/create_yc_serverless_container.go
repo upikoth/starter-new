@@ -26,5 +26,7 @@ func (p *Service) CreateYCServerlessContainer(ctx context.Context) error {
 		return err
 	}
 
+	p.newProject.backendContainerID = res.ContainerID
+
 	return nil
 }

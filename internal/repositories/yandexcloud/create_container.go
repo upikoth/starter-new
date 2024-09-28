@@ -16,6 +16,9 @@ type createContainerRequest struct {
 type createContainerResponse struct {
 	OperationID string `json:"id"`
 	Done        bool   `json:"done"`
+	Metadata    struct {
+		ContainerID string `json:"containerId"`
+	} `json:"metadata"`
 }
 
 func (y *YandexCloud) CreateContainer(
@@ -48,6 +51,7 @@ func (y *YandexCloud) CreateContainer(
 
 	return &model.CreateContainerResponse{
 		OperationID: resParsed.OperationID,
+		ContainerID: resParsed.Metadata.ContainerID,
 		Done:        resParsed.Done,
 	}, nil
 }

@@ -56,9 +56,9 @@ func (s *App) Start(ctx context.Context) error {
 		`)
 	eg, newCtx := errgroup.WithContext(ctx)
 
-	// eg.Go(func() error {
-	// 	return s.services.NewProjectService.CreateGithubRepositories(newCtx)
-	// })
+	//eg.Go(func() error {
+	//	return s.services.NewProjectService.CreateGithubRepositories(newCtx)
+	//})
 
 	eg.Go(func() error {
 		return s.services.NewProjectService.CreateYCFolder(newCtx)
@@ -120,6 +120,22 @@ func (s *App) Start(ctx context.Context) error {
 		return err
 	}
 	s.logger.Info("Шаг 2 успешно выполнен!")
+
+	s.logger.Info(`Шаг 3: Создаем 
+			api gateway
+		`)
+	eg, newCtx = errgroup.WithContext(ctx)
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.CreateYCApiGateway(ctx)
+	})
+
+	err = eg.Wait()
+
+	if err != nil {
+		return err
+	}
+	s.logger.Info("Шаг 3 успешно выполнен!")
 
 	return nil
 }

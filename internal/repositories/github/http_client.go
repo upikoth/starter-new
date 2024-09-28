@@ -51,7 +51,7 @@ func (g *Github) sendHttpRequest(ctx context.Context, method string, url string,
 	}
 
 	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated {
-		err := errors.New("не удалось выполнить POST запрос, статус ответа не 200 и не 201")
+		err := errors.New(fmt.Sprintf("не удалось выполнить запрос %s: %s, статус ответа - %d", method, url, res.StatusCode))
 		g.logger.Error(err.Error())
 		g.logger.Error(string(bodyBytes))
 		return []byte{}, err

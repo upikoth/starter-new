@@ -7,3 +7,13 @@ type CreateCertificateRequest struct {
 	YCUserCookie    string
 	YCUserCSRFToken string
 }
+
+type CreateApiGatewayRequest struct {
+	FolderID                 string
+	Name                     string
+	LogGroupID               string
+	ProjectCapitalizeName    string
+	FrontendStaticBucketName string
+	ServiceAccountID         string
+	BackendContainerID       string
+}

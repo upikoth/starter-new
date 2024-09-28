@@ -29,6 +29,7 @@ func main() {
 
 	if appErr := appInstance.Start(ctx); appErr != nil {
 		loggerInstance.Error("Приложение отработало с ошибкой")
+		loggerInstance.Error(appErr.Error())
 	} else {
 		loggerInstance.Info("Приложение успешно завершило работу")
 	}
