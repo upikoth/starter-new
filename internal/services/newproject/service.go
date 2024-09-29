@@ -92,6 +92,10 @@ func (p *Service) getPostboxFromAddress() string {
 	return fmt.Sprintf("noreply@%s", p.getProjectSiteDomain())
 }
 
+func (p *Service) getPostboxAddressName() string {
+	return p.getProjectSiteDomain()
+}
+
 func (p *Service) getProjectDNSZoneName() string {
 	return fmt.Sprintf("%s.", p.getProjectSiteDomain())
 }

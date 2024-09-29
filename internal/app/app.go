@@ -123,11 +123,16 @@ func (s *App) Start(ctx context.Context) error {
 
 	s.logger.Info(`Шаг 3: Создаем 
 			api gateway
+			postbox address
 		`)
 	eg, newCtx = errgroup.WithContext(ctx)
 
 	eg.Go(func() error {
 		return s.services.NewProjectService.CreateYCApiGateway(ctx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.CreateYCPostboxAddress(ctx)
 	})
 
 	err = eg.Wait()

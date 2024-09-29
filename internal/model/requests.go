@@ -17,3 +17,13 @@ type CreateApiGatewayRequest struct {
 	ServiceAccountID         string
 	BackendContainerID       string
 }
+
+type CreatePostboxAddressRequest struct {
+	FolderID        string
+	AddressName     string
+	YCUserCookie    string
+	YCUserCSRFToken string
+	PrivateKey      string
+	Selector        string
+	LogGroupID      string
+}

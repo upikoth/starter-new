@@ -49,3 +49,8 @@ type CreateApiGatewayResponse struct {
 	OperationID string
 	Done        bool
 }
+
+type CreatePostboxAddressResponse struct {
+	OperationID string
+	Done        bool
+}
