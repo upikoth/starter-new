@@ -27,3 +27,18 @@ type CreatePostboxAddressRequest struct {
 	Selector        string
 	LogGroupID      string
 }
+
+type GetCertificateChallengeRequest struct {
+	CertificateID   string
+	YCUserCookie    string
+	YCUserCSRFToken string
+}
+
+type BindCertificateToDNSRequest struct {
+	DNSZoneID        string
+	DNSRecordName    string
+	DNSRecordText    string
+	DNSRecordOwnerID string
+	YCUserCookie     string
+	YCUserCSRFToken  string
+}

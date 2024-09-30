@@ -27,11 +27,12 @@ func (p *Service) CreateYCCertificate(ctx context.Context) error {
 		YCUserCSRFToken: csrfToken,
 	}
 
-	_, err = p.repositories.YandexCloudBrowser.CreateCertificate(ctx, req)
+	res, err := p.repositories.YandexCloudBrowser.CreateCertificate(ctx, req)
 
 	if err != nil {
 		return err
 	}
 
+	p.newProject.certificateID = res.CertificateID
 	return nil
 }

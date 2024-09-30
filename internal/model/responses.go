@@ -37,12 +37,14 @@ type CreateLoggingGroupResponse struct {
 
 type CreateDNSZoneResponse struct {
 	OperationID string
+	DNSZoneId   string
 	Done        bool
 }
 
 type CreateCertificateResponse struct {
-	OperationID string
-	Done        bool
+	OperationID   string
+	CertificateID string
+	Done          bool
 }
 
 type CreateApiGatewayResponse struct {

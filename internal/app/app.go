@@ -124,6 +124,7 @@ func (s *App) Start(ctx context.Context) error {
 	s.logger.Info(`Шаг 3: Создаем 
 			api gateway
 			postbox address
+			запись о сертификате в dns
 		`)
 	eg, newCtx = errgroup.WithContext(ctx)
 
@@ -133,6 +134,10 @@ func (s *App) Start(ctx context.Context) error {
 
 	eg.Go(func() error {
 		return s.services.NewProjectService.CreateYCPostboxAddress(ctx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.BindCertificateToDNSZone(ctx)
 	})
 
 	err = eg.Wait()

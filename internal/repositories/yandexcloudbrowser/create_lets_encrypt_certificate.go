@@ -59,7 +59,8 @@ func (y *YandexCloudBrowser) CreateCertificate(
 	}
 
 	return &model.CreateCertificateResponse{
-		OperationID: resParsed.OperationID,
-		Done:        resParsed.Done,
+		OperationID:   resParsed.OperationID,
+		CertificateID: resParsed.Metadata.CertificateID,
+		Done:          resParsed.Done,
 	}, nil
 }

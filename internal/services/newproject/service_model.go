@@ -7,6 +7,8 @@ type newProject struct {
 	registryID         string
 	databaseEndpoint   string
 	loggingGroupID     string
+	certificateID      string
+	dnsZoneID          string
 	backendContainerID string
 	postboxUsername    string
 	postboxPassword    string

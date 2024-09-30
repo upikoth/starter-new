@@ -17,6 +17,9 @@ type createDNSZoneRequest struct {
 type createDNSZoneResponse struct {
 	OperationID string `json:"id"`
 	Done        bool   `json:"done"`
+	Response    struct {
+		ZoneID string `json:"id"`
+	} `json:"response"`
 }
 
 func (y *YandexCloud) CreateDNSZone(
@@ -50,6 +53,7 @@ func (y *YandexCloud) CreateDNSZone(
 
 	return &model.CreateDNSZoneResponse{
 		OperationID: resParsed.OperationID,
+		DNSZoneId:   resParsed.Response.ZoneID,
 		Done:        resParsed.Done,
 	}, nil
 }
