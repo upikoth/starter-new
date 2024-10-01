@@ -61,5 +61,6 @@ func (p *Service) CreateYCPostboxAddress(ctx context.Context) error {
 		return err
 	}
 
+	p.newProject.postboxAddressID = res.PostboxAddressID
 	return nil
 }

@@ -125,6 +125,7 @@ func (s *App) Start(ctx context.Context) error {
 			api gateway
 			postbox address
 			запись о сертификате в dns
+			dns record для подтверждения, что почта относится к нашему домену
 		`)
 	eg, newCtx = errgroup.WithContext(ctx)
 
@@ -146,6 +147,22 @@ func (s *App) Start(ctx context.Context) error {
 		return err
 	}
 	s.logger.Info("Шаг 3 успешно выполнен!")
+
+	s.logger.Info(`Шаг 4: Создаем 
+			dns record для подтверждения, что почта относится к нашему домену
+		`)
+	eg, newCtx = errgroup.WithContext(ctx)
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.AddYCPostboxDNSRecord(ctx)
+	})
+
+	err = eg.Wait()
+
+	if err != nil {
+		return err
+	}
+	s.logger.Info("Шаг 4 успешно выполнен!")
 
 	return nil
 }

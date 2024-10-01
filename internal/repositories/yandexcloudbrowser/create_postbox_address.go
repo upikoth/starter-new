@@ -30,9 +30,11 @@ type createPostboxAddressRequestLogOptions struct {
 }
 
 type createPostboxAddressResponse struct {
-	OperationID string   `json:"id"`
-	Done        bool     `json:"done"`
-	Metadata    struct{} `json:"metadata"`
+	OperationID string `json:"id"`
+	Done        bool   `json:"done"`
+	Response    struct {
+		ID string `json:"id"`
+	} `json:"response"`
 }
 
 func (y *YandexCloudBrowser) CreatePostboxAddress(
@@ -75,7 +77,8 @@ func (y *YandexCloudBrowser) CreatePostboxAddress(
 	}
 
 	return &model.CreatePostboxAddressResponse{
-		OperationID: resParsed.OperationID,
-		Done:        resParsed.Done,
+		OperationID:      resParsed.OperationID,
+		PostboxAddressID: resParsed.Response.ID,
+		Done:             resParsed.Done,
 	}, nil
 }

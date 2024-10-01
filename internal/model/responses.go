@@ -53,6 +53,12 @@ type CreateApiGatewayResponse struct {
 }
 
 type CreatePostboxAddressResponse struct {
+	OperationID      string
+	PostboxAddressID string
+	Done             bool
+}
+
+type AddDNSRecordResponse struct {
 	OperationID string
 	Done        bool
 }

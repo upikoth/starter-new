@@ -10,6 +10,7 @@ type newProject struct {
 	certificateID      string
 	dnsZoneID          string
 	backendContainerID string
+	postboxAddressID   string
 	postboxUsername    string
 	postboxPassword    string
 }

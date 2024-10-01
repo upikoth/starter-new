@@ -42,3 +42,9 @@ type BindCertificateToDNSRequest struct {
 	YCUserCookie     string
 	YCUserCSRFToken  string
 }
+
+type GetPostboxVerificationRecordRequest struct {
+	IdentityID      string
+	YCUserCookie    string
+	YCUserCSRFToken string
+}
