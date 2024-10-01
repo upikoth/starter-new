@@ -48,8 +48,9 @@ type CreateCertificateResponse struct {
 }
 
 type CreateApiGatewayResponse struct {
-	OperationID string
-	Done        bool
+	OperationID  string
+	ApiGatewayID string
+	Done         bool
 }
 
 type CreatePostboxAddressResponse struct {
@@ -59,6 +60,11 @@ type CreatePostboxAddressResponse struct {
 }
 
 type AddDNSRecordResponse struct {
+	OperationID string
+	Done        bool
+}
+
+type AddDomainToGatewayResponse struct {
 	OperationID string
 	Done        bool
 }

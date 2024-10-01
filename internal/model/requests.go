@@ -48,3 +48,12 @@ type GetPostboxVerificationRecordRequest struct {
 	YCUserCookie    string
 	YCUserCSRFToken string
 }
+
+type BindApiGatewayToDNSRequest struct {
+	DNSZoneID        string
+	DNSRecordName    string
+	DNSRecordText    string
+	DNSRecordOwnerID string
+	YCUserCookie     string
+	YCUserCSRFToken  string
+}

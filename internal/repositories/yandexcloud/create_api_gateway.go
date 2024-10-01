@@ -60,8 +60,9 @@ func (y *YandexCloud) CreateApiGateway(
 	}
 
 	return &model.CreateApiGatewayResponse{
-		OperationID: resParsed.OperationID,
-		Done:        resParsed.Done,
+		OperationID:  resParsed.OperationID,
+		ApiGatewayID: resParsed.Metadata.ApiGatewayID,
+		Done:         resParsed.Done,
 	}, nil
 }
 

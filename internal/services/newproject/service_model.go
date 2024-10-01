@@ -13,4 +13,5 @@ type newProject struct {
 	postboxAddressID   string
 	postboxUsername    string
 	postboxPassword    string
+	apiGatewayID       string
 }

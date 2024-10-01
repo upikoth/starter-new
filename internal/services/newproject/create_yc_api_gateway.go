@@ -31,5 +31,6 @@ func (p *Service) CreateYCApiGateway(ctx context.Context) error {
 		return err
 	}
 
+	p.newProject.apiGatewayID = res.ApiGatewayID
 	return nil
 }

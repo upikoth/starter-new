@@ -150,11 +150,16 @@ func (s *App) Start(ctx context.Context) error {
 
 	s.logger.Info(`Шаг 4: Создаем 
 			dns record для подтверждения, что почта относится к нашему домену
+			привязку gateway к домену
 		`)
 	eg, newCtx = errgroup.WithContext(ctx)
 
 	eg.Go(func() error {
 		return s.services.NewProjectService.AddYCPostboxDNSRecord(ctx)
+	})
+
+	eg.Go(func() error {
+		return s.services.NewProjectService.BindYCGatewayToDNS(ctx)
 	})
 
 	err = eg.Wait()
