@@ -107,3 +107,23 @@ func (p *Service) getApiGatewayName() string {
 func (p *Service) getCapitalizeName() string {
 	return cases.Title(language.English, cases.Compact).String(p.newProject.name)
 }
+
+func (p *Service) getProjectLocalPath() string {
+	return fmt.Sprintf("%s/%s", p.config.ProjectsPathLocal, p.newProject.name)
+}
+
+func (p *Service) getProjectLocalPathBackend() string {
+	return fmt.Sprintf("%s/%s/%s", p.config.ProjectsPathLocal, p.newProject.name, p.getBackendRepoName())
+}
+
+func (p *Service) getProjectLocalPathFrontend() string {
+	return fmt.Sprintf("%s/%s/%s", p.config.ProjectsPathLocal, p.newProject.name, p.getFrontendRepoName())
+}
+
+func (p *Service) getProjectGithubOriginBackend() string {
+	return fmt.Sprintf("git@github.com:%s/%s.git", p.config.GitHub.UserName, p.getBackendRepoName())
+}
+
+func (p *Service) getProjectGithubOriginFrontend() string {
+	return fmt.Sprintf("git@github.com:%s/%s.git", p.config.GitHub.UserName, p.getFrontendRepoName())
+}

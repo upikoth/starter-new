@@ -6,11 +6,13 @@ type Config struct {
 	GitHub             GitHub
 	YandexCloud        YandexCloud
 	MainSiteDomainName string `envconfig:"MAIN_SITE_DOMAIN_NAME" required:"true"`
+	ProjectsPathLocal  string `envconfig:"PROJECTS_PATH_LOCAL" required:"true"`
 }
 
 type GitHub struct {
-	AccessToken string `envconfig:"GITHUB_ACCESS_TOKEN" required:"true"`
-	UserName    string `envconfig:"GITHUB_USER_NAME" required:"true"`
+	AccessToken                string `envconfig:"GITHUB_ACCESS_TOKEN" required:"true"`
+	UserName                   string `envconfig:"GITHUB_USER_NAME" required:"true"`
+	BackendTemplateProjectName string `envconfig:"GITHUB_BACKEND_TEMPLATE_PROJECT_NAME" required:"true"`
 }
 
 type YandexCloud struct {

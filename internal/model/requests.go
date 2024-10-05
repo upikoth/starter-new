@@ -57,3 +57,16 @@ type BindApiGatewayToDNSRequest struct {
 	YCUserCookie     string
 	YCUserCSRFToken  string
 }
+
+type AddGithubRepositoryVariableRequest struct {
+	GithubUserName string
+	GithubRepoName string
+	VariableName   string
+	VariableValue  string
+}
+
+type AddGithubRepositoryEnvironmentRequest struct {
+	GithubUserName  string
+	GithubRepoName  string
+	EnvironmentName string
+}
