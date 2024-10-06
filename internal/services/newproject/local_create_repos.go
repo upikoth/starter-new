@@ -33,19 +33,19 @@ func (p *Service) CreateLocalRepos(ctx context.Context) error {
 }
 
 func (p *Service) createLocalProjectDirectories(_ context.Context) error {
-	err := os.Mkdir(p.getProjectLocalPath(), 0777)
+	err := os.Mkdir(p.newProject.GetLocalPath(), 0777)
 
 	if err != nil {
 		return err
 	}
 
-	err = os.Mkdir(p.getProjectLocalPathBackend(), 0777)
+	err = os.Mkdir(p.newProject.GetBackendLocalPath(), 0777)
 
 	if err != nil {
 		return err
 	}
 
-	err = os.Mkdir(p.getProjectLocalPathFrontend(), 0777)
+	err = os.Mkdir(p.newProject.GetFrontendLocalPath(), 0777)
 
 	if err != nil {
 		return err

@@ -23,8 +23,8 @@ func (p *Service) SetupGithubFrontendRepo(ctx context.Context) error {
 	eg.Go(func() error {
 		return p.repositories.Github.AddRepositoryEnvironment(newCtx, model.AddGithubRepositoryEnvironmentRequest{
 			GithubUserName:  p.config.GitHub.UserName,
-			GithubRepoName:  p.getFrontendRepoName(),
-			EnvironmentName: "prod",
+			GithubRepoName:  p.newProject.GetFrontendRepositoryName(),
+			EnvironmentName: p.newProject.GetEnvironmentName(),
 		})
 	})
 
@@ -51,9 +51,9 @@ func (p *Service) SetupGithubFrontendRepo(ctx context.Context) error {
 
 func (p *Service) createFrontendEnvironmentVariables(ctx context.Context) error {
 	environmentVariables := model.FrontendRepositoryEnvironmentVariables{
-		Environment:  "prod",
-		APIURL:       fmt.Sprintf("https://%s", p.getProjectSiteDomain()),
-		S3BucketName: p.getProjectSiteDomain(),
+		Environment:  p.newProject.GetEnvironmentName(),
+		APIURL:       p.newProject.GetDomainURL(),
+		S3BucketName: p.newProject.GetYCObjectStorageBucketNameStatic(),
 	}
 
 	wg := sync.WaitGroup{}
@@ -76,7 +76,7 @@ func (p *Service) createFrontendEnvironmentVariables(ctx context.Context) error 
 		go func() {
 			err := p.repositories.Github.AddEnvironmentVariable(ctx, model.AddGithubRepositoryVariableRequest{
 				GithubUserName: p.config.GitHub.UserName,
-				GithubRepoName: p.getFrontendRepoName(),
+				GithubRepoName: p.newProject.GetFrontendRepositoryName(),
 				VariableName:   k,
 				VariableValue:  v,
 			})
@@ -119,7 +119,7 @@ func (p *Service) createFrontendRepoVariables(ctx context.Context) error {
 		go func() {
 			err := p.repositories.Github.AddRepositoryVariable(ctx, model.AddGithubRepositoryVariableRequest{
 				GithubUserName: p.config.GitHub.UserName,
-				GithubRepoName: p.getFrontendRepoName(),
+				GithubRepoName: p.newProject.GetFrontendRepositoryName(),
 				VariableName:   k,
 				VariableValue:  v,
 			})
@@ -148,8 +148,8 @@ func (p *Service) initAndPushGitFrontend(_ context.Context) error {
 	_, err = exec.Command(
 		"/bin/sh",
 		fmt.Sprintf("%s/scripts/git-init-push.sh", dir),
-		p.getProjectLocalPathFrontend(),
-		p.getProjectGithubOriginFrontend(),
+		p.newProject.GetFrontendLocalPath(),
+		p.newProject.GetFrontendGithubOrigin(),
 	).Output()
 
 	if err != nil {

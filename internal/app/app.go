@@ -2,7 +2,7 @@ package app
 
 import (
 	"context"
-	functionswithneeds "github.com/upikoth/starter-new/internal/pkg/functionswithneeds"
+	"github.com/upikoth/starter-new/internal/pkg/functionswithneeds"
 	"github.com/upikoth/starter-new/internal/pkg/logger"
 
 	"github.com/upikoth/starter-new/internal/config"

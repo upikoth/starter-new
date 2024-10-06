@@ -8,13 +8,13 @@ import (
 
 func (p *Service) CreateYCApiGateway(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateApiGateway(ctx, model.CreateApiGatewayRequest{
-		FolderID:                 p.newProject.folderID,
-		Name:                     p.getApiGatewayName(),
-		LogGroupID:               p.newProject.loggingGroupID,
-		ProjectCapitalizeName:    p.getCapitalizeName(),
-		FrontendStaticBucketName: p.getObjectStorageFrontendStaticBucketName(),
-		ServiceAccountID:         p.newProject.serviceAccountID,
-		BackendContainerID:       p.newProject.backendContainerID,
+		FolderID:                 p.newProject.GetYCFolderID(),
+		Name:                     p.newProject.GetYCApiGatewayName(),
+		LogGroupID:               p.newProject.GetYCLoggingGroupID(),
+		ProjectCapitalizeName:    p.newProject.GetCapitalizeName(),
+		FrontendStaticBucketName: p.newProject.GetYCObjectStorageBucketNameStatic(),
+		ServiceAccountID:         p.newProject.GetYCServiceAccountID(),
+		BackendContainerID:       p.newProject.GetYCServerlessContainerID(),
 	})
 
 	if err != nil {
@@ -31,7 +31,7 @@ func (p *Service) CreateYCApiGateway(ctx context.Context) error {
 		return err
 	}
 
-	p.newProject.apiGatewayID = res.ApiGatewayID
+	p.newProject.SetYCAPIGatewayID(res.ApiGatewayID)
 	p.logger.Info("Api gateway создан")
 
 	return nil

@@ -26,7 +26,7 @@ func (p *Service) BindYCGatewayToDNS(ctx context.Context) error {
 	for isCertificateNotIssued && retrays > 0 {
 		certificate, err := p.repositories.YandexCloud.GetCertificate(
 			ctx,
-			p.newProject.certificateID,
+			p.newProject.GetYCCertificateID(),
 		)
 
 		if err != nil {
@@ -41,15 +41,15 @@ func (p *Service) BindYCGatewayToDNS(ctx context.Context) error {
 	}
 
 	if isCertificateNotIssued {
-		p.logger.Warn(fmt.Sprintf("Сертификат не был выдан в течении %s минут, необходимо привязать api gateway к dns вручную", retrays))
+		p.logger.Warn(fmt.Sprintf("Сертификат не был выдан в течении %d минут, необходимо привязать api gateway к dns вручную", retrays))
 		return nil
 	}
 
 	_, err = p.repositories.YandexCloud.AddDomainToGateway(
 		ctx,
-		p.getProjectSiteDomain(),
-		p.newProject.certificateID,
-		p.newProject.apiGatewayID,
+		p.newProject.GetDomain(),
+		p.newProject.GetYCCertificateID(),
+		p.newProject.GetYCAPIGatewayID(),
 	)
 
 	if err != nil {
@@ -58,7 +58,7 @@ func (p *Service) BindYCGatewayToDNS(ctx context.Context) error {
 
 	apiGateway, err := p.repositories.YandexCloud.GetApiGateway(
 		ctx,
-		p.newProject.apiGatewayID,
+		p.newProject.GetYCAPIGatewayID(),
 	)
 
 	if err != nil {
@@ -66,7 +66,7 @@ func (p *Service) BindYCGatewayToDNS(ctx context.Context) error {
 	}
 
 	req := model.BindApiGatewayToDNSRequest{
-		DNSZoneID:        p.newProject.dnsZoneID,
+		DNSZoneID:        p.newProject.GetYCDNSZoneID(),
 		DNSRecordName:    fmt.Sprintf("%s.", apiGateway.AttachedDomainName),
 		DNSRecordText:    apiGateway.Domain,
 		DNSRecordOwnerID: apiGateway.AttachedDomainID,

@@ -10,11 +10,11 @@ func (p *Service) CreateGithubRepositories(ctx context.Context) error {
 	eg, newCtx := errgroup.WithContext(ctx)
 
 	eg.Go(func() error {
-		return p.repositories.Github.CreateRepository(newCtx, p.getBackendRepoName())
+		return p.repositories.Github.CreateRepository(newCtx, p.newProject.GetBackendRepositoryName())
 	})
 
 	eg.Go(func() error {
-		return p.repositories.Github.CreateRepository(newCtx, p.getFrontendRepoName())
+		return p.repositories.Github.CreateRepository(newCtx, p.newProject.GetFrontendRepositoryName())
 	})
 
 	if err := eg.Wait(); err != nil {

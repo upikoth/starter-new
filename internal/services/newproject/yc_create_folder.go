@@ -6,7 +6,7 @@ import (
 )
 
 func (p *Service) CreateYCFolder(ctx context.Context) error {
-	res, err := p.repositories.YandexCloud.CreateFolder(ctx, p.newProject.name)
+	res, err := p.repositories.YandexCloud.CreateFolder(ctx, p.newProject.GetName())
 
 	if err != nil {
 		return err
@@ -22,7 +22,7 @@ func (p *Service) CreateYCFolder(ctx context.Context) error {
 		return err
 	}
 
-	p.newProject.folderID = res.FolderId
+	p.newProject.SetYCFolderID(res.FolderId)
 	p.logger.Info("Folder в yandex cloud создан")
 
 	return nil

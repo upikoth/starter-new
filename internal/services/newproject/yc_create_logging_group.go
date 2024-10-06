@@ -8,8 +8,8 @@ import (
 func (p *Service) CreateYCLogGroup(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateLoggingGroup(
 		ctx,
-		p.newProject.folderID,
-		p.getProjectLoggingGroupName(),
+		p.newProject.GetYCFolderID(),
+		p.newProject.GetYCLoggingGroupName(),
 	)
 
 	if err != nil {
@@ -26,7 +26,7 @@ func (p *Service) CreateYCLogGroup(ctx context.Context) error {
 		return err
 	}
 
-	p.newProject.loggingGroupID = res.LogGroupID
+	p.newProject.SetYCLoggingGroupID(res.LogGroupID)
 	p.logger.Info("Лог группа создана")
 
 	return nil

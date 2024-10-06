@@ -32,8 +32,8 @@ func (p *Service) CreateYCStorageBuckets(ctx context.Context) error {
 func (p *Service) createYCStorageBucketWithSecrets(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateBucket(
 		ctx,
-		p.newProject.folderID,
-		p.getObjectStorageSecretsBucketName(),
+		p.newProject.GetYCFolderID(),
+		p.newProject.GetYCObjectStorageBucketNameSecrets(),
 	)
 
 	if err != nil {
@@ -56,8 +56,8 @@ func (p *Service) createYCStorageBucketWithSecrets(ctx context.Context) error {
 func (p *Service) createYCStorageBucketForFrontendStatic(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateBucket(
 		ctx,
-		p.newProject.folderID,
-		p.getObjectStorageFrontendStaticBucketName(),
+		p.newProject.GetYCFolderID(),
+		p.newProject.GetYCObjectStorageBucketNameStatic(),
 	)
 
 	if err != nil {

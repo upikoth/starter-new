@@ -23,8 +23,8 @@ func (p *Service) SetupGithubBackendRepo(ctx context.Context) error {
 	eg.Go(func() error {
 		return p.repositories.Github.AddRepositoryEnvironment(newCtx, model.AddGithubRepositoryEnvironmentRequest{
 			GithubUserName:  p.config.GitHub.UserName,
-			GithubRepoName:  p.getBackendRepoName(),
-			EnvironmentName: "prod",
+			GithubRepoName:  p.newProject.GetBackendRepositoryName(),
+			EnvironmentName: p.newProject.GetEnvironmentName(),
 		})
 	})
 
@@ -51,16 +51,16 @@ func (p *Service) SetupGithubBackendRepo(ctx context.Context) error {
 
 func (p *Service) createBackendEnvironmentVariables(ctx context.Context) error {
 	environmentVariables := model.BackendRepositoryEnvironmentVariables{
-		Environment: "prod",
-		FrontConfirmationPasswordRecoveryRequestURL: fmt.Sprintf("https://%s/#/auth/recovery-password-confirm", p.getProjectSiteDomain()),
-		FrontConfirmationRegistrationURL:            fmt.Sprintf("https://%s/#/auth/sign-up-confirm", p.getProjectSiteDomain()),
-		FrontURL:                                    p.getProjectSiteDomain(),
+		Environment: p.newProject.GetEnvironmentName(),
+		FrontConfirmationPasswordRecoveryRequestURL: fmt.Sprintf("%s/#/auth/recovery-password-confirm", p.newProject.GetDomainURL()),
+		FrontConfirmationRegistrationURL:            fmt.Sprintf("%s/#/auth/sign-up-confirm", p.newProject.GetDomainURL()),
+		FrontURL:                                    p.newProject.GetDomain(),
 		Port:                                        "8888",
-		YCPFromAddress:                              p.getPostboxFromAddress(),
-		YCPFromName:                                 p.getPostboxFromName(),
+		YCPFromAddress:                              p.newProject.GetEmailFromAddress(),
+		YCPFromName:                                 p.newProject.GetEmailFromName(),
 		YCPHost:                                     "postbox.cloud.yandex.net",
 		YCPPort:                                     "25",
-		YCS3Path:                                    p.getObjectStorageSecretsBucketName(),
+		YCS3Path:                                    p.newProject.GetYCObjectStorageBucketNameSecrets(),
 		YDBAuthFileDirName:                          "/secrets",
 		YDBAuthFile:                                 "authorized_key.json",
 	}
@@ -85,7 +85,7 @@ func (p *Service) createBackendEnvironmentVariables(ctx context.Context) error {
 		go func() {
 			err := p.repositories.Github.AddEnvironmentVariable(ctx, model.AddGithubRepositoryVariableRequest{
 				GithubUserName: p.config.GitHub.UserName,
-				GithubRepoName: p.getBackendRepoName(),
+				GithubRepoName: p.newProject.GetBackendRepositoryName(),
 				VariableName:   k,
 				VariableValue:  v,
 			})
@@ -107,11 +107,11 @@ func (p *Service) createBackendEnvironmentVariables(ctx context.Context) error {
 func (p *Service) createBackendRepoVariables(ctx context.Context) error {
 	repoVariables := model.BackendRepositoryVariables{
 		SentryDSN:              "-",
-		YcContainterName:       p.getProjectServerlessContainerName(),
-		YcFolderID:             p.newProject.folderID,
-		YcLogOptionsLogGroupID: p.newProject.loggingGroupID,
-		YcRegistry:             p.newProject.registryID,
-		YcServiceAccountID:     p.newProject.serviceAccountID,
+		YcContainterName:       p.newProject.GetYCServerlessContainerName(),
+		YcFolderID:             p.newProject.GetYCFolderID(),
+		YcLogOptionsLogGroupID: p.newProject.GetYCLoggingGroupID(),
+		YcRegistry:             p.newProject.GetYCContainerRegistryID(),
+		YcServiceAccountID:     p.newProject.GetYCServiceAccountID(),
 	}
 	wg := sync.WaitGroup{}
 	errs := make([]error, 0)
@@ -133,7 +133,7 @@ func (p *Service) createBackendRepoVariables(ctx context.Context) error {
 		go func() {
 			err := p.repositories.Github.AddRepositoryVariable(ctx, model.AddGithubRepositoryVariableRequest{
 				GithubUserName: p.config.GitHub.UserName,
-				GithubRepoName: p.getBackendRepoName(),
+				GithubRepoName: p.newProject.GetBackendRepositoryName(),
 				VariableName:   k,
 				VariableValue:  v,
 			})
@@ -162,8 +162,8 @@ func (p *Service) initAndPushGitBackend(_ context.Context) error {
 	_, err = exec.Command(
 		"/bin/sh",
 		fmt.Sprintf("%s/scripts/git-init-push.sh", dir),
-		p.getProjectLocalPathBackend(),
-		p.getProjectGithubOriginBackend(),
+		p.newProject.GetBackendLocalPath(),
+		p.newProject.GetBackendGithubOrigin(),
 	).Output()
 
 	if err != nil {

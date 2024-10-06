@@ -22,7 +22,7 @@ func (p *Service) BindCertificateToDNSZone(ctx context.Context) error {
 	certificateChallenge, err := p.repositories.YandexCloudBrowser.GetCertificateChallenge(
 		ctx,
 		model.GetCertificateChallengeRequest{
-			CertificateID:   p.newProject.certificateID,
+			CertificateID:   p.newProject.GetYCCertificateID(),
 			YCUserCookie:    cookie,
 			YCUserCSRFToken: csrfToken,
 		},
@@ -33,12 +33,17 @@ func (p *Service) BindCertificateToDNSZone(ctx context.Context) error {
 	}
 
 	req := model.BindCertificateToDNSRequest{
-		DNSZoneID:        p.newProject.dnsZoneID,
-		DNSRecordName:    certificateChallenge.DNSName,
-		DNSRecordText:    certificateChallenge.DNSText,
-		DNSRecordOwnerID: fmt.Sprintf("%s:%s:%s", p.newProject.certificateID, certificateChallenge.ChallegeType, certificateChallenge.DNSName),
-		YCUserCookie:     cookie,
-		YCUserCSRFToken:  csrfToken,
+		DNSZoneID:     p.newProject.GetYCDNSZoneID(),
+		DNSRecordName: certificateChallenge.DNSName,
+		DNSRecordText: certificateChallenge.DNSText,
+		DNSRecordOwnerID: fmt.Sprintf(
+			"%s:%s:%s",
+			p.newProject.GetYCCertificateID(),
+			certificateChallenge.ChallegeType,
+			certificateChallenge.DNSName,
+		),
+		YCUserCookie:    cookie,
+		YCUserCSRFToken: csrfToken,
 	}
 
 	err = p.repositories.YandexCloudBrowser.BindCertificateToDNS(ctx, req)

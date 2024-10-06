@@ -8,8 +8,8 @@ import (
 func (p *Service) CreateYCDNSZone(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateDNSZone(
 		ctx,
-		p.newProject.folderID,
-		p.getProjectDNSZoneName(),
+		p.newProject.GetYCFolderID(),
+		p.newProject.GetYCDNSZoneName(),
 	)
 
 	if err != nil {
@@ -26,7 +26,7 @@ func (p *Service) CreateYCDNSZone(ctx context.Context) error {
 		return err
 	}
 
-	p.newProject.dnsZoneID = res.DNSZoneId
+	p.newProject.SetYCDNSZoneID(res.DNSZoneId)
 	p.logger.Info("DNS зона создана")
 
 	return nil

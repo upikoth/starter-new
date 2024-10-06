@@ -7,7 +7,7 @@ import (
 	"os/exec"
 )
 
-func (p *Service) createFrontendRepo(ctx context.Context) error {
+func (p *Service) createFrontendRepo(_ context.Context) error {
 	dir, err := os.Getwd()
 
 	if err != nil {
@@ -17,9 +17,9 @@ func (p *Service) createFrontendRepo(ctx context.Context) error {
 	_, err = exec.Command(
 		"/bin/sh",
 		fmt.Sprintf("%s/scripts/clone-starter-vue3-repo.sh", dir),
-		p.getProjectLocalPath(),
-		p.getFrontendRepoName(),
-		p.getBackendRepoName(),
+		p.newProject.GetLocalPath(),
+		p.newProject.GetFrontendRepositoryName(),
+		p.newProject.GetBackendRepositoryName(),
 	).Output()
 
 	if err != nil {

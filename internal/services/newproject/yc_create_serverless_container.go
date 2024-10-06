@@ -8,8 +8,8 @@ import (
 func (p *Service) CreateYCServerlessContainer(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateContainer(
 		ctx,
-		p.newProject.folderID,
-		p.getProjectServerlessContainerName(),
+		p.newProject.GetYCFolderID(),
+		p.newProject.GetYCServerlessContainerName(),
 	)
 
 	if err != nil {
@@ -26,7 +26,7 @@ func (p *Service) CreateYCServerlessContainer(ctx context.Context) error {
 		return err
 	}
 
-	p.newProject.backendContainerID = res.ContainerID
+	p.newProject.SetYCServerlessContainerID(res.ContainerID)
 	p.logger.Info("Yandex cloud serverless container создан")
 
 	return nil

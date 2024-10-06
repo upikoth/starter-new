@@ -6,12 +6,12 @@ import (
 )
 
 func (p *Service) CreateYCFolderServiceAccount(ctx context.Context) error {
-	accountName := fmt.Sprintf("%s-manager", p.newProject.name)
+	accountName := fmt.Sprintf("%s-manager", p.newProject.GetName())
 
 	serviceAccountID, err := p.repositories.YandexCloud.CreateServiceAccount(
 		ctx,
 		accountName,
-		p.newProject.folderID,
+		p.newProject.GetYCFolderID(),
 	)
 
 	if err != nil {
@@ -30,7 +30,7 @@ func (p *Service) CreateYCFolderServiceAccount(ctx context.Context) error {
 	err = p.repositories.YandexCloud.UpdateServiceAccountRoles(
 		ctx,
 		serviceAccountID,
-		p.newProject.folderID,
+		p.newProject.GetYCFolderID(),
 		accountRoles,
 	)
 
@@ -38,7 +38,7 @@ func (p *Service) CreateYCFolderServiceAccount(ctx context.Context) error {
 		return err
 	}
 
-	p.newProject.serviceAccountID = serviceAccountID
+	p.newProject.SetYCServiceAccountID(serviceAccountID)
 	p.logger.Info("Сервисный аккаунт в yandex cloud для нового проекта создан")
 
 	return nil

@@ -32,7 +32,7 @@ func (p *Service) cloneBackendTemplateProject(_ context.Context) error {
 		"/bin/sh",
 		fmt.Sprintf("%s/scripts/clone-starter-go-repo.sh", dir),
 		fmt.Sprintf("github.com/%s/%s", p.config.GitHub.UserName, p.config.GitHub.BackendTemplateProjectName),
-		fmt.Sprintf("github.com/%s/%s", p.config.GitHub.UserName, p.getBackendRepoName()),
+		fmt.Sprintf("github.com/%s/%s", p.config.GitHub.UserName, p.newProject.GetBackendRepositoryName()),
 	).Output()
 
 	if err != nil {
@@ -52,8 +52,8 @@ func (p *Service) moveBackendToCorrectFolder(_ context.Context) error {
 	_, err = exec.Command(
 		"/bin/sh",
 		fmt.Sprintf("%s/scripts/move-dir.sh", dir),
-		fmt.Sprintf("%s/%s", dir, p.getBackendRepoName()),
-		p.getProjectLocalPath(),
+		fmt.Sprintf("%s/%s", dir, p.newProject.GetBackendRepositoryName()),
+		p.newProject.GetLocalPath(),
 	).Output()
 
 	if err != nil {

@@ -21,9 +21,9 @@ func (p *Service) CreateYCCertificate(ctx context.Context) error {
 	}
 
 	req := model.CreateCertificateRequest{
-		FolderID:        p.newProject.folderID,
-		Domain:          p.getProjectSiteDomain(),
-		CertificateName: p.getCertificateName(),
+		FolderID:        p.newProject.GetYCFolderID(),
+		Domain:          p.newProject.GetDomain(),
+		CertificateName: p.newProject.GetYCCertificateName(),
 		YCUserCookie:    cookie,
 		YCUserCSRFToken: csrfToken,
 	}
@@ -36,8 +36,8 @@ func (p *Service) CreateYCCertificate(ctx context.Context) error {
 
 	time.Sleep(time.Second * 5)
 
-	p.newProject.certificateID = res.CertificateID
-	p.logger.Info("Yandex cloud сертефикат создан")
+	p.newProject.SetYCCertificateID(res.CertificateID)
+	p.logger.Info("Yandex cloud сертификат создан")
 
 	return nil
 }

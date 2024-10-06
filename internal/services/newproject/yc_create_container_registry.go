@@ -8,8 +8,8 @@ import (
 func (p *Service) CreateYCContainerRegistry(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateRegistry(
 		ctx,
-		p.newProject.folderID,
-		p.getProjectRegistryName(),
+		p.newProject.GetYCFolderID(),
+		p.newProject.GetYCContainerRegistryName(),
 	)
 
 	if err != nil {
@@ -26,7 +26,7 @@ func (p *Service) CreateYCContainerRegistry(ctx context.Context) error {
 		return err
 	}
 
-	p.newProject.registryID = res.RegistryID
+	p.newProject.SetYCContainerRegistryID(res.RegistryID)
 	p.logger.Info("Container registry в yandex cloud создано")
 
 	return nil

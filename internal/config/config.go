@@ -3,10 +3,10 @@ package config
 import "github.com/kelseyhightower/envconfig"
 
 type Config struct {
-	GitHub             GitHub
-	YandexCloud        YandexCloud
-	MainSiteDomainName string `envconfig:"MAIN_SITE_DOMAIN_NAME" required:"true"`
-	ProjectsPathLocal  string `envconfig:"PROJECTS_PATH_LOCAL" required:"true"`
+	GitHub            GitHub
+	YandexCloud       YandexCloud
+	MainSiteDomain    string `envconfig:"MAIN_SITE_DOMAIN" required:"true"`
+	ProjectsLocalPath string `envconfig:"PROJECTS_LOCAL_PATH" required:"true"`
 }
 
 type GitHub struct {

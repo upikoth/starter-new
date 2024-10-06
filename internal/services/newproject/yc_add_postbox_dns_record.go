@@ -24,7 +24,7 @@ func (p *Service) AddYCPostboxDNSRecord(ctx context.Context) error {
 	record, err := p.repositories.YandexCloudBrowser.GetPostboxVerificationRecord(
 		ctx,
 		model.GetPostboxVerificationRecordRequest{
-			IdentityID:      p.newProject.postboxAddressID,
+			IdentityID:      p.newProject.GetYCPostboxAddressID(),
 			YCUserCookie:    cookie,
 			YCUserCSRFToken: csrfToken,
 		},
@@ -36,10 +36,10 @@ func (p *Service) AddYCPostboxDNSRecord(ctx context.Context) error {
 
 	res, err := p.repositories.YandexCloud.AddDNSRecord(
 		ctx,
-		p.newProject.dnsZoneID,
+		p.newProject.GetYCDNSZoneID(),
 		model.DNSRecord{
 			Type:  record.Type,
-			Name:  strings.Replace(record.Name, fmt.Sprintf(".%s", p.getProjectSiteDomain()), "", 1),
+			Name:  strings.Replace(record.Name, fmt.Sprintf(".%s", p.newProject.GetDomain()), "", 1),
 			Value: fmt.Sprintf(`"%s"`, record.Value),
 		},
 	)

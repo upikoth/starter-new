@@ -8,8 +8,8 @@ import (
 func (p *Service) CreateYCYDB(ctx context.Context) error {
 	res, err := p.repositories.YandexCloud.CreateYDB(
 		ctx,
-		p.newProject.folderID,
-		p.getProjectYDBName(),
+		p.newProject.GetYCFolderID(),
+		p.newProject.GetYCYDBName(),
 	)
 
 	if err != nil {
@@ -26,7 +26,7 @@ func (p *Service) CreateYCYDB(ctx context.Context) error {
 		return err
 	}
 
-	p.newProject.databaseEndpoint = res.DatabaseEndpoint
+	p.newProject.SetYCYDBEndpoint(res.DatabaseEndpoint)
 	p.logger.Info("YDB создана")
 
 	return nil
