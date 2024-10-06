@@ -44,6 +44,8 @@ func (p *Service) SetupGithubBackendRepo(ctx context.Context) error {
 		return err
 	}
 
+	p.logger.Info("Github backend repository установлен")
+
 	return nil
 }
 
@@ -79,8 +81,8 @@ func (p *Service) createBackendEnvironmentVariables(ctx context.Context) error {
 	}
 
 	for k, v := range repoEnvironmentVariablesMap {
+		wg.Add(1)
 		go func() {
-			wg.Add(1)
 			err := p.repositories.Github.AddEnvironmentVariable(ctx, model.AddGithubRepositoryVariableRequest{
 				GithubUserName: p.config.GitHub.UserName,
 				GithubRepoName: p.getBackendRepoName(),
@@ -127,8 +129,8 @@ func (p *Service) createBackendRepoVariables(ctx context.Context) error {
 	}
 
 	for k, v := range repoVariablesMap {
+		wg.Add(1)
 		go func() {
-			wg.Add(1)
 			err := p.repositories.Github.AddRepositoryVariable(ctx, model.AddGithubRepositoryVariableRequest{
 				GithubUserName: p.config.GitHub.UserName,
 				GithubRepoName: p.getBackendRepoName(),

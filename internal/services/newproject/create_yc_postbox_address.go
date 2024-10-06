@@ -62,5 +62,7 @@ func (p *Service) CreateYCPostboxAddress(ctx context.Context) error {
 	}
 
 	p.newProject.postboxAddressID = res.PostboxAddressID
+	p.logger.Info("Postbox создан")
+
 	return nil
 }

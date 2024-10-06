@@ -27,5 +27,7 @@ func (p *Service) CreateYCDNSZone(ctx context.Context) error {
 	}
 
 	p.newProject.dnsZoneID = res.DNSZoneId
+	p.logger.Info("DNS зона создана")
+
 	return nil
 }

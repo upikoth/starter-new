@@ -32,5 +32,7 @@ func (p *Service) CreateYCApiGateway(ctx context.Context) error {
 	}
 
 	p.newProject.apiGatewayID = res.ApiGatewayID
+	p.logger.Info("Api gateway создан")
+
 	return nil
 }

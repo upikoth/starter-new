@@ -47,5 +47,7 @@ func (p *Service) BindCertificateToDNSZone(ctx context.Context) error {
 		return err
 	}
 
+	p.logger.Info("Сертификат привязан в DNS")
+
 	return nil
 }

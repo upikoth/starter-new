@@ -23,6 +23,7 @@ func (p *Service) CreateYCFolder(ctx context.Context) error {
 	}
 
 	p.newProject.folderID = res.FolderId
+	p.logger.Info("Folder в yandex cloud создан")
 
 	return nil
 }

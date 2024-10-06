@@ -58,5 +58,7 @@ func (p *Service) AddYCPostboxDNSRecord(ctx context.Context) error {
 		return err
 	}
 
+	p.logger.Info("Postbox привязан к DNS")
+
 	return nil
 }

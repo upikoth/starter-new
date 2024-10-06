@@ -2,6 +2,7 @@ package newproject
 
 import (
 	"context"
+	"time"
 
 	"github.com/upikoth/starter-new/internal/model"
 )
@@ -33,6 +34,10 @@ func (p *Service) CreateYCCertificate(ctx context.Context) error {
 		return err
 	}
 
+	time.Sleep(time.Second * 5)
+
 	p.newProject.certificateID = res.CertificateID
+	p.logger.Info("Yandex cloud сертефикат создан")
+
 	return nil
 }

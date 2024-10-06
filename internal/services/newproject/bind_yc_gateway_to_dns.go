@@ -80,5 +80,7 @@ func (p *Service) BindYCGatewayToDNS(ctx context.Context) error {
 		return err
 	}
 
+	p.logger.Info("API gateway привязан к DNS")
+
 	return nil
 }

@@ -44,6 +44,8 @@ func (p *Service) SetupGithubFrontendRepo(ctx context.Context) error {
 		return err
 	}
 
+	p.logger.Info("Github frontend repository установлен")
+
 	return nil
 }
 
@@ -70,11 +72,11 @@ func (p *Service) createFrontendEnvironmentVariables(ctx context.Context) error 
 	}
 
 	for k, v := range repoEnvironmentVariablesMap {
+		wg.Add(1)
 		go func() {
-			wg.Add(1)
 			err := p.repositories.Github.AddEnvironmentVariable(ctx, model.AddGithubRepositoryVariableRequest{
 				GithubUserName: p.config.GitHub.UserName,
-				GithubRepoName: p.getBackendRepoName(),
+				GithubRepoName: p.getFrontendRepoName(),
 				VariableName:   k,
 				VariableValue:  v,
 			})
@@ -113,8 +115,8 @@ func (p *Service) createFrontendRepoVariables(ctx context.Context) error {
 	}
 
 	for k, v := range repoVariablesMap {
+		wg.Add(1)
 		go func() {
-			wg.Add(1)
 			err := p.repositories.Github.AddRepositoryVariable(ctx, model.AddGithubRepositoryVariableRequest{
 				GithubUserName: p.config.GitHub.UserName,
 				GithubRepoName: p.getFrontendRepoName(),

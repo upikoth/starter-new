@@ -27,6 +27,8 @@ func (p *Service) CreateLocalRepos(ctx context.Context) error {
 		return err
 	}
 
+	p.logger.Info("Локальные папки для frontend и backend созданы")
+
 	return nil
 }
 

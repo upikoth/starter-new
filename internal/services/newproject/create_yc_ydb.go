@@ -27,6 +27,7 @@ func (p *Service) CreateYCYDB(ctx context.Context) error {
 	}
 
 	p.newProject.databaseEndpoint = res.DatabaseEndpoint
+	p.logger.Info("YDB создана")
 
 	return nil
 }

@@ -27,6 +27,7 @@ func (p *Service) CreateYCContainerRegistry(ctx context.Context) error {
 	}
 
 	p.newProject.registryID = res.RegistryID
+	p.logger.Info("Container registry в yandex cloud создано")
 
 	return nil
 }

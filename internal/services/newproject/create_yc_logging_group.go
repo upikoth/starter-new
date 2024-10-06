@@ -27,6 +27,7 @@ func (p *Service) CreateYCLogGroup(ctx context.Context) error {
 	}
 
 	p.newProject.loggingGroupID = res.LogGroupID
+	p.logger.Info("Лог группа создана")
 
 	return nil
 }

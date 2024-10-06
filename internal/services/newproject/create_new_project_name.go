@@ -15,6 +15,7 @@ func (p *Service) CreateNewProjectName(ctx context.Context) error {
 	}
 
 	p.newProject.name = name
+	p.logger.Info(fmt.Sprintf("Название нового приложения - %s", name))
 
 	return nil
 }

@@ -24,6 +24,8 @@ func (p *Service) CreateYCStorageBuckets(ctx context.Context) error {
 		return err
 	}
 
+	p.logger.Info("Yandex cloud storage бакеты для статики и секретов созданы")
+
 	return nil
 }
 
