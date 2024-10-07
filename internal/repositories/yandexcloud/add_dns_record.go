@@ -60,7 +60,9 @@ func (y *YandexCloud) AddDNSRecord(
 	}
 
 	return &model.AddDNSRecordResponse{
-		OperationID: resParsed.OperationID,
-		Done:        resParsed.Done,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
 	}, nil
 }

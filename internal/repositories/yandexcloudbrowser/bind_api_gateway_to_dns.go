@@ -27,7 +27,7 @@ type bindApiGatewayToDNSRequestAdditionOwner struct {
 
 func (y *YandexCloudBrowser) BindApiGatewayToDNS(
 	ctx context.Context,
-	req model.BindApiGatewayToDNSRequest,
+	req model.YCBindApiGatewayToDNSRequest,
 ) error {
 	reqStruct := bindApiGatewayToDNSRequest{
 		Additions: []bindApiGatewayToDNSRequestAddition{

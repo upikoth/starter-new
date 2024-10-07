@@ -49,8 +49,10 @@ func (y *YandexCloud) CreateFolder(ctx context.Context, folderName string) (*mod
 	}
 
 	return &model.CreateFolderResponse{
-		OperationID: resParsed.OperationID,
-		FolderId:    resParsed.Metadata.FolderID,
-		Done:        resParsed.Done,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
+		FolderId: resParsed.Metadata.FolderID,
 	}, nil
 }

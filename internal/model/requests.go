@@ -1,14 +1,53 @@
 package model
 
-type CreateCertificateRequest struct {
-	FolderID        string
-	Domain          string
-	CertificateName string
+type YCBrowserRequest struct {
 	YCUserCookie    string
 	YCUserCSRFToken string
 }
 
-type CreateApiGatewayRequest struct {
+type YCCreateCertificateRequest struct {
+	YCBrowserRequest
+	FolderID        string
+	Domain          string
+	CertificateName string
+}
+
+type YCCreatePostboxAddressRequest struct {
+	YCBrowserRequest
+	FolderID    string
+	AddressName string
+	PrivateKey  string
+	Selector    string
+	LogGroupID  string
+}
+
+type YCGetCertificateChallengeRequest struct {
+	YCBrowserRequest
+	CertificateID string
+}
+
+type YCBindCertificateToDNSRequest struct {
+	YCBrowserRequest
+	DNSZoneID        string
+	DNSRecordName    string
+	DNSRecordText    string
+	DNSRecordOwnerID string
+}
+
+type YCGetPostboxVerificationRecordRequest struct {
+	YCBrowserRequest
+	IdentityID string
+}
+
+type YCBindApiGatewayToDNSRequest struct {
+	YCBrowserRequest
+	DNSZoneID        string
+	DNSRecordName    string
+	DNSRecordText    string
+	DNSRecordOwnerID string
+}
+
+type YCCreateApiGatewayRequest struct {
 	FolderID                 string
 	Name                     string
 	LogGroupID               string
@@ -16,46 +55,6 @@ type CreateApiGatewayRequest struct {
 	FrontendStaticBucketName string
 	ServiceAccountID         string
 	BackendContainerID       string
-}
-
-type CreatePostboxAddressRequest struct {
-	FolderID        string
-	AddressName     string
-	YCUserCookie    string
-	YCUserCSRFToken string
-	PrivateKey      string
-	Selector        string
-	LogGroupID      string
-}
-
-type GetCertificateChallengeRequest struct {
-	CertificateID   string
-	YCUserCookie    string
-	YCUserCSRFToken string
-}
-
-type BindCertificateToDNSRequest struct {
-	DNSZoneID        string
-	DNSRecordName    string
-	DNSRecordText    string
-	DNSRecordOwnerID string
-	YCUserCookie     string
-	YCUserCSRFToken  string
-}
-
-type GetPostboxVerificationRecordRequest struct {
-	IdentityID      string
-	YCUserCookie    string
-	YCUserCSRFToken string
-}
-
-type BindApiGatewayToDNSRequest struct {
-	DNSZoneID        string
-	DNSRecordName    string
-	DNSRecordText    string
-	DNSRecordOwnerID string
-	YCUserCookie     string
-	YCUserCSRFToken  string
 }
 
 type AddGithubRepositoryVariableRequest struct {

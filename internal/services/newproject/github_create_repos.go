@@ -21,7 +21,7 @@ func (p *Service) CreateGithubRepositories(ctx context.Context) error {
 		return err
 	}
 
-	p.logger.Info("Репозитории в github для frontend и backend проектов созданы")
+	p.logger.Info("Github: репозитории для frontend и backend проектов созданы")
 
 	return nil
 }

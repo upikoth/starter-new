@@ -39,7 +39,7 @@ func (p *Service) CreateYCFolderServiceAccount(ctx context.Context) error {
 	}
 
 	p.newProject.SetYCServiceAccountID(serviceAccountID)
-	p.logger.Info("Сервисный аккаунт в yandex cloud для нового проекта создан")
+	p.logger.Info("YC: Сервисный аккаунт в для нового проекта создан")
 
 	return nil
 }

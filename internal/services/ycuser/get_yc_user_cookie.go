@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Service) GetYcUserCookie(ctx context.Context) (string, error) {
-	cookie := s.ycUser.getCookie()
+	cookie := s.ycUser.GetCookie()
 
 	if cookie != "" {
 		return cookie, nil
@@ -37,7 +37,7 @@ func (s *Service) setYcUserCookie(ctx context.Context) (string, error) {
 		return "", err
 	}
 
-	s.ycUser.setCookie(cookie)
+	s.ycUser.SetCookie(cookie)
 
 	return cookie, nil
 }

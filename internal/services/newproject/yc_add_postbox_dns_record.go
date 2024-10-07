@@ -23,10 +23,12 @@ func (p *Service) AddYCPostboxDNSRecord(ctx context.Context) error {
 
 	record, err := p.repositories.YandexCloudBrowser.GetPostboxVerificationRecord(
 		ctx,
-		model.GetPostboxVerificationRecordRequest{
-			IdentityID:      p.newProject.GetYCPostboxAddressID(),
-			YCUserCookie:    cookie,
-			YCUserCSRFToken: csrfToken,
+		model.YCGetPostboxVerificationRecordRequest{
+			YCBrowserRequest: model.YCBrowserRequest{
+				YCUserCookie:    cookie,
+				YCUserCSRFToken: csrfToken,
+			},
+			IdentityID: p.newProject.GetYCPostboxAddressID(),
 		},
 	)
 
@@ -58,7 +60,7 @@ func (p *Service) AddYCPostboxDNSRecord(ctx context.Context) error {
 		return err
 	}
 
-	p.logger.Info("Postbox привязан к DNS")
+	p.logger.Info("YC: в DNS создана запись для верификации postbox")
 
 	return nil
 }

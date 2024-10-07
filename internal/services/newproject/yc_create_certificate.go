@@ -20,12 +20,14 @@ func (p *Service) CreateYCCertificate(ctx context.Context) error {
 		return err
 	}
 
-	req := model.CreateCertificateRequest{
+	req := model.YCCreateCertificateRequest{
+		YCBrowserRequest: model.YCBrowserRequest{
+			YCUserCookie:    cookie,
+			YCUserCSRFToken: csrfToken,
+		},
 		FolderID:        p.newProject.GetYCFolderID(),
 		Domain:          p.newProject.GetDomain(),
 		CertificateName: p.newProject.GetYCCertificateName(),
-		YCUserCookie:    cookie,
-		YCUserCSRFToken: csrfToken,
 	}
 
 	res, err := p.repositories.YandexCloudBrowser.CreateCertificate(ctx, req)
@@ -37,7 +39,7 @@ func (p *Service) CreateYCCertificate(ctx context.Context) error {
 	time.Sleep(time.Second * 5)
 
 	p.newProject.SetYCCertificateID(res.CertificateID)
-	p.logger.Info("Yandex cloud сертификат создан")
+	p.logger.Info("YC: сертификат let's encrypt создан")
 
 	return nil
 }

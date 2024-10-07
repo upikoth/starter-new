@@ -9,7 +9,7 @@ type BackendRepositoryVariables struct {
 	YcServiceAccountID     string `json:"YC_SERVICE_ACCOUNT_ID"`
 }
 
-type BackendRepositoryEnvironmentVariables struct {
+type BackendEnvironmentVariables struct {
 	Environment                                 string `json:"ENVIRONMENT"`
 	FrontConfirmationPasswordRecoveryRequestURL string `json:"FRONT_CONFIRMATION_PASSWORD_RECOVERY_REQUEST_URL"`
 	FrontConfirmationRegistrationURL            string `json:"FRONT_CONFIRMATION_REGISTRATION_URL"`
@@ -28,7 +28,7 @@ type FrontendRepositoryVariables struct {
 	SentryDSN string `json:"SENTRY_DSN"`
 }
 
-type FrontendRepositoryEnvironmentVariables struct {
+type FrontendEnvironmentVariables struct {
 	Environment  string `json:"ENVIRONMENT"`
 	APIURL       string `json:"API_URL"`
 	S3BucketName string `json:"S3_BUCKET_NAME"`

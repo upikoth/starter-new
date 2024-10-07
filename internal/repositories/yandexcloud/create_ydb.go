@@ -60,8 +60,10 @@ func (y *YandexCloud) CreateYDB(
 	}
 
 	return &model.CreateYDBResponse{
-		OperationID:      resParsed.OperationID,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
 		DatabaseEndpoint: resParsed.Response.Endpoint,
-		Done:             resParsed.Done,
 	}, nil
 }

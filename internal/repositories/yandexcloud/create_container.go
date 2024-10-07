@@ -50,8 +50,10 @@ func (y *YandexCloud) CreateContainer(
 	}
 
 	return &model.CreateContainerResponse{
-		OperationID: resParsed.OperationID,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
 		ContainerID: resParsed.Metadata.ContainerID,
-		Done:        resParsed.Done,
 	}, nil
 }

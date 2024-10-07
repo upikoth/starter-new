@@ -39,7 +39,7 @@ type createPostboxAddressResponse struct {
 
 func (y *YandexCloudBrowser) CreatePostboxAddress(
 	ctx context.Context,
-	req model.CreatePostboxAddressRequest,
+	req model.YCCreatePostboxAddressRequest,
 ) (*model.CreatePostboxAddressResponse, error) {
 	reqStruct := createPostboxAddressRequest{
 		FolderID: req.FolderID,
@@ -77,8 +77,10 @@ func (y *YandexCloudBrowser) CreatePostboxAddress(
 	}
 
 	return &model.CreatePostboxAddressResponse{
-		OperationID:      resParsed.OperationID,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
 		PostboxAddressID: resParsed.Response.ID,
-		Done:             resParsed.Done,
 	}, nil
 }

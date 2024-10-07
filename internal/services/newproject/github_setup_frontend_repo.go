@@ -6,51 +6,59 @@ import (
 	"errors"
 	"fmt"
 	"github.com/upikoth/starter-new/internal/model"
-	"golang.org/x/sync/errgroup"
+	"github.com/upikoth/starter-new/internal/pkg/functionswithneeds"
 	"os"
 	"os/exec"
 	"sync"
 )
 
 func (p *Service) SetupGithubFrontendRepo(ctx context.Context) error {
-	eg, newCtx := errgroup.WithContext(ctx)
-	// 1. Устанавливаем env переменные в репозитории.
-	eg.Go(func() error {
-		return p.createFrontendRepoVariables(newCtx)
-	})
-
-	// 2. Создаем environment в репозитории.
-	eg.Go(func() error {
-		return p.repositories.Github.AddRepositoryEnvironment(newCtx, model.AddGithubRepositoryEnvironmentRequest{
-			GithubUserName:  p.config.GitHub.UserName,
-			GithubRepoName:  p.newProject.GetFrontendRepositoryName(),
-			EnvironmentName: p.newProject.GetEnvironmentName(),
-		})
-	})
-
-	err := eg.Wait()
+	err := functionswithneeds.Start(
+		ctx,
+		functionswithneeds.FunctionsWithNeeds{
+			functionswithneeds.FunctionWithNeeds{
+				Function: p.createGithubFrontendEnvironment,
+				Needs:    nil,
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: p.createGithubFrontendRepositoryVariables,
+				Needs:    nil,
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: p.createGithubFrontendEnvironmentVariables,
+				Needs: []func(ctx context.Context) error{
+					p.createGithubFrontendEnvironment,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: p.initAndPushLocalFrontendRepositoryToGithub,
+				Needs: []func(ctx context.Context) error{
+					p.createGithubFrontendRepositoryVariables,
+					p.createGithubFrontendEnvironmentVariables,
+				},
+			},
+		},
+	)
 
 	if err != nil {
 		return err
 	}
 
-	// 3. Устанавливаем env переменные в репозитории для prod окружения.
-	if err := p.createFrontendEnvironmentVariables(ctx); err != nil {
-		return err
-	}
-
-	// 4. Инициализируем git, пушим изменения в репозиторий.
-	if err := p.initAndPushGitFrontend(ctx); err != nil {
-		return err
-	}
-
-	p.logger.Info("Github frontend repository установлен")
+	p.logger.Info("Github: переменные для frontend репозитория заданы, репозиторий запушен")
 
 	return nil
 }
 
-func (p *Service) createFrontendEnvironmentVariables(ctx context.Context) error {
-	environmentVariables := model.FrontendRepositoryEnvironmentVariables{
+func (p *Service) createGithubFrontendEnvironment(ctx context.Context) error {
+	return p.repositories.Github.AddRepositoryEnvironment(ctx, model.AddGithubRepositoryEnvironmentRequest{
+		GithubUserName:  p.config.GitHub.UserName,
+		GithubRepoName:  p.newProject.GetFrontendRepositoryName(),
+		EnvironmentName: p.newProject.GetEnvironmentName(),
+	})
+}
+
+func (p *Service) createGithubFrontendEnvironmentVariables(ctx context.Context) error {
+	vars := model.FrontendEnvironmentVariables{
 		Environment:  p.newProject.GetEnvironmentName(),
 		APIURL:       p.newProject.GetDomainURL(),
 		S3BucketName: p.newProject.GetYCObjectStorageBucketNameStatic(),
@@ -59,19 +67,19 @@ func (p *Service) createFrontendEnvironmentVariables(ctx context.Context) error 
 	wg := sync.WaitGroup{}
 	errs := make([]error, 0)
 
-	bytes, err := json.Marshal(environmentVariables)
+	bytes, err := json.Marshal(vars)
 	if err != nil {
 		return err
 	}
 
-	repoEnvironmentVariablesMap := map[string]string{}
+	varsMap := map[string]string{}
 
-	err = json.Unmarshal(bytes, &repoEnvironmentVariablesMap)
+	err = json.Unmarshal(bytes, &varsMap)
 	if err != nil {
 		return err
 	}
 
-	for k, v := range repoEnvironmentVariablesMap {
+	for k, v := range varsMap {
 		wg.Add(1)
 		go func() {
 			err := p.repositories.Github.AddEnvironmentVariable(ctx, model.AddGithubRepositoryVariableRequest{
@@ -95,26 +103,26 @@ func (p *Service) createFrontendEnvironmentVariables(ctx context.Context) error 
 	return nil
 }
 
-func (p *Service) createFrontendRepoVariables(ctx context.Context) error {
-	repoVariables := model.FrontendRepositoryVariables{
+func (p *Service) createGithubFrontendRepositoryVariables(ctx context.Context) error {
+	vars := model.FrontendRepositoryVariables{
 		SentryDSN: "-",
 	}
 	wg := sync.WaitGroup{}
 	errs := make([]error, 0)
 
-	bytes, err := json.Marshal(repoVariables)
+	bytes, err := json.Marshal(vars)
 	if err != nil {
 		return err
 	}
 
-	repoVariablesMap := map[string]string{}
+	varsMap := map[string]string{}
 
-	err = json.Unmarshal(bytes, &repoVariablesMap)
+	err = json.Unmarshal(bytes, &varsMap)
 	if err != nil {
 		return err
 	}
 
-	for k, v := range repoVariablesMap {
+	for k, v := range varsMap {
 		wg.Add(1)
 		go func() {
 			err := p.repositories.Github.AddRepositoryVariable(ctx, model.AddGithubRepositoryVariableRequest{
@@ -138,7 +146,7 @@ func (p *Service) createFrontendRepoVariables(ctx context.Context) error {
 	return nil
 }
 
-func (p *Service) initAndPushGitFrontend(_ context.Context) error {
+func (p *Service) initAndPushLocalFrontendRepositoryToGithub(_ context.Context) error {
 	dir, err := os.Getwd()
 
 	if err != nil {

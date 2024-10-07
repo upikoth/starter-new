@@ -7,14 +7,14 @@ import (
 	"os/exec"
 )
 
-func (p *Service) createBackendRepo(ctx context.Context) error {
+func (p *Service) createLocalBackendRepo(ctx context.Context) error {
 	// 1. Создаем копию проекта starter-go.
 	if err := p.cloneBackendTemplateProject(ctx); err != nil {
 		return err
 	}
 
 	// 2. Перемещаем в правильную папку в проектах.
-	if err := p.moveBackendToCorrectFolder(ctx); err != nil {
+	if err := p.moveBackendToCorrectLocalFolder(ctx); err != nil {
 		return err
 	}
 
@@ -42,7 +42,7 @@ func (p *Service) cloneBackendTemplateProject(_ context.Context) error {
 	return nil
 }
 
-func (p *Service) moveBackendToCorrectFolder(_ context.Context) error {
+func (p *Service) moveBackendToCorrectLocalFolder(_ context.Context) error {
 	dir, err := os.Getwd()
 
 	if err != nil {

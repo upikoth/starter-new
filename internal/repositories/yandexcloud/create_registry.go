@@ -50,8 +50,10 @@ func (y *YandexCloud) CreateRegistry(
 	}
 
 	return &model.CreateRegistryResponse{
-		OperationID: resParsed.OperationID,
-		RegistryID:  resParsed.Metadata.RegistryID,
-		Done:        resParsed.Done,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
+		RegistryID: resParsed.Metadata.RegistryID,
 	}, nil
 }

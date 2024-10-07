@@ -7,7 +7,7 @@ import (
 )
 
 func (p *Service) CreateYCApiGateway(ctx context.Context) error {
-	res, err := p.repositories.YandexCloud.CreateApiGateway(ctx, model.CreateApiGatewayRequest{
+	res, err := p.repositories.YandexCloud.CreateApiGateway(ctx, model.YCCreateApiGatewayRequest{
 		FolderID:                 p.newProject.GetYCFolderID(),
 		Name:                     p.newProject.GetYCApiGatewayName(),
 		LogGroupID:               p.newProject.GetYCLoggingGroupID(),
@@ -27,12 +27,12 @@ func (p *Service) CreateYCApiGateway(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		err := errors.New("api gateway в процессе создания, статус операции не завершен")
+		err := errors.New("API gateway в процессе создания, статус операции не завершен")
 		return err
 	}
 
 	p.newProject.SetYCAPIGatewayID(res.ApiGatewayID)
-	p.logger.Info("Api gateway создан")
+	p.logger.Info("YC: API gateway создан")
 
 	return nil
 }

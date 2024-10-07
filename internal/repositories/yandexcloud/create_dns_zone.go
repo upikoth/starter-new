@@ -52,8 +52,10 @@ func (y *YandexCloud) CreateDNSZone(
 	}
 
 	return &model.CreateDNSZoneResponse{
-		OperationID: resParsed.OperationID,
-		DNSZoneId:   resParsed.Response.ZoneID,
-		Done:        resParsed.Done,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
+		DNSZoneId: resParsed.Response.ZoneID,
 	}, nil
 }

@@ -65,13 +65,15 @@ func (p *Service) BindYCGatewayToDNS(ctx context.Context) error {
 		return err
 	}
 
-	req := model.BindApiGatewayToDNSRequest{
+	req := model.YCBindApiGatewayToDNSRequest{
+		YCBrowserRequest: model.YCBrowserRequest{
+			YCUserCookie:    cookie,
+			YCUserCSRFToken: csrfToken,
+		},
 		DNSZoneID:        p.newProject.GetYCDNSZoneID(),
 		DNSRecordName:    fmt.Sprintf("%s.", apiGateway.AttachedDomainName),
 		DNSRecordText:    apiGateway.Domain,
 		DNSRecordOwnerID: apiGateway.AttachedDomainID,
-		YCUserCookie:     cookie,
-		YCUserCSRFToken:  csrfToken,
 	}
 
 	err = p.repositories.YandexCloudBrowser.BindApiGatewayToDNS(ctx, req)
@@ -80,7 +82,7 @@ func (p *Service) BindYCGatewayToDNS(ctx context.Context) error {
 		return err
 	}
 
-	p.logger.Info("API gateway привязан к DNS")
+	p.logger.Info("YC: для домена настроен API gateway")
 
 	return nil
 }

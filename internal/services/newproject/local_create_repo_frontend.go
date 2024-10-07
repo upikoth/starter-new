@@ -7,7 +7,7 @@ import (
 	"os/exec"
 )
 
-func (p *Service) createFrontendRepo(_ context.Context) error {
+func (p *Service) createLocalFrontendRepo(_ context.Context) error {
 	dir, err := os.Getwd()
 
 	if err != nil {

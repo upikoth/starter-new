@@ -1,70 +1,63 @@
 package model
 
-type CreateFolderResponse struct {
+type YCResponse struct {
 	OperationID string
-	FolderId    string
 	Done        bool
+}
+
+type CreateFolderResponse struct {
+	YCResponse
+	FolderId string
 }
 
 type CreateBucketResponse struct {
-	OperationID string
-	Done        bool
+	YCResponse
 }
 
 type CreateRegistryResponse struct {
-	OperationID string
-	RegistryID  string
-	Done        bool
+	YCResponse
+	RegistryID string
 }
 
 type CreateYDBResponse struct {
-	OperationID      string
+	YCResponse
 	DatabaseEndpoint string
-	Done             bool
 }
 
 type CreateContainerResponse struct {
-	OperationID string
+	YCResponse
 	ContainerID string
-	Done        bool
 }
 
 type CreateLoggingGroupResponse struct {
-	OperationID string
-	LogGroupID  string
-	Done        bool
+	YCResponse
+	LogGroupID string
 }
 
 type CreateDNSZoneResponse struct {
-	OperationID string
-	DNSZoneId   string
-	Done        bool
+	YCResponse
+	DNSZoneId string
 }
 
 type CreateCertificateResponse struct {
-	OperationID   string
+	YCResponse
 	CertificateID string
-	Done          bool
 }
 
 type CreateApiGatewayResponse struct {
-	OperationID  string
+	YCResponse
 	ApiGatewayID string
-	Done         bool
 }
 
 type CreatePostboxAddressResponse struct {
-	OperationID      string
+	YCResponse
 	PostboxAddressID string
-	Done             bool
 }
 
 type AddDNSRecordResponse struct {
-	OperationID string
-	Done        bool
+	YCResponse
 }
 
 type AddDomainToGatewayResponse struct {
-	OperationID string
-	Done        bool
+	YCResponse
 }

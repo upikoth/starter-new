@@ -27,7 +27,7 @@ type bindCertificateToDNSRequestAdditionOwner struct {
 
 func (y *YandexCloudBrowser) BindCertificateToDNS(
 	ctx context.Context,
-	req model.BindCertificateToDNSRequest,
+	req model.YCBindCertificateToDNSRequest,
 ) error {
 	reqStruct := bindCertificateToDNSRequest{
 		Additions: []bindCertificateToDNSRequestAddition{

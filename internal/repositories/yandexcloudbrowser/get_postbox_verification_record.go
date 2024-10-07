@@ -21,7 +21,7 @@ type getPostboxVerificationRequest struct {
 
 func (y *YandexCloudBrowser) GetPostboxVerificationRecord(
 	ctx context.Context,
-	req model.GetPostboxVerificationRecordRequest,
+	req model.YCGetPostboxVerificationRecordRequest,
 ) (*model.PostboxVerificationRecord, error) {
 	reqStruct := getPostboxVerificationRequest{
 		IdentityID: req.IdentityID,

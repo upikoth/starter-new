@@ -52,7 +52,9 @@ func (y *YandexCloud) AddDomainToGateway(
 	}
 
 	return &model.AddDomainToGatewayResponse{
-		OperationID: resParsed.OperationID,
-		Done:        resParsed.Done,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
 	}, nil
 }

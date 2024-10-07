@@ -24,7 +24,7 @@ type getCertificateRequest struct {
 
 func (y *YandexCloudBrowser) GetCertificateChallenge(
 	ctx context.Context,
-	req model.GetCertificateChallengeRequest,
+	req model.YCGetCertificateChallengeRequest,
 ) (*model.CertificateChallenge, error) {
 	reqStruct := getCertificateRequest{
 		CertificateID: req.CertificateID,

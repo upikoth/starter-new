@@ -37,14 +37,16 @@ func (p *Service) CreateYCPostboxAddress(ctx context.Context) error {
 		},
 	)
 
-	res, err := p.repositories.YandexCloudBrowser.CreatePostboxAddress(ctx, model.CreatePostboxAddressRequest{
-		FolderID:        p.newProject.GetYCFolderID(),
-		AddressName:     p.newProject.GetYCPostboxName(),
-		YCUserCookie:    cookie,
-		YCUserCSRFToken: csrfToken,
-		PrivateKey:      string(keyPEM),
-		Selector:        "mail",
-		LogGroupID:      p.newProject.GetYCLoggingGroupID(),
+	res, err := p.repositories.YandexCloudBrowser.CreatePostboxAddress(ctx, model.YCCreatePostboxAddressRequest{
+		YCBrowserRequest: model.YCBrowserRequest{
+			YCUserCookie:    cookie,
+			YCUserCSRFToken: csrfToken,
+		},
+		FolderID:    p.newProject.GetYCFolderID(),
+		AddressName: p.newProject.GetYCPostboxName(),
+		PrivateKey:  string(keyPEM),
+		Selector:    "mail",
+		LogGroupID:  p.newProject.GetYCLoggingGroupID(),
 	})
 
 	if err != nil {
@@ -62,7 +64,7 @@ func (p *Service) CreateYCPostboxAddress(ctx context.Context) error {
 	}
 
 	p.newProject.SetYCPostboxAddressID(res.PostboxAddressID)
-	p.logger.Info("Postbox создан")
+	p.logger.Info("YC: postbox создан")
 
 	return nil
 }

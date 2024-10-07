@@ -30,7 +30,7 @@ type createApiGatewayResponse struct {
 
 func (y *YandexCloud) CreateApiGateway(
 	ctx context.Context,
-	req model.CreateApiGatewayRequest,
+	req model.YCCreateApiGatewayRequest,
 ) (*model.CreateApiGatewayResponse, error) {
 	reqStruct := createApiGatewayRequest{
 		FolderID: req.FolderID,
@@ -60,13 +60,15 @@ func (y *YandexCloud) CreateApiGateway(
 	}
 
 	return &model.CreateApiGatewayResponse{
-		OperationID:  resParsed.OperationID,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
 		ApiGatewayID: resParsed.Metadata.ApiGatewayID,
-		Done:         resParsed.Done,
 	}, nil
 }
 
-func getOpeanapiSpec(req model.CreateApiGatewayRequest) string {
+func getOpeanapiSpec(req model.YCCreateApiGatewayRequest) string {
 	return fmt.Sprintf(`openapi: 3.0.0
 
 # x-yc-apigateway:

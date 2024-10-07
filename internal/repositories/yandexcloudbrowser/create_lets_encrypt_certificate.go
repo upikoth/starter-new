@@ -27,7 +27,7 @@ type createCertificateResponse struct {
 
 func (y *YandexCloudBrowser) CreateCertificate(
 	ctx context.Context,
-	req model.CreateCertificateRequest,
+	req model.YCCreateCertificateRequest,
 ) (*model.CreateCertificateResponse, error) {
 	reqStruct := createCertificateRequest{
 		Req:           "certificate-request",
@@ -59,8 +59,10 @@ func (y *YandexCloudBrowser) CreateCertificate(
 	}
 
 	return &model.CreateCertificateResponse{
-		OperationID:   resParsed.OperationID,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
 		CertificateID: resParsed.Metadata.CertificateID,
-		Done:          resParsed.Done,
 	}, nil
 }

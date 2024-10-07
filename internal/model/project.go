@@ -3,14 +3,12 @@ package model
 import (
 	"fmt"
 	"github.com/upikoth/starter-new/internal/config"
-	"github.com/upikoth/starter-new/internal/pkg/logger"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
 	"strings"
 )
 
 type Project struct {
-	logger logger.Logger
 	config *config.Config
 
 	name                    string
@@ -28,8 +26,10 @@ type Project struct {
 	ycPostboxPassword       string
 }
 
-func NewProject() *Project {
-	return &Project{}
+func NewProject(config *config.Config) *Project {
+	return &Project{
+		config: config,
+	}
 }
 
 const projectEnvironment = "prod"

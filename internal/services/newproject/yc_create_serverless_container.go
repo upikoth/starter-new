@@ -27,7 +27,7 @@ func (p *Service) CreateYCServerlessContainer(ctx context.Context) error {
 	}
 
 	p.newProject.SetYCServerlessContainerID(res.ContainerID)
-	p.logger.Info("Yandex cloud serverless container создан")
+	p.logger.Info("YC: serverless container создан")
 
 	return nil
 }

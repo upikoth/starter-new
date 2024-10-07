@@ -49,7 +49,9 @@ func (y *YandexCloud) CreateBucket(
 	}
 
 	return &model.CreateBucketResponse{
-		OperationID: resParsed.OperationID,
-		Done:        resParsed.Done,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
 	}, nil
 }

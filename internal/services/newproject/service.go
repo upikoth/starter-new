@@ -24,7 +24,9 @@ func New(
 ) *Service {
 
 	return &Service{
-		newProject:    model.NewProject(),
+		newProject: model.NewProject(
+			config,
+		),
 		logger:        logger,
 		config:        config,
 		repositories:  repositories,

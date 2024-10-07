@@ -7,6 +7,13 @@ import (
 	"sync"
 )
 
+// Пакет нужен для удобства организации параллельного и последовательного выполнения функций.
+//
+// Function - функция, которая должна быть выполнена.
+// Needs - функции, которые должны быть выполнены до того, как Function начнет выполняться.
+//
+// Все функции, которые должны быть выполнены и есть в Needs, должны быть указаны.
+
 type FunctionWithNeeds struct {
 	Function func(ctx context.Context) error
 	Needs    []func(ctx context.Context) error
@@ -54,7 +61,7 @@ func start(ctx context.Context, functions FunctionsWithNeeds) error {
 
 	wg.Wait()
 
-	return newCtx.Err()
+	return context.Cause(newCtx)
 }
 
 func executeFunction(

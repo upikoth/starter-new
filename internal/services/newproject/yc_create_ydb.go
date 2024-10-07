@@ -22,12 +22,12 @@ func (p *Service) CreateYCYDB(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		err := errors.New("ydb в процессе создания, статус операции не завершен")
+		err := errors.New("YDB в процессе создания, статус операции не завершен")
 		return err
 	}
 
 	p.newProject.SetYCYDBEndpoint(res.DatabaseEndpoint)
-	p.logger.Info("YDB создана")
+	p.logger.Info("YC: YDB создана")
 
 	return nil
 }

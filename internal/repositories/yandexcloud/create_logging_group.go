@@ -48,8 +48,10 @@ func (y *YandexCloud) CreateLoggingGroup(ctx context.Context, folderID, logGroup
 	}
 
 	return &model.CreateLoggingGroupResponse{
-		OperationID: resParsed.OperationID,
-		LogGroupID:  resParsed.Metadata.LogGroupID,
-		Done:        resParsed.Done,
+		YCResponse: model.YCResponse{
+			OperationID: resParsed.OperationID,
+			Done:        resParsed.Done,
+		},
+		LogGroupID: resParsed.Metadata.LogGroupID,
 	}, nil
 }

@@ -21,10 +21,12 @@ func (p *Service) BindCertificateToDNSZone(ctx context.Context) error {
 
 	certificateChallenge, err := p.repositories.YandexCloudBrowser.GetCertificateChallenge(
 		ctx,
-		model.GetCertificateChallengeRequest{
-			CertificateID:   p.newProject.GetYCCertificateID(),
-			YCUserCookie:    cookie,
-			YCUserCSRFToken: csrfToken,
+		model.YCGetCertificateChallengeRequest{
+			YCBrowserRequest: model.YCBrowserRequest{
+				YCUserCookie:    cookie,
+				YCUserCSRFToken: csrfToken,
+			},
+			CertificateID: p.newProject.GetYCCertificateID(),
 		},
 	)
 
@@ -32,7 +34,11 @@ func (p *Service) BindCertificateToDNSZone(ctx context.Context) error {
 		return err
 	}
 
-	req := model.BindCertificateToDNSRequest{
+	req := model.YCBindCertificateToDNSRequest{
+		YCBrowserRequest: model.YCBrowserRequest{
+			YCUserCookie:    cookie,
+			YCUserCSRFToken: csrfToken,
+		},
 		DNSZoneID:     p.newProject.GetYCDNSZoneID(),
 		DNSRecordName: certificateChallenge.DNSName,
 		DNSRecordText: certificateChallenge.DNSText,
@@ -42,8 +48,6 @@ func (p *Service) BindCertificateToDNSZone(ctx context.Context) error {
 			certificateChallenge.ChallegeType,
 			certificateChallenge.DNSName,
 		),
-		YCUserCookie:    cookie,
-		YCUserCSRFToken: csrfToken,
 	}
 
 	err = p.repositories.YandexCloudBrowser.BindCertificateToDNS(ctx, req)
@@ -52,7 +56,7 @@ func (p *Service) BindCertificateToDNSZone(ctx context.Context) error {
 		return err
 	}
 
-	p.logger.Info("Сертификат привязан в DNS")
+	p.logger.Info("YC: для домена настроен let's encrypt сертификат")
 
 	return nil
 }
