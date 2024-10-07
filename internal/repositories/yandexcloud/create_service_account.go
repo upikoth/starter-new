@@ -3,6 +3,7 @@ package yandexcloud
 import (
 	"context"
 	"encoding/json"
+	"github.com/pkg/errors"
 	"net/http"
 )
 
@@ -46,7 +47,7 @@ func (y *YandexCloud) CreateServiceAccount(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		return "", err
+		return "", errors.WithStack(err)
 	}
 
 	return resParsed.Metadata.ServiceAccountID, nil

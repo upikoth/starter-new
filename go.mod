@@ -5,6 +5,7 @@ go 1.23
 require (
 	github.com/joho/godotenv v1.5.1
 	github.com/kelseyhightower/envconfig v1.4.0
+	github.com/pkg/errors v0.9.1
 	github.com/rs/zerolog v1.33.0
 	golang.org/x/sync v0.8.0
 	golang.org/x/text v0.18.0

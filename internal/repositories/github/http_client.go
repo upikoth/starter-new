@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"io"
 	"net/http"
 	"time"
@@ -14,7 +14,7 @@ import (
 func (g *Github) sendHttpRequest(ctx context.Context, method string, url string, req any) ([]byte, error) {
 	body, err := json.Marshal(req)
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	ctxWithTimeout, cancel := context.WithTimeout(ctx, time.Minute)
@@ -32,13 +32,13 @@ func (g *Github) sendHttpRequest(ctx context.Context, method string, url string,
 	request.Header.Add("Accept", "application/vnd.github+json")
 
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	client := &http.Client{}
 	res, err := client.Do(request)
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	defer func(body io.ReadCloser) {
@@ -47,14 +47,14 @@ func (g *Github) sendHttpRequest(ctx context.Context, method string, url string,
 
 	bodyBytes, err := io.ReadAll(res.Body)
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated {
 		err := errors.New(fmt.Sprintf("не удалось выполнить запрос %s: %s, статус ответа - %d", method, url, res.StatusCode))
 		g.logger.Error(err.Error())
 		g.logger.Error(string(bodyBytes))
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	return bodyBytes, nil

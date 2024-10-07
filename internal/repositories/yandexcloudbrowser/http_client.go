@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"io"
 	"net/http"
 	"strconv"
@@ -22,7 +22,7 @@ func (y *YandexCloudBrowser) sendHttpRequest(
 ) ([]byte, error) {
 	body, err := json.Marshal(req)
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	ctxWithTimeout, cancel := context.WithTimeout(ctx, time.Minute)
@@ -42,13 +42,13 @@ func (y *YandexCloudBrowser) sendHttpRequest(
 	request.Header.Add("Content-Length", strconv.Itoa(len(body)))
 
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	client := &http.Client{}
 	res, err := client.Do(request)
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	defer func(body io.ReadCloser) {
@@ -57,14 +57,14 @@ func (y *YandexCloudBrowser) sendHttpRequest(
 
 	bodyBytes, err := io.ReadAll(res.Body)
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	if res.StatusCode != http.StatusOK {
 		err := errors.New(fmt.Sprintf("не удалось выполнить запрос %s: %s, статус ответа - %d", method, url, res.StatusCode))
 		y.logger.Error(err.Error())
 		y.logger.Error(string(bodyBytes))
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	return bodyBytes, nil

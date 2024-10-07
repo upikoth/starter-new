@@ -2,7 +2,7 @@ package newproject
 
 import (
 	"context"
-	"errors"
+	"github.com/pkg/errors"
 )
 
 func (p *Service) CreateYCLogGroup(ctx context.Context) error {
@@ -22,8 +22,7 @@ func (p *Service) CreateYCLogGroup(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		err := errors.New("лог группа в процессе создания, статус операции не завершен")
-		return err
+		return errors.New("лог группа в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCLoggingGroupID(res.LogGroupID)

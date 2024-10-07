@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/joho/godotenv"
 	"github.com/upikoth/starter-new/internal/app"
@@ -29,7 +30,7 @@ func main() {
 
 	if appErr := appInstance.Start(ctx); appErr != nil {
 		loggerInstance.Error("Приложение отработало с ошибкой")
-		loggerInstance.Error(appErr.Error())
+		loggerInstance.Error(fmt.Sprintf("%+v", appErr))
 	} else {
 		loggerInstance.Info("Приложение успешно завершило работу")
 	}

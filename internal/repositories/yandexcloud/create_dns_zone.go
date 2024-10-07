@@ -3,6 +3,7 @@ package yandexcloud
 import (
 	"context"
 	"encoding/json"
+	"github.com/pkg/errors"
 	"net/http"
 
 	"github.com/upikoth/starter-new/internal/model"
@@ -48,7 +49,7 @@ func (y *YandexCloud) CreateDNSZone(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	return &model.CreateDNSZoneResponse{

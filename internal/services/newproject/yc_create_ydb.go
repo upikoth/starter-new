@@ -2,7 +2,7 @@ package newproject
 
 import (
 	"context"
-	"errors"
+	"github.com/pkg/errors"
 )
 
 func (p *Service) CreateYCYDB(ctx context.Context) error {
@@ -22,8 +22,7 @@ func (p *Service) CreateYCYDB(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		err := errors.New("YDB в процессе создания, статус операции не завершен")
-		return err
+		return errors.New("YDB в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCYDBEndpoint(res.DatabaseEndpoint)

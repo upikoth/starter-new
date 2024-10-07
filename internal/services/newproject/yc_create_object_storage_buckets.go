@@ -2,7 +2,7 @@ package newproject
 
 import (
 	"context"
-	"errors"
+	"github.com/pkg/errors"
 
 	"golang.org/x/sync/errgroup"
 )
@@ -46,8 +46,7 @@ func (p *Service) createYCStorageBucketWithSecrets(ctx context.Context) error {
 	}
 
 	if !isBucketCreated {
-		err := errors.New("bucket в процессе создания, статус операции не завершен")
-		return err
+		return errors.New("bucket в процессе создания, статус операции не завершен")
 	}
 
 	return nil
@@ -70,8 +69,7 @@ func (p *Service) createYCStorageBucketForFrontendStatic(ctx context.Context) er
 	}
 
 	if !isBucketCreated {
-		err := errors.New("bucket в процессе создания, статус операции не завершен")
-		return err
+		return errors.New("bucket в процессе создания, статус операции не завершен")
 	}
 
 	return nil

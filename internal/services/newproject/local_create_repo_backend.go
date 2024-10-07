@@ -3,6 +3,7 @@ package newproject
 import (
 	"context"
 	"fmt"
+	"github.com/pkg/errors"
 	"os"
 	"os/exec"
 )
@@ -25,7 +26,7 @@ func (p *Service) cloneBackendTemplateProject(_ context.Context) error {
 	dir, err := os.Getwd()
 
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	_, err = exec.Command(
@@ -36,7 +37,7 @@ func (p *Service) cloneBackendTemplateProject(_ context.Context) error {
 	).Output()
 
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	return nil
@@ -46,7 +47,7 @@ func (p *Service) moveBackendToCorrectLocalFolder(_ context.Context) error {
 	dir, err := os.Getwd()
 
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	_, err = exec.Command(
@@ -57,7 +58,7 @@ func (p *Service) moveBackendToCorrectLocalFolder(_ context.Context) error {
 	).Output()
 
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	return nil

@@ -2,6 +2,7 @@ package fileinput
 
 import (
 	"context"
+	"github.com/pkg/errors"
 	"os"
 )
 
@@ -9,8 +10,7 @@ func (c *FileInput) GetStringFromFile(_ context.Context, filePath string) (strin
 	bytes, err := os.ReadFile(filePath)
 
 	if err != nil {
-		c.logger.Error(err.Error())
-		return "", err
+		return "", errors.WithStack(err)
 	}
 
 	return string(bytes), nil

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/pkg/errors"
 	"github.com/upikoth/starter-new/internal/model"
 	"net/http"
 )
@@ -37,7 +38,7 @@ func (y *YandexCloud) GetApiGateway(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	return &model.ApiGateway{

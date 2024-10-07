@@ -2,8 +2,8 @@ package functionswithneeds
 
 import (
 	"context"
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"sync"
 )
 

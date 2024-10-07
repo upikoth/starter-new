@@ -6,7 +6,7 @@ import (
 	"crypto/rsa"
 	"crypto/x509"
 	"encoding/pem"
-	"errors"
+	"github.com/pkg/errors"
 	"github.com/upikoth/starter-new/internal/model"
 )
 
@@ -59,8 +59,7 @@ func (p *Service) CreateYCPostboxAddress(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		err := errors.New("postbox address в процессе создания, статус операции не завершен")
-		return err
+		return errors.New("postbox address в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCPostboxAddressID(res.PostboxAddressID)

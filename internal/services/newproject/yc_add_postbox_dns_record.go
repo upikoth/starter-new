@@ -2,8 +2,8 @@ package newproject
 
 import (
 	"context"
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"github.com/upikoth/starter-new/internal/model"
 	"strings"
 )
@@ -56,8 +56,7 @@ func (p *Service) AddYCPostboxDNSRecord(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		err := errors.New("dns record в процессе создания, статус операции не завершен")
-		return err
+		return errors.New("dns record в процессе создания, статус операции не завершен")
 	}
 
 	p.logger.Info("YC: в DNS создана запись для верификации postbox")

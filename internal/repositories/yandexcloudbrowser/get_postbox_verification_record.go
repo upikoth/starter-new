@@ -3,6 +3,7 @@ package yandexcloudbrowser
 import (
 	"context"
 	"encoding/json"
+	"github.com/pkg/errors"
 	"github.com/upikoth/starter-new/internal/model"
 	"net/http"
 )
@@ -44,7 +45,7 @@ func (y *YandexCloudBrowser) GetPostboxVerificationRecord(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	record := model.PostboxVerificationRecord{

@@ -3,6 +3,7 @@ package yandexcloud
 import (
 	"context"
 	"encoding/json"
+	"github.com/pkg/errors"
 	"net/http"
 	"time"
 )
@@ -36,7 +37,7 @@ func (y *YandexCloud) fillIamToken() error {
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	y.iamToken = resParsed.IamToken

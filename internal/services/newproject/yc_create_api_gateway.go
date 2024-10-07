@@ -2,7 +2,7 @@ package newproject
 
 import (
 	"context"
-	"errors"
+	"github.com/pkg/errors"
 	"github.com/upikoth/starter-new/internal/model"
 )
 
@@ -27,8 +27,7 @@ func (p *Service) CreateYCApiGateway(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		err := errors.New("API gateway в процессе создания, статус операции не завершен")
-		return err
+		return errors.New("API gateway в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCAPIGatewayID(res.ApiGatewayID)

@@ -1,6 +1,9 @@
 package config
 
-import "github.com/kelseyhightower/envconfig"
+import (
+	"github.com/kelseyhightower/envconfig"
+	"github.com/pkg/errors"
+)
 
 type Config struct {
 	GitHub            GitHub
@@ -24,7 +27,7 @@ func New() (*Config, error) {
 	config := &Config{}
 
 	if err := envconfig.Process("", config); err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	return config, nil

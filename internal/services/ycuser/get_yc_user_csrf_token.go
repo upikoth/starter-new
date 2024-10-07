@@ -2,6 +2,7 @@ package ycuser
 
 import (
 	"context"
+	"github.com/pkg/errors"
 	"net/url"
 	"strings"
 )
@@ -10,7 +11,7 @@ func (s *Service) GetYcUserCSRFToken(ctx context.Context) (string, error) {
 	cookie, err := s.GetYcUserCookie(ctx)
 
 	if err != nil {
-		return "", err
+		return "", errors.WithStack(err)
 	}
 
 	cookieMap := map[string]string{}
@@ -24,7 +25,7 @@ func (s *Service) GetYcUserCSRFToken(ctx context.Context) (string, error) {
 	csrfToken, err := url.QueryUnescape(cookieMap["csrf-token"])
 
 	if err != nil {
-		return "", err
+		return "", errors.WithStack(err)
 	}
 
 	return csrfToken, nil

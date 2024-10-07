@@ -3,6 +3,7 @@ package yandexcloudbrowser
 import (
 	"context"
 	"encoding/json"
+	"github.com/pkg/errors"
 	"net/http"
 
 	"github.com/upikoth/starter-new/internal/model"
@@ -73,7 +74,7 @@ func (y *YandexCloudBrowser) CreatePostboxAddress(
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		return nil, err
+		return nil, errors.WithStack(err)
 	}
 
 	return &model.CreatePostboxAddressResponse{

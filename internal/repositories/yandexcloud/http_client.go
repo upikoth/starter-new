@@ -4,8 +4,8 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"io"
 	"net/http"
 	"time"
@@ -14,7 +14,7 @@ import (
 func (y *YandexCloud) sendHttpRequest(ctx context.Context, method string, url string, req any) ([]byte, error) {
 	body, err := json.Marshal(req)
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	ctxWithTimeout, cancel := context.WithTimeout(ctx, time.Minute)
@@ -30,13 +30,13 @@ func (y *YandexCloud) sendHttpRequest(ctx context.Context, method string, url st
 	request.Header.Add("Authorization", fmt.Sprintf("Bearer %s", y.iamToken))
 
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	client := &http.Client{}
 	res, err := client.Do(request)
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	defer func(body io.ReadCloser) {
@@ -45,14 +45,14 @@ func (y *YandexCloud) sendHttpRequest(ctx context.Context, method string, url st
 
 	bodyBytes, err := io.ReadAll(res.Body)
 	if err != nil {
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	if res.StatusCode != http.StatusOK {
 		err := errors.New(fmt.Sprintf("не удалось выполнить запрос %s: %s, статус ответа - %d", method, url, res.StatusCode))
 		y.logger.Error(err.Error())
 		y.logger.Error(string(bodyBytes))
-		return []byte{}, err
+		return []byte{}, errors.WithStack(err)
 	}
 
 	return bodyBytes, nil

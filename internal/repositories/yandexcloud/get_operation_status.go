@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/pkg/errors"
 	"net/http"
 	"time"
 )
@@ -41,7 +42,7 @@ func (y *YandexCloud) getOperationStatus(ctx context.Context, operationID string
 	err = json.Unmarshal(bodyBytes, &resParsed)
 
 	if err != nil {
-		return false, err
+		return false, errors.WithStack(err)
 	}
 
 	return resParsed.Done, nil

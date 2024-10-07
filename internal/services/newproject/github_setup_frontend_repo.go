@@ -3,12 +3,13 @@ package newproject
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
+	"github.com/pkg/errors"
 	"github.com/upikoth/starter-new/internal/model"
 	"github.com/upikoth/starter-new/internal/pkg/functionswithneeds"
 	"os"
 	"os/exec"
+	"strings"
 	"sync"
 )
 
@@ -69,14 +70,14 @@ func (p *Service) createGithubFrontendEnvironmentVariables(ctx context.Context) 
 
 	bytes, err := json.Marshal(vars)
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	varsMap := map[string]string{}
 
 	err = json.Unmarshal(bytes, &varsMap)
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	for k, v := range varsMap {
@@ -97,7 +98,12 @@ func (p *Service) createGithubFrontendEnvironmentVariables(ctx context.Context) 
 
 	wg.Wait()
 	if len(errs) > 0 {
-		return errors.Join(errs...)
+		errsString := make([]string, len(errs))
+		for _, err := range errs {
+			errsString = append(errsString, err.Error())
+		}
+
+		return errors.New(strings.Join(errsString, "\n"))
 	}
 
 	return nil
@@ -112,14 +118,14 @@ func (p *Service) createGithubFrontendRepositoryVariables(ctx context.Context) e
 
 	bytes, err := json.Marshal(vars)
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	varsMap := map[string]string{}
 
 	err = json.Unmarshal(bytes, &varsMap)
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	for k, v := range varsMap {
@@ -140,7 +146,12 @@ func (p *Service) createGithubFrontendRepositoryVariables(ctx context.Context) e
 
 	wg.Wait()
 	if len(errs) > 0 {
-		return errors.Join(errs...)
+		errsString := make([]string, len(errs))
+		for _, err := range errs {
+			errsString = append(errsString, err.Error())
+		}
+
+		return errors.New(strings.Join(errsString, "\n"))
 	}
 
 	return nil
@@ -150,7 +161,7 @@ func (p *Service) initAndPushLocalFrontendRepositoryToGithub(_ context.Context) 
 	dir, err := os.Getwd()
 
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	_, err = exec.Command(
@@ -161,7 +172,7 @@ func (p *Service) initAndPushLocalFrontendRepositoryToGithub(_ context.Context) 
 	).Output()
 
 	if err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	return nil

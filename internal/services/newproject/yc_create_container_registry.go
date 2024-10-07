@@ -2,7 +2,7 @@ package newproject
 
 import (
 	"context"
-	"errors"
+	"github.com/pkg/errors"
 )
 
 func (p *Service) CreateYCContainerRegistry(ctx context.Context) error {
@@ -22,8 +22,7 @@ func (p *Service) CreateYCContainerRegistry(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		err := errors.New("registry в процессе создания, статус операции не завершен")
-		return err
+		return errors.New("registry в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCContainerRegistryID(res.RegistryID)

@@ -2,6 +2,7 @@ package newproject
 
 import (
 	"context"
+	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
 	"os"
 )
@@ -36,7 +37,7 @@ func (p *Service) createLocalProjectDirectories(ctx context.Context) error {
 	eg, _ := errgroup.WithContext(ctx)
 
 	if err := os.Mkdir(p.newProject.GetLocalPath(), 0777); err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	eg.Go(func() error {
@@ -48,7 +49,7 @@ func (p *Service) createLocalProjectDirectories(ctx context.Context) error {
 	})
 
 	if err := eg.Wait(); err != nil {
-		return err
+		return errors.WithStack(err)
 	}
 
 	return nil

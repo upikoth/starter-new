@@ -2,7 +2,7 @@ package newproject
 
 import (
 	"context"
-	"errors"
+	"github.com/pkg/errors"
 )
 
 func (p *Service) CreateYCDNSZone(ctx context.Context) error {
@@ -22,8 +22,7 @@ func (p *Service) CreateYCDNSZone(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		err := errors.New("dns zone в процессе создания, статус операции не завершен")
-		return err
+		return errors.New("dns zone в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCDNSZoneID(res.DNSZoneId)

@@ -2,7 +2,7 @@ package newproject
 
 import (
 	"context"
-	"errors"
+	"github.com/pkg/errors"
 )
 
 func (p *Service) CreateYCFolder(ctx context.Context) error {
@@ -18,8 +18,7 @@ func (p *Service) CreateYCFolder(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		err := errors.New("folder в процессе создания, статус операции не завершен")
-		return err
+		return errors.New("folder в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCFolderID(res.FolderId)
