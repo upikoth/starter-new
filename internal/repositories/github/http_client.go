@@ -12,6 +12,8 @@ import (
 )
 
 func (g *Github) sendHttpRequest(ctx context.Context, method string, url string, req any) ([]byte, error) {
+	g.rl.Take()
+
 	body, err := json.Marshal(req)
 	if err != nil {
 		return []byte{}, errors.WithStack(err)

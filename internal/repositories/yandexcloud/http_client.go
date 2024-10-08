@@ -12,6 +12,8 @@ import (
 )
 
 func (y *YandexCloud) sendHttpRequest(ctx context.Context, method string, url string, req any) ([]byte, error) {
+	y.rl.Take()
+
 	body, err := json.Marshal(req)
 	if err != nil {
 		return []byte{}, errors.WithStack(err)

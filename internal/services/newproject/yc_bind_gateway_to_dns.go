@@ -35,13 +35,13 @@ func (p *Service) BindYCGatewayToDNS(ctx context.Context) error {
 
 		isCertificateNotIssued = certificate.Status != "ISSUED"
 
-		p.logger.Info("Сертификат не был выдан, ожидаем 1 минуту")
+		p.logger.Info("YC: Сертификат не был выдан, ожидаем 1 минуту")
 		retrays -= 1
 		time.Sleep(time.Minute)
 	}
 
 	if isCertificateNotIssued {
-		p.logger.Warn(fmt.Sprintf("Сертификат не был выдан в течении %d минут, необходимо привязать api gateway к dns вручную", retrays))
+		p.logger.Warn(fmt.Sprintf("YC: Сертификат не был выдан в течении %d минут, необходимо привязать api gateway к dns вручную", retrays))
 		return nil
 	}
 

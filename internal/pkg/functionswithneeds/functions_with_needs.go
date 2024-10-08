@@ -34,7 +34,6 @@ func start(ctx context.Context, functions FunctionsWithNeeds) error {
 		return nil
 	}
 
-	var wg sync.WaitGroup
 	newCtx, cancelCause := context.WithCancelCause(ctx)
 	notifyCompleteFunctionChs := make([]chan string, len(functions))
 
@@ -42,12 +41,12 @@ func start(ctx context.Context, functions FunctionsWithNeeds) error {
 		notifyCompleteFunctionChs[i] = make(chan string, len(functions))
 	}
 
+	var wg sync.WaitGroup
+
 	for i, function := range functions {
 		wg.Add(1)
 		go func() {
-			defer func() {
-				wg.Done()
-			}()
+			defer wg.Done()
 
 			executeFunction(
 				newCtx,

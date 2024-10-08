@@ -20,6 +20,8 @@ func (y *YandexCloudBrowser) sendHttpRequest(
 	cookie string,
 	csrfToken string,
 ) ([]byte, error) {
+	y.rl.Take()
+
 	body, err := json.Marshal(req)
 	if err != nil {
 		return []byte{}, errors.WithStack(err)
