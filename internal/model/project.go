@@ -33,6 +33,13 @@ func NewProject(config *config.Config) *Project {
 }
 
 const projectEnvironment = "prod"
+const backendPort = "8888"
+const ycpHost = "postbox.cloud.yandex.net"
+const ycpPort = "25"
+const ydbAuthFileDirName = "/secrets"
+const ydbAuthFileName = "authorized_key.json"
+const frontConfirmationPasswordRecoveryRequestAbsoluteURL = "/#/auth/recovery-password-confirm"
+const frontConfirmationRegistrationAbsoluteURL = "/#/auth/sign-up-confirm"
 
 func (p *Project) GetName() string {
 	return p.name
@@ -70,6 +77,10 @@ func (p *Project) GetEmailFromAddress() string {
 	return fmt.Sprintf("noreply@%s", p.GetDomain())
 }
 
+func (p *Project) GetBackendPort() string {
+	return backendPort
+}
+
 func (p *Project) GetBackendRepositoryName() string {
 	return fmt.Sprintf("%s-go", p.GetName())
 }
@@ -82,6 +93,14 @@ func (p *Project) GetBackendGithubOrigin() string {
 	return fmt.Sprintf("git@github.com:%s/%s.git", p.config.GitHub.UserName, p.GetBackendRepositoryName())
 }
 
+func (p *Project) GetFrontendConfirmationPasswordRecoveryRequestURL() string {
+	return fmt.Sprintf("%s%s", p.GetDomainURL(), frontConfirmationPasswordRecoveryRequestAbsoluteURL)
+}
+
+func (p *Project) GetFrontendConfirmationRegistrationURL() string {
+	return fmt.Sprintf("%s%s", p.GetDomainURL(), frontConfirmationRegistrationAbsoluteURL)
+}
+
 func (p *Project) GetFrontendRepositoryName() string {
 	return fmt.Sprintf("%s-vue3", p.GetName())
 }
@@ -92,6 +111,22 @@ func (p *Project) GetFrontendLocalPath() string {
 
 func (p *Project) GetFrontendGithubOrigin() string {
 	return fmt.Sprintf("git@github.com:%s/%s.git", p.config.GitHub.UserName, p.GetFrontendRepositoryName())
+}
+
+func (p *Project) GetYCPHost() string {
+	return ycpHost
+}
+
+func (p *Project) GetYCPPort() string {
+	return ycpPort
+}
+
+func (p *Project) GetYCYDBFileDirName() string {
+	return ydbAuthFileDirName
+}
+
+func (p *Project) GetYCYDBFileName() string {
+	return ydbAuthFileName
 }
 
 func (p *Project) GetYCObjectStorageBucketNameSecrets() string {

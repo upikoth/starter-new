@@ -59,7 +59,7 @@ func (p *Service) CreateYCPostboxAddress(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		return errors.New("postbox address в процессе создания, статус операции не завершен")
+		return errors.New("YC: postbox address в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCPostboxAddressID(res.PostboxAddressID)

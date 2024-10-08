@@ -27,7 +27,7 @@ func (p *Service) CreateYCApiGateway(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		return errors.New("API gateway в процессе создания, статус операции не завершен")
+		return errors.New("YC: API gateway в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCAPIGatewayID(res.ApiGatewayID)

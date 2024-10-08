@@ -22,7 +22,7 @@ func (p *Service) CreateYCLogGroup(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		return errors.New("лог группа в процессе создания, статус операции не завершен")
+		return errors.New("YC: лог группа в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCLoggingGroupID(res.LogGroupID)

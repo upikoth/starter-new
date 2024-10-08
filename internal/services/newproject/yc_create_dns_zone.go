@@ -22,7 +22,7 @@ func (p *Service) CreateYCDNSZone(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		return errors.New("dns zone в процессе создания, статус операции не завершен")
+		return errors.New("YC: dns zone в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCDNSZoneID(res.DNSZoneId)

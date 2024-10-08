@@ -61,17 +61,17 @@ func (p *Service) createGithubBackendEnvironment(ctx context.Context) error {
 func (p *Service) createGithubBackendEnvironmentVariables(ctx context.Context) error {
 	vars := model.BackendEnvironmentVariables{
 		Environment: p.newProject.GetEnvironmentName(),
-		FrontConfirmationPasswordRecoveryRequestURL: fmt.Sprintf("%s/#/auth/recovery-password-confirm", p.newProject.GetDomainURL()),
-		FrontConfirmationRegistrationURL:            fmt.Sprintf("%s/#/auth/sign-up-confirm", p.newProject.GetDomainURL()),
+		FrontConfirmationPasswordRecoveryRequestURL: p.newProject.GetFrontendConfirmationPasswordRecoveryRequestURL(),
+		FrontConfirmationRegistrationURL:            p.newProject.GetFrontendConfirmationRegistrationURL(),
 		FrontURL:                                    p.newProject.GetDomain(),
-		Port:                                        "8888",
+		Port:                                        p.newProject.GetBackendPort(),
 		YCPFromAddress:                              p.newProject.GetEmailFromAddress(),
 		YCPFromName:                                 p.newProject.GetEmailFromName(),
-		YCPHost:                                     "postbox.cloud.yandex.net",
-		YCPPort:                                     "25",
+		YCPHost:                                     p.newProject.GetYCPHost(),
+		YCPPort:                                     p.newProject.GetYCPPort(),
 		YCS3Path:                                    p.newProject.GetYCObjectStorageBucketNameSecrets(),
-		YDBAuthFileDirName:                          "/secrets",
-		YDBAuthFile:                                 "authorized_key.json",
+		YDBAuthFileDirName:                          p.newProject.GetYCYDBFileDirName(),
+		YDBAuthFile:                                 p.newProject.GetYCYDBFileName(),
 	}
 
 	wg := sync.WaitGroup{}

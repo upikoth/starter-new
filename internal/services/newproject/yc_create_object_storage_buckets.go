@@ -69,7 +69,7 @@ func (p *Service) createYCStorageBucketForFrontendStatic(ctx context.Context) er
 	}
 
 	if !isBucketCreated {
-		return errors.New("bucket в процессе создания, статус операции не завершен")
+		return errors.New("YC: bucket в процессе создания, статус операции не завершен")
 	}
 
 	return nil

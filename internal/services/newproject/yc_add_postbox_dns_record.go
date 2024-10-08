@@ -56,7 +56,7 @@ func (p *Service) AddYCPostboxDNSRecord(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		return errors.New("dns record в процессе создания, статус операции не завершен")
+		return errors.New("YC: dns record в процессе создания, статус операции не завершен")
 	}
 
 	p.logger.Info("YC: в DNS создана запись для верификации postbox")

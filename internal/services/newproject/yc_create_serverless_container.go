@@ -22,7 +22,7 @@ func (p *Service) CreateYCServerlessContainer(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		return errors.New("serverless container в процессе создания, статус операции не завершен")
+		return errors.New("YC: serverless container в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCServerlessContainerID(res.ContainerID)

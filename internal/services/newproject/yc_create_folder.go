@@ -18,7 +18,7 @@ func (p *Service) CreateYCFolder(ctx context.Context) error {
 	}
 
 	if !isCreated {
-		return errors.New("folder в процессе создания, статус операции не завершен")
+		return errors.New("YC: folder в процессе создания, статус операции не завершен")
 	}
 
 	p.newProject.SetYCFolderID(res.FolderId)
