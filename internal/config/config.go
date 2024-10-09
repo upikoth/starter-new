@@ -8,6 +8,7 @@ import (
 type Config struct {
 	GitHub            GitHub
 	YandexCloud       YandexCloud
+	ProxyVariables    ProxyVariables
 	MainSiteDomain    string `envconfig:"MAIN_SITE_DOMAIN" required:"true"`
 	ProjectsLocalPath string `envconfig:"PROJECTS_LOCAL_PATH" required:"true"`
 }
@@ -21,6 +22,12 @@ type GitHub struct {
 type YandexCloud struct {
 	OauthToken string `envconfig:"YANDEX_CLOUD_OAUTH_USER_TOKEN" required:"true"`
 	CloudID    string `envconfig:"YANDEX_CLOUD_CLOUD_ID" required:"true"`
+}
+
+type ProxyVariables struct {
+	NotificationsTelegramTo    string `envconfig:"NOTIFICATIONS_TELEGRAM_TO" required:"true"`
+	NotificationsTelegramToken string `envconfig:"NOTIFICATIONS_TELEGRAM_TOKEN" required:"true"`
+	UpikothPackagesRead        string `envconfig:"UPIKOTH_PACKAGES_READ" required:"true"`
 }
 
 func New() (*Config, error) {

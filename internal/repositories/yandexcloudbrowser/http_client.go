@@ -27,6 +27,9 @@ func (y *YandexCloudBrowser) sendHttpRequest(
 		return []byte{}, errors.WithStack(err)
 	}
 
+	if ctx.Err() != nil {
+		return []byte{}, errors.WithStack(ctx.Err())
+	}
 	ctxWithTimeout, cancel := context.WithTimeout(ctx, time.Minute)
 	defer cancel()
 
@@ -66,7 +69,7 @@ func (y *YandexCloudBrowser) sendHttpRequest(
 		err := errors.New(fmt.Sprintf("не удалось выполнить запрос %s: %s, статус ответа - %d", method, url, res.StatusCode))
 		y.logger.Error(err.Error())
 		y.logger.Error(string(bodyBytes))
-		return []byte{}, errors.WithStack(err)
+		return []byte{}, err
 	}
 
 	return bodyBytes, nil

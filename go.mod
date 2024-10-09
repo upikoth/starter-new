@@ -13,8 +13,10 @@ require (
 
 require (
 	github.com/benbjohnson/clock v1.3.0 // indirect
+	github.com/jefflinse/githubsecret v1.0.2 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	go.uber.org/ratelimit v0.3.1 // indirect
+	golang.org/x/crypto v0.0.0-20210322153248-0c34fe9e7dc2 // indirect
 	golang.org/x/sys v0.25.0 // indirect
 )

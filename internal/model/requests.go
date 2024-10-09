@@ -69,3 +69,31 @@ type AddGithubRepositoryEnvironmentRequest struct {
 	GithubRepoName  string
 	EnvironmentName string
 }
+
+type GetGithubRepositoryPublicKeyRequest struct {
+	GithubUserName string
+	GithubRepoName string
+}
+
+type AddGithubRepositorySecretRequest struct {
+	GithubUserName         string
+	GithubRepoName         string
+	VariableName           string
+	VariableEncryptedValue string
+	RepositoryPublicKeyID  string
+}
+
+type GetGithubEnvironmentPublicKeyRequest struct {
+	GithubUserName  string
+	GithubRepoName  string
+	EnvironmentName string
+}
+
+type AddGithubEnvironmentSecretRequest struct {
+	GithubUserName         string
+	GithubRepoName         string
+	VariableName           string
+	VariableEncryptedValue string
+	RepositoryPublicKeyID  string
+	EnvironmentName        string
+}

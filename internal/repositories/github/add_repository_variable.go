@@ -7,13 +7,13 @@ import (
 	"net/http"
 )
 
-type addRepositoryRequest struct {
+type addRepositoryVariableRequest struct {
 	Name  string `json:"name"`
 	Value string `json:"value"`
 }
 
 func (g *Github) AddRepositoryVariable(ctx context.Context, req model.AddGithubRepositoryVariableRequest) error {
-	reqStruct := addRepositoryRequest{
+	reqStruct := addRepositoryVariableRequest{
 		Name:  req.VariableName,
 		Value: req.VariableValue,
 	}

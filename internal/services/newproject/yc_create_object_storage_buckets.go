@@ -42,7 +42,11 @@ func (p *Service) createYCStorageBucketWithSecrets(ctx context.Context) error {
 
 	isBucketCreated := res.Done
 	if !isBucketCreated {
-		isBucketCreated = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
+		isBucketCreated, err = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
+
+		if err != nil {
+			return err
+		}
 	}
 
 	if !isBucketCreated {
@@ -65,7 +69,11 @@ func (p *Service) createYCStorageBucketForFrontendStatic(ctx context.Context) er
 
 	isBucketCreated := res.Done
 	if !isBucketCreated {
-		isBucketCreated = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
+		isBucketCreated, err = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
+
+		if err != nil {
+			return err
+		}
 	}
 
 	if !isBucketCreated {

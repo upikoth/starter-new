@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/jefflinse/githubsecret"
 	"github.com/pkg/errors"
 	"github.com/upikoth/starter-new/internal/model"
 	"github.com/upikoth/starter-new/internal/pkg/functionswithneeds"
@@ -23,6 +24,10 @@ func (p *Service) SetupGithubFrontendRepo(ctx context.Context) error {
 			},
 			functionswithneeds.FunctionWithNeeds{
 				Function: p.createGithubFrontendRepositoryVariables,
+				Needs:    nil,
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: p.createGithubFrontendRepositorySecrets,
 				Needs:    nil,
 			},
 			functionswithneeds.FunctionWithNeeds{
@@ -173,6 +178,75 @@ func (p *Service) initAndPushLocalFrontendRepositoryToGithub(_ context.Context) 
 
 	if err != nil {
 		return errors.WithStack(err)
+	}
+
+	return nil
+}
+
+func (p *Service) createGithubFrontendRepositorySecrets(ctx context.Context) error {
+	publicKey, err := p.repositories.Github.GetRepositoryPublicKey(ctx, model.GetGithubRepositoryPublicKeyRequest{
+		GithubUserName: p.config.GitHub.UserName,
+		GithubRepoName: p.newProject.GetFrontendRepositoryName(),
+	})
+
+	if err != nil {
+		return err
+	}
+
+	vars := model.FrontendRepositorySecrets{
+		NotificationsTelegramTo:    p.config.ProxyVariables.NotificationsTelegramTo,
+		NotificationsTelegramToken: p.config.ProxyVariables.NotificationsTelegramToken,
+		UpikothPackagesRead:        p.config.ProxyVariables.UpikothPackagesRead,
+	}
+	wg := sync.WaitGroup{}
+	errs := make([]error, 0)
+
+	bytes, err := json.Marshal(vars)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	varsMap := map[string]string{}
+
+	err = json.Unmarshal(bytes, &varsMap)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	for k, v := range varsMap {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+
+			encryptedSecret, err := githubsecret.Encrypt(publicKey.Key, v)
+
+			if err != nil {
+				errs = append(errs, err)
+				return
+			}
+
+			err = p.repositories.Github.AddRepositorySecret(ctx, model.AddGithubRepositorySecretRequest{
+				GithubUserName:         p.config.GitHub.UserName,
+				GithubRepoName:         p.newProject.GetFrontendRepositoryName(),
+				VariableName:           k,
+				VariableEncryptedValue: encryptedSecret,
+				RepositoryPublicKeyID:  publicKey.KeyID,
+			})
+
+			if err != nil {
+				errs = append(errs, err)
+			}
+		}()
+	}
+
+	wg.Wait()
+	if len(errs) > 0 {
+		errsString := make([]string, len(errs))
+		for _, err := range errs {
+			errsString = append(errsString, err.Error())
+		}
+
+		return errors.New(strings.Join(errsString, "\n"))
 	}
 
 	return nil

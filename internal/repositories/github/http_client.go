@@ -19,6 +19,9 @@ func (g *Github) sendHttpRequest(ctx context.Context, method string, url string,
 		return []byte{}, errors.WithStack(err)
 	}
 
+	if ctx.Err() != nil {
+		return []byte{}, errors.WithStack(ctx.Err())
+	}
 	ctxWithTimeout, cancel := context.WithTimeout(ctx, time.Minute)
 	defer cancel()
 
@@ -56,7 +59,7 @@ func (g *Github) sendHttpRequest(ctx context.Context, method string, url string,
 		err := errors.New(fmt.Sprintf("не удалось выполнить запрос %s: %s, статус ответа - %d", method, url, res.StatusCode))
 		g.logger.Error(err.Error())
 		g.logger.Error(string(bodyBytes))
-		return []byte{}, errors.WithStack(err)
+		return []byte{}, err
 	}
 
 	return bodyBytes, nil

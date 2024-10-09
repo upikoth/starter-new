@@ -13,17 +13,21 @@ type operationStatusResponse struct {
 	Done bool `json:"done"`
 }
 
-func (y *YandexCloud) GetOperationStatus(ctx context.Context, operationID string) bool {
+func (y *YandexCloud) GetOperationStatus(ctx context.Context, operationID string) (bool, error) {
 	for i := 0; i < 120; i += 1 {
 		time.Sleep(time.Second * 5)
-		done, _ := y.getOperationStatus(ctx, operationID)
+		done, err := y.getOperationStatus(ctx, operationID)
+
+		if err != nil {
+			return false, err
+		}
 
 		if done {
-			return true
+			return true, nil
 		}
 	}
 
-	return false
+	return false, nil
 }
 
 func (y *YandexCloud) getOperationStatus(ctx context.Context, operationID string) (bool, error) {

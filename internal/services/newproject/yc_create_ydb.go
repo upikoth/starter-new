@@ -18,7 +18,11 @@ func (p *Service) CreateYCYDB(ctx context.Context) error {
 
 	isCreated := res.Done
 	if !isCreated {
-		isCreated = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
+		isCreated, err = p.repositories.YandexCloud.GetOperationStatus(ctx, res.OperationID)
+
+		if err != nil {
+			return err
+		}
 	}
 
 	if !isCreated {
