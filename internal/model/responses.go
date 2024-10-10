@@ -29,6 +29,10 @@ type CreateContainerResponse struct {
 	ContainerID string
 }
 
+type UpdateServiceAccountAccessToRegistryResponse struct {
+	YCResponse
+}
+
 type CreateLoggingGroupResponse struct {
 	YCResponse
 	LogGroupID string
@@ -52,6 +56,8 @@ type CreateApiGatewayResponse struct {
 type CreatePostboxAddressResponse struct {
 	YCResponse
 	PostboxAddressID string
+	PostboxUsername  string
+	PostboxPassword  string
 }
 
 type AddDNSRecordResponse struct {
@@ -60,4 +66,9 @@ type AddDNSRecordResponse struct {
 
 type AddDomainToGatewayResponse struct {
 	YCResponse
+}
+
+type CreateAccessKeyResponse struct {
+	AccessKeyID     string
+	AccessKeySecret string
 }

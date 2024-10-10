@@ -11,19 +11,22 @@ import (
 type Project struct {
 	config *config.Config
 
-	name                    string
-	ycFolderID              string
-	ycServiceAccountID      string
-	ycContainerRegistryID   string
-	ydbEndpoint             string
-	ycLoggingGroupID        string
-	ycCertificateID         string
-	ycDNSZoneID             string
-	ycServerlessContainerID string
-	ycAPIGatewayID          string
-	ycPostboxAddressID      string
-	ycPostboxUsername       string
-	ycPostboxPassword       string
+	name                           string
+	ycFolderID                     string
+	ycServiceAccountID             string
+	ycContainerRegistryID          string
+	ydbEndpoint                    string
+	ycLoggingGroupID               string
+	ycCertificateID                string
+	ycDNSZoneID                    string
+	ycServerlessContainerID        string
+	ycAPIGatewayID                 string
+	ycPostboxAddressID             string
+	ycPostboxUsername              string
+	ycPostboxPassword              string
+	ycObjectStorageAccessKeyID     string
+	ycObjectStorageAccessKeySecret string
+	ycSAJSONCredentials            string
 }
 
 func NewProject(config *config.Config) *Project {
@@ -263,4 +266,28 @@ func (p *Project) GetYCPostboxPassword() string {
 
 func (p *Project) SetYCPostboxPassword(password string) {
 	p.ycPostboxPassword = password
+}
+
+func (p *Project) GetYCObjectStorageAccessKeyID() string {
+	return p.ycObjectStorageAccessKeyID
+}
+
+func (p *Project) SetYCObjectStorageAccessKeyID(id string) {
+	p.ycObjectStorageAccessKeyID = id
+}
+
+func (p *Project) GetYCObjectStorageAccessKeySecret() string {
+	return p.ycObjectStorageAccessKeySecret
+}
+
+func (p *Project) SetYCObjectStorageAccessKeySecret(secret string) {
+	p.ycObjectStorageAccessKeySecret = secret
+}
+
+func (p *Project) GetYCSAJSONCredentials() string {
+	return p.ycSAJSONCredentials
+}
+
+func (p *Project) SetYCSAJSONCredentials(creds string) {
+	p.ycSAJSONCredentials = creds
 }

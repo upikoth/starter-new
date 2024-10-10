@@ -14,7 +14,7 @@ type getEnvironmentPublicKeyResponse struct {
 	Key   string `json:"key"`
 }
 
-func (g *Github) GetEnvironmentPublicKey(ctx context.Context, req *model.GetGithubEnvironmentPublicKeyRequest) (*model.GithubEnvironmentPublicKey, error) {
+func (g *Github) GetEnvironmentPublicKey(ctx context.Context, req model.GetGithubEnvironmentPublicKeyRequest) (*model.GithubEnvironmentPublicKey, error) {
 	bodyBytes, err := g.sendHttpRequest(
 		ctx,
 		http.MethodGet,

@@ -22,9 +22,10 @@ func (g *Github) AddEnvironmentVariable(ctx context.Context, req model.AddGithub
 		ctx,
 		http.MethodPost,
 		fmt.Sprintf(
-			"https://api.github.com/repos/%s/%s/environments/prod/variables",
+			"https://api.github.com/repos/%s/%s/environments/%s/variables",
 			req.GithubUserName,
 			req.GithubRepoName,
+			req.EnvironmentName,
 		),
 		reqStruct,
 	)

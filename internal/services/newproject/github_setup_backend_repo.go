@@ -37,10 +37,18 @@ func (p *Service) SetupGithubBackendRepo(ctx context.Context) error {
 				},
 			},
 			functionswithneeds.FunctionWithNeeds{
+				Function: p.createGithubBackendEnvironmentSecrets,
+				Needs: []func(ctx context.Context) error{
+					p.createGithubBackendEnvironment,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
 				Function: p.initAndPushLocalBackendRepositoryToGithub,
 				Needs: []func(ctx context.Context) error{
 					p.createGithubBackendRepositoryVariables,
 					p.createGithubBackendEnvironmentVariables,
+					p.createGithubBackendRepositorySecrets,
+					p.createGithubBackendEnvironmentSecrets,
 				},
 			},
 		},
@@ -98,10 +106,11 @@ func (p *Service) createGithubBackendEnvironmentVariables(ctx context.Context) e
 		wg.Add(1)
 		go func() {
 			err := p.repositories.Github.AddEnvironmentVariable(ctx, model.AddGithubRepositoryVariableRequest{
-				GithubUserName: p.config.GitHub.UserName,
-				GithubRepoName: p.newProject.GetBackendRepositoryName(),
-				VariableName:   k,
-				VariableValue:  v,
+				GithubUserName:  p.config.GitHub.UserName,
+				GithubRepoName:  p.newProject.GetBackendRepositoryName(),
+				VariableName:    k,
+				VariableValue:   v,
+				EnvironmentName: p.newProject.GetEnvironmentName(),
 			})
 			if err != nil {
 				errs = append(errs, err)
@@ -244,6 +253,78 @@ func (p *Service) createGithubBackendRepositorySecrets(ctx context.Context) erro
 				VariableName:           k,
 				VariableEncryptedValue: encryptedSecret,
 				RepositoryPublicKeyID:  publicKey.KeyID,
+			})
+
+			if err != nil {
+				errs = append(errs, err)
+			}
+		}()
+	}
+
+	wg.Wait()
+	if len(errs) > 0 {
+		errsString := make([]string, len(errs))
+		for _, err := range errs {
+			errsString = append(errsString, err.Error())
+		}
+
+		return errors.New(strings.Join(errsString, "\n"))
+	}
+
+	return nil
+}
+
+func (p *Service) createGithubBackendEnvironmentSecrets(ctx context.Context) error {
+	publicKey, err := p.repositories.Github.GetEnvironmentPublicKey(ctx, model.GetGithubEnvironmentPublicKeyRequest{
+		GithubUserName:  p.config.GitHub.UserName,
+		GithubRepoName:  p.newProject.GetBackendRepositoryName(),
+		EnvironmentName: p.newProject.GetEnvironmentName(),
+	})
+
+	if err != nil {
+		return err
+	}
+
+	vars := model.BackendEnvironmentSecrets{
+		YCPostboxPassword:   p.newProject.GetYCPostboxPassword(),
+		YCPostboxUsername:   p.newProject.GetYCPostboxUsername(),
+		YCSAJSONCredentials: p.newProject.GetYCSAJSONCredentials(),
+		YDBDSN:              p.newProject.GetYCYDBEndpoint(),
+	}
+	wg := sync.WaitGroup{}
+	errs := make([]error, 0)
+
+	bytes, err := json.Marshal(vars)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	varsMap := map[string]string{}
+
+	err = json.Unmarshal(bytes, &varsMap)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+
+	for k, v := range varsMap {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+
+			encryptedSecret, err := githubsecret.Encrypt(publicKey.Key, v)
+
+			if err != nil {
+				errs = append(errs, err)
+				return
+			}
+
+			err = p.repositories.Github.AddEnvironmentSecret(ctx, model.AddGithubEnvironmentSecretRequest{
+				GithubUserName:         p.config.GitHub.UserName,
+				GithubRepoName:         p.newProject.GetBackendRepositoryName(),
+				VariableName:           k,
+				VariableEncryptedValue: encryptedSecret,
+				RepositoryPublicKeyID:  publicKey.KeyID,
+				EnvironmentName:        p.newProject.GetEnvironmentName(),
 			})
 
 			if err != nil {

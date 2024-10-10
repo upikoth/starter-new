@@ -58,10 +58,11 @@ type YCCreateApiGatewayRequest struct {
 }
 
 type AddGithubRepositoryVariableRequest struct {
-	GithubUserName string
-	GithubRepoName string
-	VariableName   string
-	VariableValue  string
+	GithubUserName  string
+	GithubRepoName  string
+	VariableName    string
+	VariableValue   string
+	EnvironmentName string
 }
 
 type AddGithubRepositoryEnvironmentRequest struct {

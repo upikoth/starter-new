@@ -116,6 +116,31 @@ func (s *App) Start(ctx context.Context) error {
 				},
 			},
 			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.YCCreateObjectStorageAccessKey,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateYCFolderServiceAccount,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.YCCreatePostboxAccessKey,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateYCFolderServiceAccount,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.YCCreateServiceAccountAuthorizedKey,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateYCFolderServiceAccount,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.UpdateYCAccessToRegistry,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateYCContainerRegistry,
+					s.services.NewProjectService.CreateYCFolderServiceAccount,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
 				Function: s.services.NewProjectService.CreateYCApiGateway,
 				Needs: []func(ctx context.Context) error{
 					s.services.NewProjectService.CreateYCFolder,
@@ -148,6 +173,10 @@ func (s *App) Start(ctx context.Context) error {
 					s.services.NewProjectService.CreateYCContainerRegistry,
 					s.services.NewProjectService.CreateLocalRepos,
 					s.services.NewProjectService.CreateGithubRepositories,
+					s.services.NewProjectService.YCCreatePostboxAccessKey,
+					s.services.NewProjectService.CreateYCYDB,
+					s.services.NewProjectService.YCCreateServiceAccountAuthorizedKey,
+					s.services.NewProjectService.UpdateYCAccessToRegistry,
 				},
 			},
 			functionswithneeds.FunctionWithNeeds{
@@ -155,6 +184,7 @@ func (s *App) Start(ctx context.Context) error {
 				Needs: []func(ctx context.Context) error{
 					s.services.NewProjectService.CreateLocalRepos,
 					s.services.NewProjectService.CreateGithubRepositories,
+					s.services.NewProjectService.YCCreateObjectStorageAccessKey,
 				},
 			},
 			functionswithneeds.FunctionWithNeeds{
