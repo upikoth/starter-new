@@ -50,6 +50,30 @@ func (s *App) Start(ctx context.Context) error {
 				Needs:    nil,
 			},
 			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.CreateSentryBackendProject,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateNewProjectName,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.CreateSentryFrontendProject,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateNewProjectName,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.CreateSentryBackendDSN,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateSentryBackendProject,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.CreateSentryFrontendDSN,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateSentryFrontendProject,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
 				Function: s.services.NewProjectService.CreateLocalRepos,
 				Needs: []func(ctx context.Context) error{
 					s.services.NewProjectService.CreateNewProjectName,
@@ -177,6 +201,22 @@ func (s *App) Start(ctx context.Context) error {
 					s.services.NewProjectService.CreateYCYDB,
 					s.services.NewProjectService.YCCreateServiceAccountAuthorizedKey,
 					s.services.NewProjectService.UpdateYCAccessToRegistry,
+					s.services.NewProjectService.CreateSentryBackendDSN,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.CreateBackendLocalDevEnvironment,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateYCFolder,
+					s.services.NewProjectService.CreateYCLogGroup,
+					s.services.NewProjectService.CreateYCFolderServiceAccount,
+					s.services.NewProjectService.CreateYCContainerRegistry,
+					s.services.NewProjectService.CreateLocalRepos,
+					s.services.NewProjectService.YCCreatePostboxAccessKey,
+					s.services.NewProjectService.CreateYCYDB,
+					s.services.NewProjectService.YCCreateServiceAccountAuthorizedKey,
+					s.services.NewProjectService.UpdateYCAccessToRegistry,
+					s.services.NewProjectService.CreateSentryBackendDSN,
 				},
 			},
 			functionswithneeds.FunctionWithNeeds{
@@ -185,6 +225,15 @@ func (s *App) Start(ctx context.Context) error {
 					s.services.NewProjectService.CreateLocalRepos,
 					s.services.NewProjectService.CreateGithubRepositories,
 					s.services.NewProjectService.YCCreateObjectStorageAccessKey,
+					s.services.NewProjectService.CreateSentryFrontendDSN,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.CreateFrontendLocalDevEnvironment,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateLocalRepos,
+					s.services.NewProjectService.YCCreateObjectStorageAccessKey,
+					s.services.NewProjectService.CreateSentryFrontendDSN,
 				},
 			},
 			functionswithneeds.FunctionWithNeeds{

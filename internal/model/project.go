@@ -27,6 +27,8 @@ type Project struct {
 	ycObjectStorageAccessKeyID     string
 	ycObjectStorageAccessKeySecret string
 	ycSAJSONCredentials            string
+	sentryBackendDSN               string
+	sentryFrontendDSN              string
 }
 
 func NewProject(config *config.Config) *Project {
@@ -290,4 +292,20 @@ func (p *Project) GetYCSAJSONCredentials() string {
 
 func (p *Project) SetYCSAJSONCredentials(creds string) {
 	p.ycSAJSONCredentials = creds
+}
+
+func (p *Project) GetSentryBackendDSN() string {
+	return p.sentryBackendDSN
+}
+
+func (p *Project) SetSentryBackendDSN(dsn string) {
+	p.sentryBackendDSN = dsn
+}
+
+func (p *Project) GetSentryFrontendDSN() string {
+	return p.sentryFrontendDSN
+}
+
+func (p *Project) SetSentryFrontendDSN(dsn string) {
+	p.sentryFrontendDSN = dsn
 }

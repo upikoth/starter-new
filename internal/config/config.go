@@ -8,9 +8,16 @@ import (
 type Config struct {
 	GitHub            GitHub
 	YandexCloud       YandexCloud
+	Sentry            Sentry
 	ProxyVariables    ProxyVariables
 	MainSiteDomain    string `envconfig:"MAIN_SITE_DOMAIN" required:"true"`
 	ProjectsLocalPath string `envconfig:"PROJECTS_LOCAL_PATH" required:"true"`
+}
+
+type Sentry struct {
+	OrganizationID string `envconfig:"SENTRY_ORGANIZATION_ID" required:"true"`
+	TeamID         string `envconfig:"SENTRY_TEAM_ID" required:"true"`
+	AuthToken      string `envconfig:"SENTRY_AUTH_TOKEN" required:"true"`
 }
 
 type GitHub struct {

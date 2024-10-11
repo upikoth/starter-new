@@ -134,7 +134,7 @@ func (p *Service) createGithubBackendEnvironmentVariables(ctx context.Context) e
 
 func (p *Service) createGithubBackendRepositoryVariables(ctx context.Context) error {
 	vars := model.BackendRepositoryVariables{
-		SentryDSN:              "-",
+		SentryDSN:              p.newProject.GetSentryBackendDSN(),
 		YcContainterName:       p.newProject.GetYCServerlessContainerName(),
 		YcFolderID:             p.newProject.GetYCFolderID(),
 		YcLogOptionsLogGroupID: p.newProject.GetYCLoggingGroupID(),

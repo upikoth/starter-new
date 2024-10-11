@@ -6,6 +6,7 @@ import (
 	"github.com/upikoth/starter-new/internal/repositories/consoleinput"
 	"github.com/upikoth/starter-new/internal/repositories/fileinput"
 	"github.com/upikoth/starter-new/internal/repositories/github"
+	"github.com/upikoth/starter-new/internal/repositories/sentry"
 	"github.com/upikoth/starter-new/internal/repositories/yandexcloud"
 	"github.com/upikoth/starter-new/internal/repositories/yandexcloudbrowser"
 )
@@ -16,6 +17,7 @@ type Repositories struct {
 	Github             *github.Github
 	YandexCloud        *yandexcloud.YandexCloud
 	YandexCloudBrowser *yandexcloudbrowser.YandexCloudBrowser
+	Sentry             *sentry.Sentry
 }
 
 func New(
@@ -43,6 +45,10 @@ func New(
 		),
 		YandexCloud: yandexCloudRepo,
 		YandexCloudBrowser: yandexcloudbrowser.New(
+			logger,
+			config,
+		),
+		Sentry: sentry.New(
 			logger,
 			config,
 		),

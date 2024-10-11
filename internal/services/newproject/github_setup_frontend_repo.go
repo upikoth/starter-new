@@ -125,7 +125,7 @@ func (p *Service) createGithubFrontendEnvironmentVariables(ctx context.Context) 
 
 func (p *Service) createGithubFrontendRepositoryVariables(ctx context.Context) error {
 	vars := model.FrontendRepositoryVariables{
-		SentryDSN: "-",
+		SentryDSN: p.newProject.GetSentryFrontendDSN(),
 	}
 	wg := sync.WaitGroup{}
 	errs := make([]error, 0)

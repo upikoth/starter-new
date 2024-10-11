@@ -98,3 +98,12 @@ type AddGithubEnvironmentSecretRequest struct {
 	RepositoryPublicKeyID  string
 	EnvironmentName        string
 }
+
+type CreateSentryProjectRequest struct {
+	ProjectName     string
+	ProjectPlatform string
+}
+
+type CreateSentryProjectDSNRequest struct {
+	ProjectName string
+}
