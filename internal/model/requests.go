@@ -107,3 +107,11 @@ type CreateSentryProjectRequest struct {
 type CreateSentryProjectDSNRequest struct {
 	ProjectName string
 }
+
+type UploadFileToBucketRequest struct {
+	BucketName  string
+	FileName    string
+	FileContent []byte
+	AccessKey   string
+	SecretKey   string
+}

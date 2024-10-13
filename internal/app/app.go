@@ -158,6 +158,13 @@ func (s *App) Start(ctx context.Context) error {
 				},
 			},
 			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.UploadYCSecretsToObjectStorage,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.YCCreateServiceAccountAuthorizedKey,
+					s.services.NewProjectService.CreateYCStorageBuckets,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
 				Function: s.services.NewProjectService.UpdateYCAccessToRegistry,
 				Needs: []func(ctx context.Context) error{
 					s.services.NewProjectService.CreateYCContainerRegistry,
