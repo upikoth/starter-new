@@ -17,7 +17,7 @@ func New(
 	logger logger.Logger,
 	config *config.Config,
 ) *Github {
-	rl := ratelimit.New(constants.GithubRPS)
+	rl := ratelimit.New(constants.GithubRPS, ratelimit.WithoutSlack)
 
 	return &Github{
 		logger: logger,

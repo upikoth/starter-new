@@ -23,10 +23,10 @@ type Repositories struct {
 }
 
 func New(
-	logger logger.Logger,
-	config *config.Config,
+	log logger.Logger,
+	cfg *config.Config,
 ) (*Repositories, error) {
-	yandexCloudRepo, err := yandexcloud.New(logger, config)
+	yandexCloudRepo, err := yandexcloud.New(log, cfg)
 
 	if err != nil {
 		return nil, err
@@ -34,29 +34,29 @@ func New(
 
 	return &Repositories{
 		ConsoleInput: consoleinput.New(
-			logger,
-			config,
+			log,
+			cfg,
 		),
 		FileInput: fileinput.New(
-			logger,
-			config,
+			log,
+			cfg,
 		),
 		Github: github.New(
-			logger,
-			config,
+			log,
+			cfg,
 		),
 		YandexCloud: yandexCloudRepo,
 		YandexCloudBrowser: yandexcloudbrowser.New(
-			logger,
-			config,
+			log,
+			cfg,
 		),
 		YandexCloudObjectStorage: yandexcloudobjectstorage.New(
-			logger,
-			config,
+			log,
+			cfg,
 		),
 		Sentry: sentry.New(
-			logger,
-			config,
+			log,
+			cfg,
 		),
 	}, nil
 }

@@ -18,7 +18,7 @@ func New(
 	logger logger.Logger,
 	config *config.Config,
 ) (*YandexCloud, error) {
-	rl := ratelimit.New(constants.YandexCloudRPS)
+	rl := ratelimit.New(constants.YandexCloudRPS, ratelimit.WithoutSlack)
 
 	yc := &YandexCloud{
 		logger: logger,

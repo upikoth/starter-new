@@ -17,7 +17,7 @@ func New(
 	logger logger.Logger,
 	config *config.Config,
 ) *YandexCloudObjectStorage {
-	rl := ratelimit.New(constants.YandexCloudObjectStorageRPS)
+	rl := ratelimit.New(constants.YandexCloudObjectStorageRPS, ratelimit.WithoutSlack)
 
 	ycObjectStorage := &YandexCloudObjectStorage{
 		logger: logger,

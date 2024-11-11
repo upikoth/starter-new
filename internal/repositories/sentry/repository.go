@@ -17,7 +17,7 @@ func New(
 	logger logger.Logger,
 	config *config.Config,
 ) *Sentry {
-	rl := ratelimit.New(constants.SentryRPS)
+	rl := ratelimit.New(constants.SentryRPS, ratelimit.WithoutSlack)
 
 	return &Sentry{
 		logger: logger,

@@ -17,7 +17,7 @@ func New(
 	logger logger.Logger,
 	config *config.Config,
 ) *YandexCloudBrowser {
-	rl := ratelimit.New(constants.YandexCloudBrowserRPS)
+	rl := ratelimit.New(constants.YandexCloudBrowserRPS, ratelimit.WithoutSlack)
 
 	ycb := &YandexCloudBrowser{
 		logger: logger,
