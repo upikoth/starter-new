@@ -75,10 +75,23 @@ YDB_AUTH_FILE_NAME=%s
 YC_SA_JSON_CREDENTIALS=%s
 
 FRONT_URL=%s
+FRONT_HANDLE_AUTH_PAGE_URL=%s
 FRONT_CONFIRMATION_REGISTRATION_URL="%s"
 FRONT_CONFIRMATION_PASSWORD_RECOVERY_REQUEST_URL="%s"
 
 SENTRY_DSN=%s
+
+OAUTH_VK_CLIENT_ID=dummy
+OAUTH_VK_CLIENT_SECRET=dummy
+OAUTH_VK_REDIRECT_URL=dummy
+
+OAUTH_MAIL_CLIENT_ID=dummy
+OAUTH_MAIL_CLIENT_SECRET=dummy
+OAUTH_MAIL_REDIRECT_URL=dummy
+
+OAUTH_YANDEX_CLIENT_ID=dummy
+OAUTH_YANDEX_CLIENT_SECRET=dummy
+OAUTH_YANDEX_REDIRECT_URL=dummy
 
 # Токен бота телеграм.
 # NOTIFICATIONS_TELEGRAM_TOKEN=%s
@@ -104,6 +117,7 @@ SENTRY_DSN=%s
 			p.newProject.GetYCYDBFileName(),
 			p.newProject.GetYCSAJSONCredentials(),
 			p.newProject.GetDomain(),
+			p.newProject.GetFrontendHandleAuthPageURL(),
 			p.newProject.GetFrontendConfirmationRegistrationURL(),
 			p.newProject.GetFrontendConfirmationPasswordRecoveryRequestURL(),
 			p.newProject.GetSentryBackendDSN(),

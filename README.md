@@ -14,3 +14,23 @@
 Что нужно сделать ручками:
 1. Настроить renovate (можно автоматизировать позже)
 2. Readme описать, в шапки реп указать акутуальные ссылки
+3. Настроить oauth (создать новое приложение во всех сервисах, заменить соответсвтующие env переменные)
+
+Oauth:
+1. vk - https://id.vk.com/about/business/go/accounts/159787/apps
+2. mailru - https://o2.mail.ru/app/
+3. yandex - https://oauth.yandex.ru/
+
+После создания нового приложения в oauth сервисах нужно заполнить переменные локально и в ci/cd
+
+- OAUTH_VK_CLIENT_ID=
+- OAUTH_VK_CLIENT_SECRET=
+- OAUTH_VK_REDIRECT_URL=
+
+- OAUTH_MAIL_CLIENT_ID=
+- OAUTH_MAIL_CLIENT_SECRET=
+- OAUTH_MAIL_REDIRECT_URL=
+
+- OAUTH_YANDEX_CLIENT_ID=
+- OAUTH_YANDEX_CLIENT_SECRET=
+- OAUTH_YANDEX_REDIRECT_URL=

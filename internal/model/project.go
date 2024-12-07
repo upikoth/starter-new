@@ -45,6 +45,7 @@ const ydbAuthFileDirName = "/secrets"
 const ydbAuthFileName = "authorized_key.json"
 const frontConfirmationPasswordRecoveryRequestAbsoluteURL = "/#/auth/recovery-password-confirm"
 const frontConfirmationRegistrationAbsoluteURL = "/#/auth/sign-up-confirm"
+const frontHandleAuthAbsoluteURL = "/#/auth/handle"
 
 func (p *Project) GetName() string {
 	return p.name
@@ -104,6 +105,10 @@ func (p *Project) GetFrontendConfirmationPasswordRecoveryRequestURL() string {
 
 func (p *Project) GetFrontendConfirmationRegistrationURL() string {
 	return fmt.Sprintf("%s%s", p.GetDomainURL(), frontConfirmationRegistrationAbsoluteURL)
+}
+
+func (p *Project) GetFrontendHandleAuthPageURL() string {
+	return fmt.Sprintf("%s%s", p.GetDomainURL(), frontHandleAuthAbsoluteURL)
 }
 
 func (p *Project) GetFrontendRepositoryName() string {

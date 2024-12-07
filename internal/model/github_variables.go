@@ -14,6 +14,7 @@ type BackendEnvironmentVariables struct {
 	FrontConfirmationPasswordRecoveryRequestURL string `json:"FRONT_CONFIRMATION_PASSWORD_RECOVERY_REQUEST_URL"`
 	FrontConfirmationRegistrationURL            string `json:"FRONT_CONFIRMATION_REGISTRATION_URL"`
 	FrontURL                                    string `json:"FRONT_URL"`
+	FrontHandleAuthPageURL                      string `json:"FRONT_HANDLE_AUTH_PAGE_URL"`
 	Port                                        string `json:"PORT"`
 	YCPFromAddress                              string `json:"YCP_FROM_ADDRESS"`
 	YCPFromName                                 string `json:"YCP_FROM_NAME"`
@@ -22,6 +23,9 @@ type BackendEnvironmentVariables struct {
 	YCS3Path                                    string `json:"YC_S3_PATH"`
 	YDBAuthFileDirName                          string `json:"YDB_AUTH_FILE_DIR_NAME"`
 	YDBAuthFile                                 string `json:"YDB_AUTH_FILE_NAME"`
+	OauthMailRedirectURL                        string `json:"OAUTH_MAIL_REDIRECT_URL"`
+	OauthVKRedirectURL                          string `json:"OAUTH_VK_REDIRECT_URL"`
+	OauthYandexRedirectURL                      string `json:"OAUTH_YANDEX_REDIRECT_URL"`
 }
 
 type FrontendRepositoryVariables struct {

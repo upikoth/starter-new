@@ -77,6 +77,7 @@ func (p *Service) createGithubBackendEnvironmentVariables(ctx context.Context) e
 		FrontConfirmationPasswordRecoveryRequestURL: p.newProject.GetFrontendConfirmationPasswordRecoveryRequestURL(),
 		FrontConfirmationRegistrationURL:            p.newProject.GetFrontendConfirmationRegistrationURL(),
 		FrontURL:                                    p.newProject.GetDomain(),
+		FrontHandleAuthPageURL:                      p.newProject.GetFrontendHandleAuthPageURL(),
 		Port:                                        p.newProject.GetBackendPort(),
 		YCPFromAddress:                              p.newProject.GetEmailFromAddress(),
 		YCPFromName:                                 p.newProject.GetEmailFromName(),
@@ -85,6 +86,9 @@ func (p *Service) createGithubBackendEnvironmentVariables(ctx context.Context) e
 		YCS3Path:                                    p.newProject.GetYCObjectStorageBucketNameSecrets(),
 		YDBAuthFileDirName:                          p.newProject.GetYCYDBFileDirName(),
 		YDBAuthFile:                                 p.newProject.GetYCYDBFileName(),
+		OauthMailRedirectURL:                        "dummy",
+		OauthVKRedirectURL:                          "dummy",
+		OauthYandexRedirectURL:                      "dummy",
 	}
 
 	wg := sync.WaitGroup{}
@@ -219,6 +223,12 @@ func (p *Service) createGithubBackendRepositorySecrets(ctx context.Context) erro
 	vars := model.BackendRepositorySecrets{
 		NotificationsTelegramTo:    p.config.ProxyVariables.NotificationsTelegramTo,
 		NotificationsTelegramToken: p.config.ProxyVariables.NotificationsTelegramToken,
+		OauthMailClientID:          "dummy",
+		OauthMailClientSecret:      "dummy",
+		OauthVkClientID:            "dummy",
+		OauthVkClientSecret:        "dummy",
+		OauthYandexClientID:        "dummy",
+		OauthYandexClientSecret:    "dummy",
 	}
 	wg := sync.WaitGroup{}
 	errs := make([]error, 0)

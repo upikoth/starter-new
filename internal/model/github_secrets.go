@@ -3,6 +3,12 @@ package model
 type BackendRepositorySecrets struct {
 	NotificationsTelegramTo    string `json:"NOTIFICATIONS_TELEGRAM_TO"`
 	NotificationsTelegramToken string `json:"NOTIFICATIONS_TELEGRAM_TOKEN"`
+	OauthMailClientID          string `json:"OAUTH_MAIL_CLIENT_ID"`
+	OauthMailClientSecret      string `json:"OAUTH_MAIL_CLIENT_SECRET"`
+	OauthVkClientID            string `json:"OAUTH_VK_CLIENT_ID"`
+	OauthVkClientSecret        string `json:"OAUTH_VK_CLIENT_SECRET"`
+	OauthYandexClientID        string `json:"OAUTH_YANDEX_CLIENT_ID"`
+	OauthYandexClientSecret    string `json:"OAUTH_YANDEX_CLIENT_SECRET"`
 }
 
 type BackendEnvironmentSecrets struct {
