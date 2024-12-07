@@ -92,6 +92,18 @@ func (s *App) Start(ctx context.Context) error {
 				},
 			},
 			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.AddRenovateToGithubRepositories,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateGithubRepositories,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
+				Function: s.services.NewProjectService.SetGithubRepositoriesHomepage,
+				Needs: []func(ctx context.Context) error{
+					s.services.NewProjectService.CreateGithubRepositories,
+				},
+			},
+			functionswithneeds.FunctionWithNeeds{
 				Function: s.services.NewProjectService.CreateYCFolderServiceAccount,
 				Needs: []func(ctx context.Context) error{
 					s.services.NewProjectService.CreateYCFolder,

@@ -55,7 +55,7 @@ func (g *Github) sendHttpRequest(ctx context.Context, method string, url string,
 		return []byte{}, errors.WithStack(err)
 	}
 
-	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated {
+	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated && res.StatusCode != http.StatusNoContent {
 		err := errors.New(fmt.Sprintf("не удалось выполнить запрос %s: %s, статус ответа - %d", method, url, res.StatusCode))
 		g.logger.Error(err.Error())
 		g.logger.Error(string(bodyBytes))

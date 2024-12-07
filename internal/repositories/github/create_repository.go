@@ -2,6 +2,8 @@ package github
 
 import (
 	"context"
+	"encoding/json"
+	"github.com/pkg/errors"
 	"net/http"
 )
 
@@ -9,12 +11,16 @@ type createRepositoryRequest struct {
 	Name string `json:"name"`
 }
 
-func (g *Github) CreateRepository(ctx context.Context, repoName string) error {
+type createRepositoryResponse struct {
+	ID int `json:"id"`
+}
+
+func (g *Github) CreateRepository(ctx context.Context, repoName string) (repositoryID int, err error) {
 	reqStruct := createRepositoryRequest{
 		Name: repoName,
 	}
 
-	_, err := g.sendHttpRequest(
+	bodyBytes, err := g.sendHttpRequest(
 		ctx,
 		http.MethodPost,
 		"https://api.github.com/user/repos",
@@ -22,8 +28,15 @@ func (g *Github) CreateRepository(ctx context.Context, repoName string) error {
 	)
 
 	if err != nil {
-		return err
+		return 0, err
 	}
 
-	return nil
+	resParsed := createRepositoryResponse{}
+	err = json.Unmarshal(bodyBytes, &resParsed)
+
+	if err != nil {
+		return 0, errors.WithStack(err)
+	}
+
+	return resParsed.ID, nil
 }

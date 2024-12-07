@@ -71,6 +71,12 @@ type AddGithubRepositoryEnvironmentRequest struct {
 	EnvironmentName string
 }
 
+type SetGithubRepositoryHomepageURLRequest struct {
+	GithubUserName string
+	GithubRepoName string
+	URL            string
+}
+
 type GetGithubRepositoryPublicKeyRequest struct {
 	GithubUserName string
 	GithubRepoName string

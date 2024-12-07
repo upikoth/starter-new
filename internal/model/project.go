@@ -29,6 +29,8 @@ type Project struct {
 	ycSAJSONCredentials            string
 	sentryBackendDSN               string
 	sentryFrontendDSN              string
+	githubBackendRepositoryID      int
+	githubFrontendRepositoryID     int
 }
 
 func NewProject(config *config.Config) *Project {
@@ -46,6 +48,7 @@ const ydbAuthFileName = "authorized_key.json"
 const frontConfirmationPasswordRecoveryRequestAbsoluteURL = "/#/auth/recovery-password-confirm"
 const frontConfirmationRegistrationAbsoluteURL = "/#/auth/sign-up-confirm"
 const frontHandleAuthAbsoluteURL = "/#/auth/handle"
+const swaggerAbsoluteURL = "/api/docs/app"
 
 func (p *Project) GetName() string {
 	return p.name
@@ -109,6 +112,10 @@ func (p *Project) GetFrontendConfirmationRegistrationURL() string {
 
 func (p *Project) GetFrontendHandleAuthPageURL() string {
 	return fmt.Sprintf("%s%s", p.GetDomainURL(), frontHandleAuthAbsoluteURL)
+}
+
+func (p *Project) GetSwaggerDocsURL() string {
+	return fmt.Sprintf("%s%s", p.GetDomainURL(), swaggerAbsoluteURL)
 }
 
 func (p *Project) GetFrontendRepositoryName() string {
@@ -313,4 +320,20 @@ func (p *Project) GetSentryFrontendDSN() string {
 
 func (p *Project) SetSentryFrontendDSN(dsn string) {
 	p.sentryFrontendDSN = dsn
+}
+
+func (p *Project) GetGithubBackendRepositoryID() int {
+	return p.githubBackendRepositoryID
+}
+
+func (p *Project) SetGithubBackendRepositoryID(id int) {
+	p.githubBackendRepositoryID = id
+}
+
+func (p *Project) GetGithubFrontendRepositoryID() int {
+	return p.githubFrontendRepositoryID
+}
+
+func (p *Project) SetGithubFrontendRepositoryID(id int) {
+	p.githubFrontendRepositoryID = id
 }
