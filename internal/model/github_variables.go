@@ -7,6 +7,8 @@ type BackendRepositoryVariables struct {
 	YcLogOptionsLogGroupID string `json:"YC_LOG_OPTIONS_LOG_GROUP_ID"`
 	YcRegistry             string `json:"YC_REGISTRY"`
 	YcServiceAccountID     string `json:"YC_SERVICE_ACCOUNT_ID"`
+	OauthMailAPIURL        string `json:"OAUTH_MAIL_API_URL"`
+	OauthYandexAPIURL      string `json:"OAUTH_YANDEX_API_URL"`
 }
 
 type BackendEnvironmentVariables struct {

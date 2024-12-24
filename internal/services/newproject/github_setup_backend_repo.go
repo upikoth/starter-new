@@ -144,6 +144,8 @@ func (p *Service) createGithubBackendRepositoryVariables(ctx context.Context) er
 		YcLogOptionsLogGroupID: p.newProject.GetYCLoggingGroupID(),
 		YcRegistry:             p.newProject.GetYCContainerRegistryID(),
 		YcServiceAccountID:     p.newProject.GetYCServiceAccountID(),
+		OauthMailAPIURL:        p.config.ProxyVariables.OauthMailAPIURL,
+		OauthYandexAPIURL:      p.config.ProxyVariables.OauthYandexAPIURL,
 	}
 	wg := sync.WaitGroup{}
 	errs := make([]error, 0)

@@ -35,6 +35,8 @@ type ProxyVariables struct {
 	NotificationsTelegramTo    string `envconfig:"NOTIFICATIONS_TELEGRAM_TO" required:"true"`
 	NotificationsTelegramToken string `envconfig:"NOTIFICATIONS_TELEGRAM_TOKEN" required:"true"`
 	UpikothPackagesRead        string `envconfig:"UPIKOTH_PACKAGES_READ" required:"true"`
+	OauthMailAPIURL            string `envconfig:"OAUTH_MAIL_API_URL" required:"true"`
+	OauthYandexAPIURL          string `envconfig:"OAUTH_YANDEX_API_URL" required:"true"`
 }
 
 func New() (*Config, error) {
