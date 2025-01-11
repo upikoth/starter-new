@@ -13,6 +13,7 @@
 
 Что нужно сделать ручками:
 1. Настроить oauth (создать новое приложение во всех сервисах, заменить соответсвтующие env переменные)
+2. Перегенерить YCP_PASSWORD запустив generate.py из инструкции https://yandex.cloud/ru/docs/postbox/operations/send-email
 
 Oauth:
 1. vk - https://id.vk.com/about/business/go/accounts/159787/apps

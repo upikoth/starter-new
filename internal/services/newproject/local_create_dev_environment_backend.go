@@ -88,10 +88,12 @@ OAUTH_VK_REDIRECT_URL=dummy
 OAUTH_MAIL_CLIENT_ID=dummy
 OAUTH_MAIL_CLIENT_SECRET=dummy
 OAUTH_MAIL_REDIRECT_URL=dummy
+OAUTH_MAIL_API_URL=%s
 
 OAUTH_YANDEX_CLIENT_ID=dummy
 OAUTH_YANDEX_CLIENT_SECRET=dummy
 OAUTH_YANDEX_REDIRECT_URL=dummy
+OAUTH_YANDEX_API_URL=%s
 
 # Токен бота телеграм.
 # NOTIFICATIONS_TELEGRAM_TOKEN=%s
@@ -121,6 +123,8 @@ OAUTH_YANDEX_REDIRECT_URL=dummy
 			p.newProject.GetFrontendConfirmationRegistrationURL(),
 			p.newProject.GetFrontendConfirmationPasswordRecoveryRequestURL(),
 			p.newProject.GetSentryBackendDSN(),
+			p.config.ProxyVariables.OauthMailAPIURL,
+			p.config.ProxyVariables.OauthYandexAPIURL,
 			p.config.ProxyVariables.NotificationsTelegramToken,
 			p.config.ProxyVariables.NotificationsTelegramTo,
 			p.newProject.GetYCServerlessContainerName(),
